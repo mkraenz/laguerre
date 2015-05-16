@@ -47,7 +47,7 @@ function getTangentplaneIndex(index1, index2, index3) {
 		else{
 			indexStr += "0";
 		}
-		if(i != indexArray1.length){
+		if(i != indexArray1.length-1){
 			indexStr += ",";
 		}
 	}
@@ -70,4 +70,5 @@ for (var i = 0; i < paramSpheresTop.length; i++) {
 getRadiiAndSphere(paramSphereBottom, -1);
 
 getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[1], paramSpheresTop[2]);
-getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[1], paramSpheresTop[2]);
+getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[1], paramSphereBottom);
+getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[2], paramSphereBottom);
