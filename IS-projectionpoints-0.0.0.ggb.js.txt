@@ -5,12 +5,8 @@
 
 var index = ["1,1,1", "-1,1,1", "1,-1,1"];
 for(var i = 0; i < 3; i++){
+// calc radii
 ggbApplet.evalCommand("r_{"+ index[i] +"} = Distance[M_{" + index[i] + "}, tp_{0,0,1}]");
-}
-
-// the corresponding spheres
-
-var index = ["1,1,1", "-1,1,1", "1,-1,1"];
-for(var i = 0; i < 3; i++){
+// build spheres
 ggbApplet.evalCommand("s_{"+ index[i] +"} = Sphere[M_{" + index[i] + "}, r_{" + index[i] + "}]");
 }
