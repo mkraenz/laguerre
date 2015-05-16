@@ -1,0 +1,16 @@
+// Script for
+
+
+//first 3 parametrizable spheres with z = 1
+
+var index = ["1,1,1", "-1,1,1", "1,-1,1", "1,1,-1"];
+for(var i = 0; i < 3; i++){
+// calc radii
+ggbApplet.evalCommand("r_{"+ index[i] +"} = Distance[M_{" + index[i] + "}, tp_{0,0,1}]");
+// build spheres
+ggbApplet.evalCommand("s_{"+ index[i] +"} = Sphere[M_{" + index[i] + "}, r_{" + index[i] + "}]");
+}
+
+// fourth and last parametrizable sphere, with z = -1
+ggbApplet.evalCommand("r_{"+ index[3] +"} = Distance[M_{" + index[3] + "}, tp_{0,0,-1}]");
+ggbApplet.evalCommand("s_{"+ index[3] +"} = Sphere[M_{" + index[3] + "}, r_{" + index[3] + "}]");
