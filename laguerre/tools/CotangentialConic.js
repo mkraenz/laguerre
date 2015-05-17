@@ -25,17 +25,19 @@ function createSpheresMidpointsAndRadii() {
 	ggbApplet.evalCommand('rm = Radius[sm]');
 }
 
-function createThreePointsOnCone(cone){
+function createThreePointsOnCone(cone) {
 	ggbApplet.evalCommand("P_1 = Point[" + cone + ", 1]");
 	ggbApplet.evalCommand("P_2 = Point[" + cone + ", 1/2]");
 	ggbApplet.evalCommand("P_3 = Point[" + cone + ", 1/4]");
 }
 
-function projectOntoRealSphere(){
-	ggbApplet.evalCommand("ray1 = Ray[If[ro >= rm, O, M],P_1]");
-	ggbApplet.evalCommand("ray2 = Ray[If[ro >= rm, O, M],P_2]");
-	ggbApplet.evalCommand("ray3 = Ray[If[ro >= rm, O, M],P_3]");
-	
+function projectOntoBigSphere() {
+	ggbApplet.evalCommand("ray1 = Ray[Midpoint[sbig],P_1]");
+	ggbApplet.evalCommand("ray2 = Ray[Midpoint[sbig],P_2]");
+	ggbApplet.evalCommand("ray3 = Ray[Midpoint[sbig],P_3]");
+	ggbApplet.evalCommand("PointOnSbig1 = Intersect[ray1, sbig] ");
+	ggbApplet.evalCommand("PointOnSbig2 = Intersect[ray2, sbig]");
+	ggbApplet.evalCommand("PointOnSbig3 = Intersect[ray3, sbig]");
 }
 /**
  * main script
@@ -43,18 +45,22 @@ function projectOntoRealSphere(){
 createMidpoints();
 createSliders();
 createSpheresMidpointsAndRadii();
-
+ggbApplet.evalCommand("sbig = If[ro >= rm, so, sm]");
 ggbApplet.evalCommand("rd = abs(rm - ro)");
 ggbApplet.evalCommand("seg = Segment[M, O]");
-ggbApplet.evalCommand("Mid = Midpoint[seg]");
-ggbApplet.evalCommand("sd = Sphere[If[ro >= rm, O, M], rd]");
-ggbApplet.evalCommand("smid = Sphere[Mid, Distance[Mid, M]]");
-ggbApplet.evalCommand("coned = If[ro != rm, Intersect[smid, sd], "
+ggbApplet.evalCommand("SegMid = Midpoint[seg]");
+ggbApplet.evalCommand("sd = Sphere[Midpoint[sbig], rd]");
+ggbApplet.evalCommand("sSegMid = Sphere[SegMid, Distance[SegMid, M]]");
+ggbApplet.evalCommand("coned = If[ro != rm, Intersect[sSegMid, sd], "
 		+ "Intersect[OrthogonalPlane[O, Vector[M, O]], so]]");
 
 createThreePointsOnCone("coned");
-projectOntoRealSphere();
-ggbApplet.evalCommand("");
-ggbApplet.evalCommand("");
-ggbApplet.evalCommand("");
-// TODO delete previous token
+projectOntoBigSphere();
+/*
+ * Here is possibly a bug source. GeoGebra tries to find 2 intersection points
+ * of a ray with sbig. Hopefully, always the second index _2 will always be the
+ * one which is defined, while the other is undefined. This might turn out to be
+ * a false hope...
+ */
+ggbApplet.evalCommand("c = Circle[PointOnSbig1_2, PointOnSbig2_2,"
+		+ " PointOnSbig3_2]");
