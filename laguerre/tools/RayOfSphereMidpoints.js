@@ -21,9 +21,6 @@ function createThreePlanes() {
 				+ 'RandomUniform[-100, 100], RandomUniform[-100, 100])');
 	}
 	for (var i = 0; i < 3; i++) {
-		var p1 = i * 3;
-		var p2 = i * 3 + 1;
-		var p3 = i * 3 + 2;
 		ggbApplet.evalCommand('e_' + i + ' = Plane[ P_' + i * 3 + ', P_'
 				+ (i * 3 + 1) + ', P_' + (i * 3 + 2) + ']');
 	}
