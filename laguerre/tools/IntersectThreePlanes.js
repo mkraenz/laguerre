@@ -19,4 +19,4 @@ function createThreePlanes() {
 
 createThreePlanes();
 ggbApplet.evalCommand('commonLine = Intersect[e_0, e_1]');
-ggbApplet.evalCommand('CommonPoint = Intersect[e_2, CommonLine]');
+ggbApplet.evalCommand('CommonPoint = Intersect[e_2, commonLine]');
