@@ -26,7 +26,7 @@ function createProjectionPoints(){
 	ggbApplet.evalCommand('ProjZ = (0,0,10)');
 }
 
-function createTangentpointsToS_0(){
+function createTangentplanesToS_0(){
 	ggbApplet.evalCommand('MidOfSegOtoProjX = Midpoint[Segment[O, ProjX]]');
 	ggbApplet.evalCommand('MidOfSegOtoProjY = Midpoint[Segment[O, ProjY]]');
 	ggbApplet.evalCommand('MidOfSegOtoProjZ = Midpoint[Segment[O, ProjZ]]');
@@ -62,13 +62,16 @@ function createTangentpointsToS_0(){
 	ggbApplet.renameObject('TPoint_2', 'TPoint_{0,0,-1}');
 	ggbApplet.setVisible('TPoint_{0,0,1}', false);
 	ggbApplet.setVisible('TPoint_{0,0,-1}', false);
-	ggbApplet.evalCommand('tp_{1,0,0} = TangentialPlaneToSphere[TPoint_{1,0,0}]');
-	ggbApplet.evalCommand('tp_{-1,0,0} = TangentialPlaneToSphere[TPoint_{-1,0,0}]');
-	ggbApplet.evalCommand('tp_{0,1,0} = TangentialPlaneToSphere[TPoint_{0,1,0}]');
-	ggbApplet.evalCommand('tp_{0,-1,0} = TangentialPlaneToSphere[TPoint_{0,-1,0}]');
-	ggbApplet.evalCommand('tp_{0,0,1} = TangentialPlaneToSphere[TPoint_{0,0,1}]');
-	ggbApplet.evalCommand('tp_{0,0,-1} = TangentialPlaneToSphere[TPoint_{0,0,-1}]');
-	ggbApplet.evalCommand('');
+	ggbApplet.evalCommand('tp_{1,0,0} = TangentialPlaneToSphere[s_0, TPoint_{1,0,0}]');
+	ggbApplet.evalCommand('tp_{-1,0,0} = TangentialPlaneToSphere[s_0, TPoint_{-1,0,0}]');
+	ggbApplet.evalCommand('tp_{0,1,0} = TangentialPlaneToSphere[s_0, TPoint_{0,1,0}]');
+	ggbApplet.evalCommand('tp_{0,-1,0} = TangentialPlaneToSphere[s_0, TPoint_{0,-1,0}]');
+	ggbApplet.evalCommand('tp_{0,0,1} = TangentialPlaneToSphere[s_0, TPoint_{0,0,1}]');
+	ggbApplet.evalCommand('tp_{0,0,-1} = TangentialPlaneToSphere[s_0, TPoint_{0,0,-1}]');
+}
+
+function createParameterMidpoints(){
+	// TODO: implement
 }
 
 /**
@@ -76,5 +79,6 @@ function createTangentpointsToS_0(){
  */
 createOriginSphere();
 createProjectionPoints();
-createTangentpointsToS_0();
+createTangentplanesToS_0();
+createParameterMidpoints();
 ggbApplet.evalCommand('');
