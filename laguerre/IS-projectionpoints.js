@@ -21,10 +21,9 @@ function getTangentPlaneToThreeSpheres(index1, index2, index3) {
 
 /**
  * Supposing that the indexes are of the form like "1,152,3"
- * 
- * @param index1
- * @param index2
- * @param index3
+ * @param index1 index of the first tangent plane
+ * @param index2 see index1
+ * @param index3 see index1
  */
 function getTangentplaneIndex(index1, index2, index3) {
 	var indexArray1 = index1.split(",");
@@ -59,8 +58,11 @@ function getTangentplaneIndex(index1, index2, index3) {
  * main script
  */
 
-// the spheres which can be customized by the user by moving the corresponding
-// point "M_{x,y,z}"
+
+/**
+ * create the spheres which can be customized by the user by moving the corresponding
+ * point "M_{x,y,z}"
+ */
 var paramSpheresTop = [ "1,1,1", "-1,1,1", "1,-1,1" ];
 var paramSphereBottom = '1,1,-1';
 
