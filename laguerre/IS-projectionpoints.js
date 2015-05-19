@@ -56,8 +56,8 @@ function createTangentplanesToS_0() {
 	ggbApplet.setVisible('TPoint_{1,0,0}', false);
 	ggbApplet.setVisible('TPoint_{-1,0,0}', false);
 	ggbApplet.evalCommand('TPoint = Intersect[coneProjX, coneProjZ]');
-	ggbApplet.renameObject('TPoint_1', 'TPoint_{0,1,0}');
-	ggbApplet.renameObject('TPoint_2', 'TPoint_{0,-1,0}');
+	ggbApplet.renameObject('TPoint_1', 'TPoint_{0,-1,0}');
+	ggbApplet.renameObject('TPoint_2', 'TPoint_{0,1,0}');
 	ggbApplet.setVisible('TPoint_{0,1,0}', false);
 	ggbApplet.setVisible('TPoint_{0,-1,0}', false);
 	ggbApplet.evalCommand('TPoint = Intersect[coneProjX, coneProjY]');
