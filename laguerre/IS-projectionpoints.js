@@ -116,33 +116,44 @@ function getRegionIndex(index1, index2, index3) {
 
 function createParameterMidpoints() {
 	var createParameterMidpointrays = function(planeIndex1, planeIndex2,
-			planeIndex3) {
+			planeIndex3, startRegionIndex) {
 		var midpointRayName = 'midpointRay_{'
-			+ getRegionIndex(planeIndex1, planeIndex2, planeIndex3)
-			+ '}';
-		ggbApplet.evalCommand(midpointRayName + ' = RayOfSphereMidpoints[s_0, tp_{' + planeIndex1 + '}, tp_{'
+				+ getRegionIndex(planeIndex1, planeIndex2, planeIndex3)
+				+ ' from ' + startRegionIndex + '}';
+		ggbApplet.evalCommand(midpointRayName
+				+ ' = RayOfSphereMidpoints[s_0, tp_{' + planeIndex1 + '}, tp_{'
 				+ planeIndex2 + '}, tp_{' + planeIndex3 + '}]');
 		ggbApplet.setVisible(midpointRayName, false);
 	}
-	
+
 	var createParameterMidpointsSubroutine = function(planeIndex1, planeIndex2,
 			planeIndex3) {
 		var regionIndex = getRegionIndex(planeIndex1, planeIndex2, planeIndex3);
-		ggbApplet.evalCommand('parameter_{' + regionIndex + '} = Slider[0.01, 0.99, 0.01]'); // min, max, increment step
+		ggbApplet.evalCommand('parameter_{' + regionIndex
+				+ '} = Slider[0.01, 0.99, 0.01]'); // min, max, increment step
 		ggbApplet.evalCommand('SetValue[parameter_{' + regionIndex + '}, 0.5]');
-		ggbApplet.evalCommand('M_{'
-				+ regionIndex + '} = Point[midpointRay_{' + regionIndex + '}, parameter_{' + regionIndex + '}]');
+		ggbApplet.evalCommand('M_{' + regionIndex + '} = Point[midpointRay_{'
+				+ regionIndex + " from " + "0,0,0" + '}, parameter_{'
+				+ regionIndex + '}]');
 	}
-	
+
 	var planeArray = [ "1,0,0", "-1,0,0", "0,1,0", "0,-1,0", "0,0,1", "0,0,-1" ];
-	createParameterMidpointrays(planeArray[0], planeArray[2], planeArray[4]);
-	createParameterMidpointrays(planeArray[1], planeArray[2], planeArray[4]);
-	createParameterMidpointrays(planeArray[0], planeArray[3], planeArray[4]);
-	createParameterMidpointrays(planeArray[0], planeArray[2], planeArray[5]);
-	createParameterMidpointsSubroutine(planeArray[0], planeArray[2], planeArray[4]);
-	createParameterMidpointsSubroutine(planeArray[1], planeArray[2], planeArray[4]);
-	createParameterMidpointsSubroutine(planeArray[0], planeArray[3], planeArray[4]);
-	createParameterMidpointsSubroutine(planeArray[0], planeArray[2], planeArray[5]);
+	createParameterMidpointrays(planeArray[0], planeArray[2], planeArray[4],
+			"0,0,0");
+	createParameterMidpointrays(planeArray[1], planeArray[2], planeArray[4],
+			"0,0,0");
+	createParameterMidpointrays(planeArray[0], planeArray[3], planeArray[4],
+			"0,0,0");
+	createParameterMidpointrays(planeArray[0], planeArray[2], planeArray[5],
+			"0,0,0");
+	createParameterMidpointsSubroutine(planeArray[0], planeArray[2],
+			planeArray[4]);
+	createParameterMidpointsSubroutine(planeArray[1], planeArray[2],
+			planeArray[4]);
+	createParameterMidpointsSubroutine(planeArray[0], planeArray[3],
+			planeArray[4]);
+	createParameterMidpointsSubroutine(planeArray[0], planeArray[2],
+			planeArray[5]);
 }
 
 function getParamRadiiAndSphere(index, zCoordOfTangentplane) {
@@ -164,9 +175,13 @@ function getTangentPlaneToThreeSpheres(index1, index2, index3) {
 
 /**
  * Supposing that the indexes are of the form like "1,152,3"
- * @param index1 index of the first tangent plane
- * @param index2 see index1
- * @param index3 see index1
+ * 
+ * @param index1
+ *            index of the first tangent plane
+ * @param index2
+ *            see index1
+ * @param index3
+ *            see index1
  */
 function getTangentplaneIndex(index1, index2, index3) {
 	var indexArray1 = index1.split(",");
@@ -182,21 +197,20 @@ function getTangentplaneIndex(index1, index2, index3) {
 		}
 	}
 	indexStr = "";
-	for( var i = 0; i < indexArray1.length; i++){
-		if( i == commonIndex){
+	for (var i = 0; i < indexArray1.length; i++) {
+		if (i == commonIndex) {
 			indexStr += 1 + parseInt(indexArray1[i]);
-		}
-		else{
+		} else {
 			indexStr += "0";
 		}
-		if(i != indexArray1.length-1){
+		if (i != indexArray1.length - 1) {
 			indexStr += ",";
 		}
 	}
 	return indexStr;
 }
 
-function createParameterSpheresAndTangentplanes(){
+function createParameterSpheresAndTangentplanes() {
 	var paramSpheresTop = [ "1,1,1", "-1,1,1", "1,-1,1" ];
 	var paramSphereBottom = '1,1,-1';
 
@@ -205,9 +219,12 @@ function createParameterSpheresAndTangentplanes(){
 	}
 	getParamRadiiAndSphere(paramSphereBottom, -1);
 
-	getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[1], paramSpheresTop[2]);
-	getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[1], paramSphereBottom);
-	getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[2], paramSphereBottom);
+	getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[1],
+			paramSpheresTop[2]);
+	getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[1],
+			paramSphereBottom);
+	getTangentPlaneToThreeSpheres(paramSpheresTop[0], paramSpheresTop[2],
+			paramSphereBottom);
 }
 
 /**
