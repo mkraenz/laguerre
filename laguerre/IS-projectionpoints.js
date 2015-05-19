@@ -114,12 +114,33 @@ function getRegionIndex(index1, index2, index3) {
 	return regionIndex;
 }
 
+/**
+ * see photos taken on 2015-05-19
+ * @param regionIndex
+ * @returns {String}
+ */
+function getInitialMidpointRayEmitterDirection(regionIndex) {
+	var direction = '';
+	var regionArr = regionIndex.split(',');
+	for (var i = 0; i < regionArr.length; i++) {
+		if (regionArr[i] > 0) {
+			direction += '-';
+		} else {
+			direction += '+';
+		}
+		if (i != regionArr.length - 1) {
+			direction += ',';
+		}
+	}
+	return direction;
+}
+
 function createParameterMidpoints() {
 	var createParameterMidpointrays = function(planeIndex1, planeIndex2,
 			planeIndex3, startRegionIndex) {
-		var midpointRayName = 'midpointRay_{'
-				+ getRegionIndex(planeIndex1, planeIndex2, planeIndex3)
-				+ ' from ' + startRegionIndex + '}';
+		var targetRegion = getRegionIndex(planeIndex1, planeIndex2, planeIndex3);
+		var midpointRayName = 'midpointRay_{' + targetRegion + ','
+				+ getInitialMidpointRayEmitterDirection(targetRegion) + '}';
 		ggbApplet.evalCommand(midpointRayName
 				+ ' = RayOfSphereMidpoints[s_0, tp_{' + planeIndex1 + '}, tp_{'
 				+ planeIndex2 + '}, tp_{' + planeIndex3 + '}]');
@@ -133,8 +154,9 @@ function createParameterMidpoints() {
 				+ '} = Slider[0.01, 0.99, 0.01]'); // min, max, increment step
 		ggbApplet.evalCommand('SetValue[parameter_{' + regionIndex + '}, 0.5]');
 		ggbApplet.evalCommand('M_{' + regionIndex + '} = Point[midpointRay_{'
-				+ regionIndex + " from " + "0,0,0" + '}, parameter_{'
-				+ regionIndex + '}]');
+				+ regionIndex + ','
+				+ getInitialMidpointRayEmitterDirection(regionIndex)
+				+ '}, parameter_{' + regionIndex + '}]');
 	}
 
 	var planeArray = [ "1,0,0", "-1,0,0", "0,1,0", "0,-1,0", "0,0,1", "0,0,-1" ];
