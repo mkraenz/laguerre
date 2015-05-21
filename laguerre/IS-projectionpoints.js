@@ -270,8 +270,10 @@ function createParameterSpheresAndTangentplanes() {
 /**
  * main script
  */
-createOriginSphere();
-createProjectionPoints();
-createTangentplanesToS_0();
-createParameterMidpoints();
-createParameterSpheresAndTangentplanes();
+function construct() {
+	createOriginSphere();
+	createProjectionPoints();
+	createTangentplanesToS_0();
+	createParameterMidpoints();
+	createParameterSpheresAndTangentplanes();
+}
