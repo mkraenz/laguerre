@@ -3,5 +3,5 @@
  */
 
 function helloWorldPoint() {
-	document.ggbApplet.evalCommand("A = (1,1,1)");
+	document.ggbApplet.evalCommand("A = (2,2,2)");
 }
