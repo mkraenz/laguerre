@@ -86,29 +86,25 @@ function createTangentplanesToS_0() {
  * z different from 0
  * 
  * @param index1
- *            index of the tangent plane in the form "12,1,0" =: "x,y,z"
+ *            {int-Array} index of the tangent plane in the form "12,1,0" =:
+ *            "x,y,z"
  * @param index2
  *            see index1
  * @param index3
  *            see index1
+ * @return {int-Array} index of the outlined region
  */
 function getRegionIndex(index1, index2, index3) {
-	var indexArray1 = index1.split(",");
-	var indexArray2 = index2.split(",");
-	var indexArray3 = index3.split(",");
-	var regionIndex = "";
-	for (var i = 0; i < indexArray1.length; i++) {
-		if (indexArray1[i] !== '0') {
-			regionIndex += indexArray1[i];
+	var regionIndex = [];
+	for (var i = 0; i < index1.length; i++) {
+		if (index1[i] != 0) {
+			regionIndex.push(index1[i]);
 		} else {
-			if (indexArray2[i] !== '0') {
-				regionIndex += indexArray2[i];
+			if (index2[i] != 0) {
+				regionIndex.push(index2[i]);
 			} else {
-				regionIndex += indexArray3[i];
+				regionIndex.push(index3[i]);
 			}
-		}
-		if (i != indexArray1.length - 1) {
-			regionIndex += ',';
 		}
 	}
 	return regionIndex;
@@ -116,58 +112,80 @@ function getRegionIndex(index1, index2, index3) {
 
 /**
  * see photos taken on 2015-05-19
- * @param regionIndex
- * @returns {String}
+ * 
+ * @param regionIndex index of the region the ray points into.
+ * @returns {int-Array}
  */
 function getInitialMidpointRayEmitterDirection(regionIndex) {
-	var direction = '';
-	var regionArr = regionIndex.split(',');
-	for (var i = 0; i < regionArr.length; i++) {
-		if (regionArr[i] > 0) {
-			direction += '-';
+	var direction = [];
+	for (var i = 0; i < regionIndex.length; i++) {
+		if (regionIndex[i] > 0) {
+			direction.push(-1);
 		} else {
-			direction += '+';
-		}
-		if (i != regionArr.length - 1) {
-			direction += ',';
+			direction.push(1);
 		}
 	}
 	return direction;
+}
+
+/**
+ * 
+ * @param index
+ *            {int-Array} the index as an array in the form [0,1,54,1,-1,1]
+ *            where the last three entries are either 1 or -1
+ * @returns {String} of the form 'midpointRay_{0,1,54,+,+,-}'
+ */
+function midpointRayToString(index) {
+	var indexCopy = index.slice(0);
+	for (var i = 3; i < indexCopy.length; i++) {
+		if (indexCopy[i] == 1) {
+			indexCopy[i] = '+';
+		} else {
+			indexCopy[i] = '-';
+		}
+	}
+	return 'midpointRay_{' + indexCopy.toString() + '}';
 }
 
 function createParameterMidpoints() {
 	var createParameterMidpointrays = function(planeIndex1, planeIndex2,
 			planeIndex3, startRegionIndex) {
 		var targetRegion = getRegionIndex(planeIndex1, planeIndex2, planeIndex3);
-		var midpointRayName = 'midpointRay_{' + targetRegion + ','
-				+ getInitialMidpointRayEmitterDirection(targetRegion) + '}';
+		var direction = getInitialMidpointRayEmitterDirection(targetRegion);
+		var midpointRayIndex = targetRegion.concat(direction);
+		var midpointRayName = midpointRayToString(midpointRayIndex);
 		ggbApplet.evalCommand(midpointRayName
-				+ ' = RayOfSphereMidpoints[s_0, tp_{' + planeIndex1 + '}, tp_{'
-				+ planeIndex2 + '}, tp_{' + planeIndex3 + '}]');
+				+ ' = RayOfSphereMidpoints[s_0, tp_{' + planeIndex1.toString()
+				+ '}, tp_{' + planeIndex2.toString() + '}, tp_{'
+				+ planeIndex3.toString() + '}]');
 		ggbApplet.setVisible(midpointRayName, false);
 	}
 
 	var createParameterMidpointsSubroutine = function(planeIndex1, planeIndex2,
 			planeIndex3) {
-		var regionIndex = getRegionIndex(planeIndex1, planeIndex2, planeIndex3);
+		var regionIndexArray = getRegionIndex(planeIndex1, planeIndex2,
+				planeIndex3);
+		var regionIndex = regionIndexArray.toString();
 		ggbApplet.evalCommand('parameter_{' + regionIndex
 				+ '} = Slider[0.01, 0.99, 0.01]'); // min, max, increment step
 		ggbApplet.evalCommand('SetValue[parameter_{' + regionIndex + '}, 0.5]');
-		ggbApplet.evalCommand('M_{' + regionIndex + '} = Point[midpointRay_{'
-				+ regionIndex + ','
-				+ getInitialMidpointRayEmitterDirection(regionIndex)
-				+ '}, parameter_{' + regionIndex + '}]');
+		var direction = getInitialMidpointRayEmitterDirection(regionIndexArray);
+		var midpointRayIndex = regionIndexArray.concat(direction);
+		var midpointRayName = midpointRayToString(midpointRayIndex);
+		ggbApplet.evalCommand('M_{' + regionIndex + '} = Point['
+				+ midpointRayName + ', parameter_{' + regionIndex + '}]');
 	}
 
-	var planeArray = [ "1,0,0", "-1,0,0", "0,1,0", "0,-1,0", "0,0,1", "0,0,-1" ];
-	createParameterMidpointrays(planeArray[0], planeArray[2], planeArray[4],
-			"0,0,0");
-	createParameterMidpointrays(planeArray[1], planeArray[2], planeArray[4],
-			"0,0,0");
-	createParameterMidpointrays(planeArray[0], planeArray[3], planeArray[4],
-			"0,0,0");
-	createParameterMidpointrays(planeArray[0], planeArray[2], planeArray[5],
-			"0,0,0");
+	var planeArray = [ [ 1, 0, 0 ], [ -1, 0, 0 ], [ 0, 1, 0 ], [ 0, -1, 0 ],
+			[ 0, 0, 1 ], [ 0, 0, -1 ] ];
+	createParameterMidpointrays(planeArray[0], planeArray[2], planeArray[4], [
+			0, 0, 0 ]);
+	createParameterMidpointrays(planeArray[1], planeArray[2], planeArray[4], [
+			0, 0, 0 ]);
+	createParameterMidpointrays(planeArray[0], planeArray[3], planeArray[4], [
+			0, 0, 0 ]);
+	createParameterMidpointrays(planeArray[0], planeArray[2], planeArray[5], [
+			0, 0, 0 ]);
 	createParameterMidpointsSubroutine(planeArray[0], planeArray[2],
 			planeArray[4]);
 	createParameterMidpointsSubroutine(planeArray[1], planeArray[2],
@@ -252,8 +270,10 @@ function createParameterSpheresAndTangentplanes() {
 /**
  * main script
  */
-createOriginSphere();
-createProjectionPoints();
-createTangentplanesToS_0();
-createParameterMidpoints();
-createParameterSpheresAndTangentplanes();
+function construct() {
+	createOriginSphere();
+	createProjectionPoints();
+	createTangentplanesToS_0();
+	createParameterMidpoints();
+	createParameterSpheresAndTangentplanes();
+}
