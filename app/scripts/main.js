@@ -1,1 +1,1 @@
-console.log('\'Allo \'Ppasd!');
+console.log('\'Allo \'Pd!');
