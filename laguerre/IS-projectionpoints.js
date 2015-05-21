@@ -169,10 +169,11 @@ function createParameterMidpoints() {
 		ggbApplet.evalCommand('parameter_{' + regionIndex
 				+ '} = Slider[0.01, 0.99, 0.01]'); // min, max, increment step
 		ggbApplet.evalCommand('SetValue[parameter_{' + regionIndex + '}, 0.5]');
-		ggbApplet.evalCommand('M_{' + regionIndex + '} = Point[midpointRay_{'
-				+ regionIndex + ','
-				+ getInitialMidpointRayEmitterDirection(regionIndex).toString()
-				+ '}, parameter_{' + regionIndex + '}]');
+		var direction = getInitialMidpointRayEmitterDirection(regionIndexArray);
+		var midpointRayIndex = regionIndexArray.concat(direction);
+		var midpointRayName = midpointRayToString(midpointRayIndex);
+		ggbApplet.evalCommand('M_{' + regionIndex + '} = Point['
+				+ midpointRayName + ', parameter_{' + regionIndex + '}]');
 	}
 
 	var planeArray = [ [ 1, 0, 0 ], [ -1, 0, 0 ], [ 0, 1, 0 ], [ 0, -1, 0 ],
