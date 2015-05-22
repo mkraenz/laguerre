@@ -34,6 +34,12 @@ module.exports = function (grunt) {
         base: {
             src: ['<%= config.tssrc %>/*.ts'],
             dest: '<%= config.app %>/scripts/gen/laguerre.js',
+            options: {
+              target: 'es5', //or es3
+              basePath: ['<%= config.tssrc %>/*.ts'],
+              sourceMap: true,
+              declaration: true
+            }
         }
     },
 	
