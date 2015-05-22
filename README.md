@@ -1,14 +1,30 @@
 # laguerre
 
+## Setup
+First, I assume you have git installed (note that github-for-windows does not suffice). Also we will need bower, grunt-cli and grunt globally installed via npm with `$ npm install -g <package-name>`.
+
+1. Checkout the project from git. 
+2. Navigate into the projects root and run the following commands in a shell.
+  1. `$ npm install` (if this gives you errors as in the first comments attached screenshot then see below)
+  2. `$ bower install`
+  3. `$ grunt serve` (to see if everything worked fine. It should open a tab in your browser displaying some stuff.)
+  
+For tests also cd into /test and run `$ bower install`.
+
+
 ## Naming convention
 We mostly use the following naming convention.
 As standard position we consider 
-ProjPointX = (pos. number, 0, 0)
-ProjPointY = (0, pos. number, 0)
-ProjPointZ = (0, 0,p os. number).
-Short version: We name everything as if we had the standard (euclidean) cube.
+1. ProjPointX = (pos. number, 0, 0)
+2. ProjPointY = (0, pos. number, 0)
+3. ProjPointZ = (0, 0, pos. number).
 
-Long version:
+
+### Short version: 
+We name everything as if we had the standard (euclidean) cube.
+
+
+### Long version:
 Sphere s_o markes the section 0,0,0 = x,y,z. (This is an “oh”  for origin not a zero)
 Now we simply in-/decrease the corrresponding
 index each time we have could inscribe a sphere in there.
@@ -33,3 +49,15 @@ tp_{0,0,1}
 tp_{0,0,-1}
 Now we just in-/decrease the corresponding index each time we built another row of spheres.
 Due to the nature of the construction it is not neccessary to have mixed terms, e.g. indices where both x and y are unequal to 0. Only one will be unequal to 0,
+
+
+## Setup problems
+### Tests
+When runnings the grunt <test> task it might display you a `Phantom Js timed out` warning. This is the case when mocha is not installed correctly.
+Solution: run `$ npm install -g mocha`
+
+Maybe.....For tests also cd into /test and run `$ bower install`.
+
+### npm install errors
+After mocha was globally installed, a new setup from scratch might end up in the error message as in the comments attached screenshot. To safely setup the project try deleting the grunt-mocha and the generator-mocha from %appdata%/npm/node_modules. Then run `npm install -g grunt-mocha` and try the whole installation again.
+
