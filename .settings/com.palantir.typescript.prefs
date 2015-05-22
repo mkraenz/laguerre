@@ -1,5 +1,5 @@
 build.path.exportedFolder=
 build.path.sourceFolder=app/ts
-compiler.outputDirOption=
-compiler.outputFileOption=
+compiler.outputDirOption=app/scripts/gen
+compiler.outputFileOption=eclipse.js
 eclipse.preferences.version=1
