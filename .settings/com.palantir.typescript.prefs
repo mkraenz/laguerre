@@ -1,5 +1,14 @@
 build.path.exportedFolder=
 build.path.sourceFolder=app/ts
-compiler.outputDirOption=app/scripts/gen
-compiler.outputFileOption=eclipse.js
+compiler.codeGenTarget=ECMASCRIPT5
+compiler.compileOnSave=false
+compiler.generateDeclarationFiles=false
+compiler.mapSourceFiles=false
+compiler.moduleGenTarget=UNSPECIFIED
+compiler.noEmitOnError=true
+compiler.noImplicitAny=true
+compiler.noLib=false
+compiler.outputDirOption=
+compiler.outputFileOption=
+compiler.removeComments=false
 eclipse.preferences.version=1
