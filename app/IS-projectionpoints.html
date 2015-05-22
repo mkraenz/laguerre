@@ -2,20 +2,20 @@
 <html>
 <head>
 <script type="text/javascript"
-	src=file://E:git-repositories/laguerre/laguerre/HelloWorld.js></script>
+	src="scripts/IS-projectionpoints.js"></script>
 <script type="text/javascript"
 	src="http://www.geogebratube.org/scripts/deployggb.js"></script>
 </head>
 <body>
-	<p>This is text.</p>
-	<input type="button" value="Create Point" onclick="HelloWorldPoint()">
+	<p>Debug.</p>
+	<input type="button" value="Construct!" onclick="construct()">
 	<div id="applet_container1"></div>
 
 	<script type="text/javascript">
-		// Create applet for material_id 27876 from tube.
+		// Create applet for material_id 1222013 from tube.
 		// The second parameter forces not to use webSimple (this is necessary when multiple applets are used on one page, if one cannot use webSimple).
 		var applet1 = new GGBApplet({
-			material_id : "1221851"
+			material_id : "1222013"
 		}, true);
 		window.onload = function() {
 			applet1.inject('applet_container1', 'preferHTML5');
