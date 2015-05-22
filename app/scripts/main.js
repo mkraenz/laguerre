@@ -1,1 +1,2 @@
-console.log('\'Allo \'Pd!');
+console.log('main.js!');
+

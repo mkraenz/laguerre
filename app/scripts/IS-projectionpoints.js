@@ -14,7 +14,7 @@ function createOriginSphere() {
 	ggbApplet.evalCommand('r_{0 slider} = Slider[0.1, 10]');
 	ggbApplet.evalCommand('SetValue[r_{0 slider}, 1]');
 	ggbApplet.evalCommand('s_0 = Sphere[O_0, r_{0 slider}]');
-	ggbApplet.evalCommand('SetColor[s_0, "Gold"]')
+	ggbApplet.evalCommand('SetColor[s_0, "Gold"]');
 	ggbApplet.evalCommand('O = Midpoint[s_0]');
 	ggbApplet.evalCommand('r_0 = Radius[s_0]');
 	ggbApplet.setVisible('O', false);
