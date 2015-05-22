@@ -1,2 +1,2 @@
 console.log('stuff');
-console.log('morestuff');
+console.log('build with eclipse');
