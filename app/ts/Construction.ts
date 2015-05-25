@@ -8,7 +8,8 @@ class Construction {
     private ORIGIN: string = TypeString.midpoint(this.ORIGIN_REGION);
     private ORIGIN_SPHERE: string = TypeString.sphere(this.ORIGIN_REGION);
 
-    public static listOfInvisibleObjects = new Array<string>();
+    private listOfInvisibleObjects = new Array<string>();
+    private listOfInvisibleLabels = new Array<string>();
     
     // for the parametrizable spheres' slider
     private PARAMETER_SPHERE_MIDPOINT_MIN = 0.01;
@@ -39,14 +40,14 @@ class Construction {
         var segmentProjX: string = "segmentProjXToOrigin";
         var segmentProjY: string = "segmentProjYToOrigin";
         var segmentProjZ: string = "segmentProjZToOrigin";
-        Construction.listOfInvisibleObjects.push(segmentProjX, segmentProjY, segmentProjZ);
+        this.listOfInvisibleObjects.push(segmentProjX, segmentProjY, segmentProjZ);
         this.ggb.segment(this.ORIGIN, this.PROJECTION_POINT_X, segmentProjX);
         this.ggb.segment(this.ORIGIN, this.PROJECTION_POINT_Y, segmentProjY);
         this.ggb.segment(this.ORIGIN, this.PROJECTION_POINT_Z, segmentProjZ);
         var midpointProjX: string = this.ggb.midpoint(segmentProjX, 'MidOfSegOtoProjX');
         var midpointProjY: string = this.ggb.midpoint(segmentProjY, 'MidOfSegOtoProjY');;
         var midpointProjZ: string = this.ggb.midpoint(segmentProjZ, 'MidOfSegOtoProjZ');
-        Construction.listOfInvisibleObjects.push(midpointProjX, midpointProjY, midpointProjZ);
+        this.listOfInvisibleObjects.push(midpointProjX, midpointProjY, midpointProjZ);
 
         var radiusProjX: string = this.ggb.distance(midpointProjX, this.ORIGIN, 'r_{' + this.PROJECTION_POINT_X + '}');
         var radiusProjY: string = this.ggb.distance(midpointProjY, this.ORIGIN, 'r_{' + this.PROJECTION_POINT_Y + '}');
@@ -54,7 +55,7 @@ class Construction {
         var projectionSphereX: string = this.ggb.sphere(midpointProjX, radiusProjX, 's_{' + this.PROJECTION_POINT_X + '}');
         var projectionSphereY: string = this.ggb.sphere(midpointProjY, radiusProjY, 's_{' + this.PROJECTION_POINT_Y + '}');
         var projectionSphereZ: string = this.ggb.sphere(midpointProjZ, radiusProjZ, 's_{' + this.PROJECTION_POINT_Z + '}');
-        Construction.listOfInvisibleObjects.push(projectionSphereX, projectionSphereY, projectionSphereZ);
+        this.listOfInvisibleObjects.push(projectionSphereX, projectionSphereY, projectionSphereZ);
         
         // there seems to be some bug with naming of conics defined by
         // intersect. thus we have to use c,d,e
@@ -64,6 +65,7 @@ class Construction {
         var coneProjX: string = this.t.renameObject(coneX, 'coneProjX');
         var coneProjY: string = this.t.renameObject(coneY, 'coneProjY');
         var coneProjZ: string = this.t.renameObject(coneZ, 'coneProjZ');
+        this.listOfInvisibleObjects.push(coneProjX, coneProjY, coneProjZ);
 
         this.ggb.intersect(coneProjY, coneProjZ, 'TPointX');
         var tPointPosX: string = this.t.renameObject('TPointX_1', TypeString.tPoint([1, 0, 0]));
@@ -74,7 +76,7 @@ class Construction {
         this.ggb.intersect(coneProjX, coneProjY, 'TPointZ');
         var tPointPosZ: string = this.t.renameObject('TPointZ_1', TypeString.tPoint([0, 0, 1]));
         var tPointNegZ: string = this.t.renameObject('TPointZ_2', TypeString.tPoint([0, 0, -1]));
-        Construction.listOfInvisibleObjects.push(tPointPosX, tPointNegX, tPointNegY, tPointPosY, tPointPosZ, tPointNegZ);
+        this.listOfInvisibleObjects.push(tPointPosX, tPointNegX, tPointNegY, tPointPosY, tPointPosZ, tPointNegZ);
 
         this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, TypeString.tPlane([1, 0, 0]));
         this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, TypeString.tPlane([-1, 0, 0]));
@@ -82,11 +84,15 @@ class Construction {
         this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, TypeString.tPlane([0, -1, 0]));
         this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, TypeString.tPlane([0, 0, 1]));
         this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, TypeString.tPlane([0, 0, -1]));
+
+        this.listOfInvisibleLabels.push(TypeString.tPlane([1, 0, 0]), TypeString.tPlane([-1, 0, 0]),
+            TypeString.tPlane([0, 1, 0]), TypeString.tPlane([0, -1, 0]), TypeString.tPlane([0, 0, 1]),
+            TypeString.tPlane([0, 0, -1]));
     }
 
     private setHelperObjectsInvisible() {
-        for (var i: number = 0; i < Construction.listOfInvisibleObjects.length; i++) {
-            ggbApplet.setVisible(Construction.listOfInvisibleObjects[i], false);
+        for (var i: number = 0; i < this.listOfInvisibleObjects.length; i++) {
+            ggbApplet.setVisible(this.listOfInvisibleObjects[i], false);
         }
     }
 
@@ -126,6 +132,12 @@ class Construction {
         this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[3]);
         this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[2], spheres[3]);
     }
+    
+    private setLabelsInvisible(){
+       for(var i: number = 0; i < this.listOfInvisibleLabels.length; i++){
+          ggbApplet.setLabelVisible(this.listOfInvisibleLabels[i], false); 
+       } 
+    }
 
 
     run() {
@@ -136,5 +148,6 @@ class Construction {
         this.createParameterSpheresAndTangentplanes();
 
         this.setHelperObjectsInvisible();
+        this.setLabelsInvisible();
     }
 }

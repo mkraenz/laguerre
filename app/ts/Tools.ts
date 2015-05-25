@@ -52,7 +52,7 @@ class Tools {
         var midpointRayName: string = TypeString.midpointRayToString(midpointRayIndex);
         this.ggb.rayOfSphereMidpoints(TypeString.sphere(sphereRegion), TypeString.tPlane(plane1),
             TypeString.tPlane(plane2), TypeString.tPlane(plane3), midpointRayName);
-        //        ggbApplet.setVisible(midpointRayName, false);
+        ggbApplet.setVisible(midpointRayName, false);
         return midpointRayName;
     }
 
@@ -66,7 +66,7 @@ class Tools {
     }
 
     tangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
-        var commonIndex:number = null;
+        var commonIndex: number = null;
         for (var i = 0; i < index1.length; i++) {
             // here one might have to use parseInt(indexArray[i]
             if (index1[i] == index2[i]
@@ -125,8 +125,8 @@ class Tools {
         }
         return direction;
     }
-    
-    
- 
+
+
+
 
 }
