@@ -15,9 +15,9 @@ class Tools {
 
     radius(region: number[]) {
         var tpIndex: number[] = [0, 0, region[2]];
-        var midpoint: string = TypeString.midpointString(region);
-        var radiusName: string = TypeString.radiusString(region);
-        return this.ggb.distance(midpoint, TypeString.tpString(tpIndex),
+        var midpoint: string = TypeString.midpoint(region);
+        var radiusName: string = TypeString.radius(region);
+        return this.ggb.distance(midpoint, TypeString.tPlane(tpIndex),
             radiusName);
     }
 
@@ -25,16 +25,15 @@ class Tools {
      * Creates a Sphere midpoint with a name of the form "M_{1,2,3}"
      */
     sphereMidpointFree(region: number[], x: number, y: number, z: number): string {
-        // TODO: write something useful instead of this crap
-        var name: string = TypeString.midpointString(region);
+        var name: string = TypeString.midpoint(region);
         this.pointFree(x, y, z, name);
         return name;
     }
 
     sphere(region: number[]): string {
-        var midpoint: string = TypeString.midpointString(region);
-        var radius: string = TypeString.radiusString(region);
-        var sphereName: string = TypeString.sphereString(region);
+        var midpoint: string = TypeString.midpoint(region);
+        var radius: string = TypeString.radius(region);
+        var sphereName: string = TypeString.sphere(region);
         return this.ggb.sphere(midpoint, radius, sphereName);
     }
 
@@ -51,23 +50,23 @@ class Tools {
         var direction: number[] = this.initialMidpointRayEmitterDirection(targetRegion);
         var midpointRayIndex: number[] = targetRegion.concat(direction);
         var midpointRayName: string = TypeString.midpointRayToString(midpointRayIndex);
-        this.ggb.rayOfSphereMidpoints(TypeString.sphereString(sphereRegion), TypeString.tpString(plane1),
-            TypeString.tpString(plane2), TypeString.tpString(plane3), midpointRayName);
+        this.ggb.rayOfSphereMidpoints(TypeString.sphere(sphereRegion), TypeString.tPlane(plane1),
+            TypeString.tPlane(plane2), TypeString.tPlane(plane3), midpointRayName);
         //        ggbApplet.setVisible(midpointRayName, false);
         return midpointRayName;
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
         var nextPlaneIndex: number[] = this.tangentPlaneIndex(sphere1, sphere2, sphere3);
-        var name: string = TypeString.tpString(nextPlaneIndex);
+        var name: string = TypeString.tPlane(nextPlaneIndex);
         this.ggb.tangentPlaneToThreeSpheresAwayFromOrigin(this.ORIGIN,
-            TypeString.sphereString(sphere1), TypeString.sphereString(sphere2), TypeString.sphereString(sphere3),
+            TypeString.sphere(sphere1), TypeString.sphere(sphere2), TypeString.sphere(sphere3),
             name);
         return name;
     }
 
     tangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
-        var commonIndex = null;
+        var commonIndex:number = null;
         for (var i = 0; i < index1.length; i++) {
             // here one might have to use parseInt(indexArray[i]
             if (index1[i] == index2[i]

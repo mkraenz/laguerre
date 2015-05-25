@@ -4,9 +4,9 @@ class Construction {
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
-    private ORIGIN: string = 'M_{0,0,0}';
-    private ORIGIN_SPHERE: string = 's_{0,0,0}';
     private ORIGIN_REGION: number[] = [0, 0, 0];
+    private ORIGIN: string = TypeString.midpoint(this.ORIGIN_REGION);
+    private ORIGIN_SPHERE: string = TypeString.sphere(this.ORIGIN_REGION);
 
     public static listOfInvisibleObjects = new Array<string>();
     
@@ -14,7 +14,6 @@ class Construction {
     private PARAMETER_SPHERE_MIDPOINT_MIN = 0.01;
     private PARAMETER_SPHERE_MIDPOINT_MAX = 0.99;
     private PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
-    private PARAMETER_SLIDER_NAME = 'parameter';
 
     private ggb: GGBTools = new GGBTools();
     private t: Tools = new Tools(this.ggb, this.ORIGIN);
@@ -23,7 +22,7 @@ class Construction {
         var region: number[] = [0, 0, 0];
         this.t.sphereMidpointFree(region, 0, 0, 0);
 
-        var radiusSliderStr: string = 'r_{' + region.toString() + '}';
+        var radiusSliderStr: string = TypeString.radius(region);
         this.ggb.slider(0.1, 10, radiusSliderStr);
         ggbApplet.setValue(radiusSliderStr, 1);
         var sphereName: string = this.t.sphere(region);
@@ -67,22 +66,22 @@ class Construction {
         var coneProjZ: string = this.t.renameObject(coneZ, 'coneProjZ');
 
         this.ggb.intersect(coneProjY, coneProjZ, 'TPointX');
-        var tPointPosX: string = this.t.renameObject('TPointX_1', 'TPoint_{1,0,0}');
-        var tPointNegX: string = this.t.renameObject('TPointX_2', 'TPoint_{-1,0,0}');
+        var tPointPosX: string = this.t.renameObject('TPointX_1', TypeString.tPoint([1, 0, 0]));
+        var tPointNegX: string = this.t.renameObject('TPointX_2', TypeString.tPoint([-1, 0, 0]));
         this.ggb.intersect(coneProjX, coneProjZ, 'TPointY');
-        var tPointNegY: string = this.t.renameObject('TPointY_1', 'TPoint_{0,-1,0}');
-        var tPointPosY: string = this.t.renameObject('TPointY_2', 'TPoint_{0,1,0}');
+        var tPointNegY: string = this.t.renameObject('TPointY_1', TypeString.tPoint([0, -1, 0]));
+        var tPointPosY: string = this.t.renameObject('TPointY_2', TypeString.tPoint([0, 1, 0]));
         this.ggb.intersect(coneProjX, coneProjY, 'TPointZ');
-        var tPointPosZ: string = this.t.renameObject('TPointZ_1', 'TPoint_{0,0,1}');
-        var tPointNegZ: string = this.t.renameObject('TPointZ_2', 'TPoint_{0,0,-1}');
+        var tPointPosZ: string = this.t.renameObject('TPointZ_1', TypeString.tPoint([0, 0, 1]));
+        var tPointNegZ: string = this.t.renameObject('TPointZ_2', TypeString.tPoint([0, 0, -1]));
         Construction.listOfInvisibleObjects.push(tPointPosX, tPointNegX, tPointNegY, tPointPosY, tPointPosZ, tPointNegZ);
 
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, 'tp_{1,0,0}');
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, 'tp_{-1,0,0}');
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, 'tp_{0,1,0}');
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, 'tp_{0,-1,0}');
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, 'tp_{0,0,1}');
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, 'tp_{0,0,-1}');
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, TypeString.tPlane([1, 0, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, TypeString.tPlane([-1, 0, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, TypeString.tPlane([0, 1, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, TypeString.tPlane([0, -1, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, TypeString.tPlane([0, 0, 1]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, TypeString.tPlane([0, 0, -1]));
     }
 
     private setHelperObjectsInvisible() {
@@ -98,13 +97,13 @@ class Construction {
         var region: number[] = this.t.regionIndex(plane1, plane2, plane3);
         var regionIndex: string = region.toString();
 
-        var sliderName = TypeString.typeString(this.PARAMETER_SLIDER_NAME, region);
+        var sliderName = TypeString.parameter(region);
         this.ggb.slider(this.PARAMETER_SPHERE_MIDPOINT_MIN, this.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
             this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
         ggbApplet.setValue(sliderName, 0.5);
         var midpointRayName = this.t.rayOfSphereMidpoints([0, 0, 0], plane1, plane2, plane3);
-        var pointName = this.ggb.point(midpointRayName, TypeString.midpointString(region),
-            TypeString.parameterString(region));
+        var pointName = this.ggb.point(midpointRayName, TypeString.midpoint(region),
+            TypeString.parameter(region));
         return pointName;
     }
 
