@@ -1,28 +1,38 @@
 class Tools {
+    
+    private DEFAULT: string = 'default';
 
     indexToString(x: number, y: number, z: number): string {
         var str: string = x + ',' + y + ',' + z;
         return str;
     }
 
-    generalPoint(x: number, y: number, z: number, name: string = 'default'): string {
+    generalPoint(x: number, y: number, z: number, name: string = this.DEFAULT): string {
         var cmd: string = '(' + this.indexToString(x, y, z) + ')';
-        if (name !== 'default') {
-            cmd = name + '= ' + cmd;
-        }
+        this.setCmdOnNondefaultName(cmd, name);
         ggbApplet.evalCommand(cmd);
         return name;
     }
 
+    /**
+     * Creates a Sphere midpoint with a name of the form "M_{1,2,3}"
+     */
     midpoint(region: number[], x: number, y: number, z: number): string {
         var name: string = 'M_{' + region.toString() + '}';
         this.generalPoint(x, y, z, name);
         return name;
     }
 
-    generalSegment(startPoint: string, endPoint: string, name: string = 'default'): string {
-
+    generalSegment(startPoint: string, endPoint: string, name: string = this.DEFAULT): string {
+        var cmd: string = 'Segment[' + startPoint + ', ' + endPoint + ']';
+        this.setCmdOnNondefaultName(cmd, name);
         return name;
+    }
+
+    private setCmdOnNondefaultName(cmd: string, name: string) {
+        if (name !== this.DEFAULT) {
+            cmd = name + '= ' + cmd;
+        }
     }
     
     /**
@@ -40,11 +50,9 @@ class Tools {
         return sphereName;
     }
 
-    slider(start: number, end: number, name: string = 'default', step: number = 0.1): string {
+    slider(start: number, end: number, name: string = this.DEFAULT, step: number = 0.1): string {
         var cmd: string = "Slider[" + start.toString() + ", " + end.toString() + ", " + step.toString() + "]";
-        if (name !== 'default') {
-            cmd = name + " = " + cmd;
-        }
+        this.setCmdOnNondefaultName(cmd, name);
         ggbApplet.evalCommand(cmd);
         return name;
     }

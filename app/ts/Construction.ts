@@ -15,13 +15,13 @@ class Construction {
         var sphereName: string = this.t.sphere(region);
         this.t.setColor(sphereName, "Gold");
     }
-
-
+    
     createProjectionPoints() {
         this.t.generalPoint(10,0,0, this.PROJECTION_POINT_X);
         this.t.generalPoint(0,10,0, this.PROJECTION_POINT_Y);
         this.t.generalPoint(0,0,10, this.PROJECTION_POINT_Z);
     }
+    
      createInitialTangentplanes() {
     ggbApplet.evalCommand('MidOfSegOtoProjX = Midpoint[Segment[O, ProjX]]');
     ggbApplet.evalCommand('MidOfSegOtoProjY = Midpoint[Segment[O, ProjY]]');
