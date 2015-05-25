@@ -1,6 +1,7 @@
 class Construction {
-    private t: Tools = new Tools();
-    private ggb: GGBTools = new GGBTools;
+
+    private ggb: GGBTools = new GGBTools();
+    private t: Tools = new Tools(this.ggb, this.ORIGIN);
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -16,6 +17,7 @@ class Construction {
     private PARAMETER_SPHERE_MIDPOINT_MAX = 0.99;
     private PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
     private PARAMETER_SLIDER_NAME = 'parameter';
+
 
     createInitialSphere() {
         var region: number[] = [0, 0, 0];
@@ -117,12 +119,31 @@ class Construction {
         this.parameterMidpoints(planeArray[0], planeArray[2], planeArray[5]);
     }
 
+    paramRadiiAndSphere(index) {
+        this.t.radius(index);
+        this.t.sphere(index);
+    }
+
+    private createParameterSpheresAndTangentplanes() {
+        var spheres = [[1, 1, 1], [-1, 1, 1], [1, -1, 1], [1, 1, -1]];
+        for (var i = 0; i < spheres.length; i++) {
+            this.paramRadiiAndSphere(spheres[i]);
+        }
+        this.t.tangentialPlaneToThreeSpheres(spheres[0], spheres[1],
+            spheres[2]);
+        this.t.tangentialPlaneToThreeSpheres(spheres[0], spheres[1],
+            spheres[3]);
+        this.t.tangentialPlaneToThreeSpheres(spheres[0], spheres[2],
+            spheres[3]);
+    }
+
 
     run() {
         this.createInitialSphere();
         this.createProjectionPoints();
         this.createInitialTangentplanes();
         this.createParameterMidpoints();
+        this.createParameterSpheresAndTangentplanes();
 
         this.setHelperObjectsInvisible();
     }

@@ -1,6 +1,7 @@
 class Tools {
 
-    private ggb = new GGBTools();
+    constructor(private ggb: GGBTools, private ORIGIN: string) {
+    }
 
     private indexToString(x: number, y: number, z: number): string {
         var str: string = x + ',' + y + ',' + z;
@@ -10,6 +11,14 @@ class Tools {
     pointFree(x: number, y: number, z: number, name?: string): string {
         this.ggb.pointFree(x.toString(), y.toString(), z.toString(), name);
         return name;
+    }
+
+    radius(region: number[]) {
+        var tpIndex: number[] = [0, 0, region[2]];
+        var midpoint: string = TypeString.midpointString(region);
+        var radiusName: string = TypeString.radiusString(region);
+        return this.ggb.distance(midpoint, TypeString.tpString(tpIndex),
+            radiusName);
     }
 
     /**
@@ -25,8 +34,7 @@ class Tools {
     sphere(region: number[]): string {
         var midpoint: string = TypeString.midpointString(region);
         var radius: string = TypeString.radiusString(region);
-        'r_{' + region.toString() + '}';
-        var sphereName: string = 's_{' + region.toString() + '}';
+        var sphereName: string = TypeString.sphereString(region);
         return this.ggb.sphere(midpoint, radius, sphereName);
     }
 
@@ -36,12 +44,6 @@ class Tools {
     renameObject(oldName: string, newName: string): string {
         ggbApplet.renameObject(oldName, newName);
         return newName;
-    }
-
-    initialTangentialPlane(region: number[]): string {
-        var name: string = '';
-        Construction.listOfInvisibleObjects.push();
-        return name;
     }
 
     rayOfSphereMidpoints(sphereRegion: number[], plane1: number[], plane2: number[], plane3: number[]): string {
@@ -55,8 +57,12 @@ class Tools {
         return midpointRayName;
     }
 
+    tangentialPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
+        var name: string = this.ggb.tangentialPlaneToThreeSphereAwayFromOrigin(this.ORIGIN,
+            TypeString.sphereString(sphere1), TypeString.sphereString(sphere2), TypeString.sphereString(sphere3));
+        return name;
+    }
 
-    
     /**
      * Get the index of the next region outlined by the three given tangent planes.
      * For example tp_{1,0,0}, tp_{0,1,0}, tp_{0,0,1} define region {1,1,1}. The

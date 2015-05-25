@@ -29,8 +29,8 @@ class GGBTools {
 
     public point(targetObj: string, name?: string, pathParameter?: string): string {
         var cmd: string = 'Point[' + targetObj;
-        if( pathParameter) {
-           cmd = cmd + ',' + pathParameter; 
+        if (pathParameter) {
+            cmd = cmd + ',' + pathParameter;
         }
         cmd = cmd + ']';
         this.fullCommandAndExec(cmd, name);
@@ -99,7 +99,17 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
-
+    
+    /**
+     * Custom Tool
+     */
+    public tangentialPlaneToThreeSphereAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
+        var cmd: string = 'TangentialPlaneToThreeSphereAwayFromOrigin[' + origin +
+            ',' + sphere1 + ',' + sphere2 + ',' + sphere3 + ']';
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
+    
     /**
      * @return true, if successfully executed command in GeoGebra, else false.
      */
