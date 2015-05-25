@@ -22,4 +22,8 @@ class TypeString {
     public static radiusString(index: number[]): string {
         return this.typeString('r', index);
     }
+    
+    public static parameterString(index: number[]): string {
+       return this.typeString('parameter', index); 
+    }
 }

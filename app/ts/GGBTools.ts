@@ -27,8 +27,12 @@ class GGBTools {
         return name;
     }
 
-    public point(targetObj: string, name?: string): string {
-        var cmd: string = 'Point[' + targetObj + ']';
+    public point(targetObj: string, name?: string, pathParameter?: string): string {
+        var cmd: string = 'Point[' + targetObj;
+        if( pathParameter) {
+           cmd = cmd + ',' + pathParameter; 
+        }
+        cmd = cmd + ']';
         this.fullCommandAndExec(cmd, name);
         return name;
     }

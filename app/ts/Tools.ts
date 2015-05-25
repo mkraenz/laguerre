@@ -44,7 +44,7 @@ class Tools {
         return name;
     }
 
-    rayOfSphereMidpoints(sphereRegion: number[], plane1: number[], plane2: number[], plane3: number[]) {
+    rayOfSphereMidpoints(sphereRegion: number[], plane1: number[], plane2: number[], plane3: number[]): string {
         var targetRegion: number[] = this.regionIndex(plane1, plane2, plane3);
         var direction: number[] = this.initialMidpointRayEmitterDirection(targetRegion);
         var midpointRayIndex: number[] = targetRegion.concat(direction);
@@ -52,6 +52,7 @@ class Tools {
         this.ggb.rayOfSphereMidpoints(TypeString.sphereString(sphereRegion), TypeString.tpString(plane1),
             TypeString.tpString(plane2), TypeString.tpString(plane3), midpointRayName);
         //        ggbApplet.setVisible(midpointRayName, false);
+        return midpointRayName;
     }
 
 
