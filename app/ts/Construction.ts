@@ -1,7 +1,5 @@
 class Construction {
 
-    private ggb: GGBTools = new GGBTools();
-    private t: Tools = new Tools(this.ggb, this.ORIGIN);
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -18,6 +16,8 @@ class Construction {
     private PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
     private PARAMETER_SLIDER_NAME = 'parameter';
 
+    private ggb: GGBTools = new GGBTools();
+    private t: Tools = new Tools(this.ggb, this.ORIGIN);
 
     createInitialSphere() {
         var region: number[] = [0, 0, 0];
@@ -77,12 +77,12 @@ class Construction {
         var tPointNegZ: string = this.t.renameObject('TPointZ_2', 'TPoint_{0,0,-1}');
         Construction.listOfInvisibleObjects.push(tPointPosX, tPointNegX, tPointNegY, tPointPosY, tPointPosZ, tPointNegZ);
 
-        this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, 'tp_{1,0,0}');
-        this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, 'tp_{-1,0,0}');
-        this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, 'tp_{0,1,0}');
-        this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, 'tp_{0,-1,0}');
-        this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, 'tp_{0,0,1}');
-        this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, 'tp_{0,0,-1}');
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, 'tp_{1,0,0}');
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, 'tp_{-1,0,0}');
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, 'tp_{0,1,0}');
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, 'tp_{0,-1,0}');
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, 'tp_{0,0,1}');
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, 'tp_{0,0,-1}');
     }
 
     private setHelperObjectsInvisible() {
@@ -95,7 +95,6 @@ class Construction {
      * @return name of the created object inside GeoGebra
      */
     private parameterMidpoints(plane1: number[], plane2: number[], plane3: number[]): string {
-
         var region: number[] = this.t.regionIndex(plane1, plane2, plane3);
         var regionIndex: string = region.toString();
 
@@ -110,7 +109,6 @@ class Construction {
     }
 
     private createParameterMidpoints() {
-
         var planeArray = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0],
             [0, 0, 1], [0, 0, -1]];
         this.parameterMidpoints(planeArray[0], planeArray[2], planeArray[4]);
@@ -119,22 +117,15 @@ class Construction {
         this.parameterMidpoints(planeArray[0], planeArray[2], planeArray[5]);
     }
 
-    paramRadiiAndSphere(index) {
-        this.t.radius(index);
-        this.t.sphere(index);
-    }
-
     private createParameterSpheresAndTangentplanes() {
         var spheres = [[1, 1, 1], [-1, 1, 1], [1, -1, 1], [1, 1, -1]];
         for (var i = 0; i < spheres.length; i++) {
-            this.paramRadiiAndSphere(spheres[i]);
+            this.t.radius(spheres[i]);
+            this.t.sphere(spheres[i]);
         }
-        this.t.tangentialPlaneToThreeSpheres(spheres[0], spheres[1],
-            spheres[2]);
-        this.t.tangentialPlaneToThreeSpheres(spheres[0], spheres[1],
-            spheres[3]);
-        this.t.tangentialPlaneToThreeSpheres(spheres[0], spheres[2],
-            spheres[3]);
+        this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[2]);
+        this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[3]);
+        this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[2], spheres[3]);
     }
 
 

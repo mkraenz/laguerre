@@ -85,7 +85,7 @@ class GGBTools {
     /**
      * Custom Tool
      */
-    public tangentialPlaneToSphere(sphere: string, point: string, name?: string): string {
+    public tangentPlaneToSphere(sphere: string, point: string, name?: string): string {
         var cmd: string = 'TangentialPlaneToSphere[' + sphere + ', ' + point + ']';
         this.fullCommandAndExec(cmd, name);
         return name;
@@ -103,8 +103,8 @@ class GGBTools {
     /**
      * Custom Tool
      */
-    public tangentialPlaneToThreeSphereAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
-        var cmd: string = 'TangentialPlaneToThreeSphereAwayFromOrigin[' + origin +
+    public tangentPlaneToThreeSpheresAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
+        var cmd: string = 'TangentialPlaneToThreeSpheresAwayFromOrigin[' + origin +
             ',' + sphere1 + ',' + sphere2 + ',' + sphere3 + ']';
         this.fullCommandAndExec(cmd, name);
         return name;

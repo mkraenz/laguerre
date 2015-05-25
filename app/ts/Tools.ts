@@ -50,39 +50,60 @@ class Tools {
         var targetRegion: number[] = this.regionIndex(plane1, plane2, plane3);
         var direction: number[] = this.initialMidpointRayEmitterDirection(targetRegion);
         var midpointRayIndex: number[] = targetRegion.concat(direction);
-        var midpointRayName: string = this.midpointRayToString(midpointRayIndex);
+        var midpointRayName: string = TypeString.midpointRayToString(midpointRayIndex);
         this.ggb.rayOfSphereMidpoints(TypeString.sphereString(sphereRegion), TypeString.tpString(plane1),
             TypeString.tpString(plane2), TypeString.tpString(plane3), midpointRayName);
         //        ggbApplet.setVisible(midpointRayName, false);
         return midpointRayName;
     }
 
-    tangentialPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
-        var name: string = this.ggb.tangentialPlaneToThreeSphereAwayFromOrigin(this.ORIGIN,
-            TypeString.sphereString(sphere1), TypeString.sphereString(sphere2), TypeString.sphereString(sphere3));
+    tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
+        var nextPlaneIndex: number[] = this.tangentPlaneIndex(sphere1, sphere2, sphere3);
+        var name: string = TypeString.tpString(nextPlaneIndex);
+        this.ggb.tangentPlaneToThreeSpheresAwayFromOrigin(this.ORIGIN,
+            TypeString.sphereString(sphere1), TypeString.sphereString(sphere2), TypeString.sphereString(sphere3),
+            name);
         return name;
     }
 
+    tangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
+        var commonIndex = null;
+        for (var i = 0; i < index1.length; i++) {
+            // here one might have to use parseInt(indexArray[i]
+            if (index1[i] == index2[i]
+                && index1[i] == index3[i]) {
+                commonIndex = i;
+                break;
+            }
+        }
+        var nextPlane: number[] = new Array<number>(3);
+        for (var i = 0; i < index1.length; i++) {
+            if (i == commonIndex) {
+                nextPlane[i] = 1 + index1[i];
+            } else {
+                nextPlane[i] = 0;
+            }
+        }
+        return nextPlane;
+    }
+    
     /**
      * Get the index of the next region outlined by the three given tangent planes.
      * For example tp_{1,0,0}, tp_{0,1,0}, tp_{0,0,1} define region {1,1,1}. The
      * algorithm works since each tangent planes only has one index x or y or
      * z different from 0.
-     * @param index1 {number-Array} index of the tangent plane in the form "12,1,0" =: "x,y,z"
-     * @param index2 see index1
-     * @param index3 see index1
      * @return {number-Array} index of the outlined region
      */
-    regionIndex(index1: number[], index2: number[], index3: number[]): number[] {
+    regionIndex(plane1: number[], plane2: number[], plane3: number[]): number[] {
         var regionIndex: number[] = [];
-        for (var i: number = 0; i < index1.length; i++) {
-            if (index1[i] != 0) {
-                regionIndex.push(index1[i]);
+        for (var i: number = 0; i < plane1.length; i++) {
+            if (plane1[i] != 0) {
+                regionIndex.push(plane1[i]);
             } else {
-                if (index2[i] != 0) {
-                    regionIndex.push(index2[i]);
+                if (plane2[i] != 0) {
+                    regionIndex.push(plane2[i]);
                 } else {
-                    regionIndex.push(index3[i]);
+                    regionIndex.push(plane3[i]);
                 }
             }
         }
@@ -107,26 +128,6 @@ class Tools {
     }
     
     
-    /**
-     * 
-     * @param index
-     *            {int-Array} the index as an array in the form [0,1,54,1,-1,1]
-     *            where the last three entries are either 1 or -1
-     * @returns {String} of the form 'midpointRay_{0,1,54,+,+,-}'
-     */
-    midpointRayToString(index: number[]): string {
-        var indexCopy: Array<string> = new Array<string>(index.length);
-        for (var i: number = 0; i < index.length; i++) {
-            indexCopy[i] = index[i].toString();
-        }
-        for (var i = 3; i < indexCopy.length; i++) {
-            if (indexCopy[i] == '1') {
-                indexCopy[i] = '+';
-            } else {
-                indexCopy[i] = '-';
-            }
-        }
-        return 'midpointRay_{' + indexCopy.toString() + '}';
-    }
+ 
 
 }

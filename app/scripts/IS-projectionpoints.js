@@ -236,6 +236,7 @@ function getTangentplaneIndex(index1, index2, index3) {
 			break;
 		}
 	}
+	// TODO: write var here
 	indexStr = "";
 	for (var i = 0; i < indexArray1.length; i++) {
 		if (i == commonIndex) {
