@@ -93,7 +93,7 @@ class Construction {
      * @return name of the created object inside GeoGebra
      */
     private parameterMidpoints(plane1: number[], plane2: number[], plane3: number[]): string {
-        
+
         var region: number[] = this.t.regionIndex(plane1, plane2, plane3);
         var regionIndex: string = region.toString();
 
@@ -101,30 +101,20 @@ class Construction {
         this.ggb.slider(this.PARAMETER_SPHERE_MIDPOINT_MIN, this.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
             this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
         ggbApplet.setValue(sliderName, 0.5);
-        var direction = this.t.initialMidpointRayEmitterDirection(region);
-        var midpointRayIndex = region.concat(direction);
-        var midpointRayName = this.t.midpointRayToString(midpointRayIndex);
-        this.t.rayOfSphereMidpoints([0, 0, 0], plane1, plane2, plane3);
-
-        return this.ggb.point(midpointRayName, TypeString.midpointString(region), TypeString.parameterString(region));
+        var midpointRayName = this.t.rayOfSphereMidpoints([0, 0, 0], plane1, plane2, plane3);
+        var pointName = this.ggb.point(midpointRayName, TypeString.midpointString(region),
+            TypeString.parameterString(region));
+        return pointName;
     }
 
     private createParameterMidpoints() {
 
         var planeArray = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0],
             [0, 0, 1], [0, 0, -1]];
-        this.t.rayOfSphereMidpoints([0, 0, 0], planeArray[0], planeArray[2], planeArray[4]);
-        this.t.rayOfSphereMidpoints([0, 0, 0], planeArray[1], planeArray[2], planeArray[4]);
-        this.t.rayOfSphereMidpoints([0, 0, 0], planeArray[0], planeArray[3], planeArray[4]);
-        this.t.rayOfSphereMidpoints([0, 0, 0], planeArray[0], planeArray[2], planeArray[5]);
-        createParameterMidpointsSubroutine(planeArray[0], planeArray[2],
-            planeArray[4]);
-        createParameterMidpointsSubroutine(planeArray[1], planeArray[2],
-            planeArray[4]);
-        createParameterMidpointsSubroutine(planeArray[0], planeArray[3],
-            planeArray[4]);
-        createParameterMidpointsSubroutine(planeArray[0], planeArray[2],
-            planeArray[5]);
+        this.parameterMidpoints(planeArray[0], planeArray[2], planeArray[4]);
+        this.parameterMidpoints(planeArray[1], planeArray[2], planeArray[4]);
+        this.parameterMidpoints(planeArray[0], planeArray[3], planeArray[4]);
+        this.parameterMidpoints(planeArray[0], planeArray[2], planeArray[5]);
     }
 
 
