@@ -5,6 +5,7 @@ class Construction {
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
     private ORIGIN: string = 'M_{0,0,0}';
+    private ORIGIN_SPHERE: string = 's_{0,0,0}';
     private listOfInvisibleObjects = new Array<string>();
 
     createInitialSphere() {
@@ -32,36 +33,35 @@ class Construction {
         this.ggb.segment(this.ORIGIN, this.PROJECTION_POINT_X, segmentProjX);
         this.ggb.segment(this.ORIGIN, this.PROJECTION_POINT_Y, segmentProjY);
         this.ggb.segment(this.ORIGIN, this.PROJECTION_POINT_Z, segmentProjZ);
-        var midpointProjX: string = "MidOfSegOtoProjX";
-        var midpointProjY: string = "MidOfSegOtoProjY";
-        var midpointProjZ: string = "MidOfSegOtoProjZ";
+        var midpointProjX: string = this.ggb.midpoint(segmentProjX, 'MidOfSegOtoProjX');
+        var midpointProjY: string = this.ggb.midpoint(segmentProjY, 'MidOfSegOtoProjY');;
+        var midpointProjZ: string = this.ggb.midpoint(segmentProjZ, 'MidOfSegOtoProjZ');
         this.listOfInvisibleObjects.push(midpointProjX, midpointProjY, midpointProjZ);
-        this.ggb.midpoint(segmentProjX, midpointProjX);
-        this.ggb.midpoint(segmentProjY, midpointProjY);
-        this.ggb.midpoint(segmentProjZ, midpointProjZ);
-        var projectionSphereX: string = 'sProjX';
-        var projectionSphereY: string = 'sProjY';
-        var projectionSphereZ: string = 'sProjZ';
+        
+        var radiusProjX: string = this.ggb.distance(midpointProjX, this.ORIGIN, 'r_{projX}');
+        var radiusProjY: string = this.ggb.distance(midpointProjY, this.ORIGIN, 'r_{projY}');
+        var radiusProjZ: string = this.ggb.distance(midpointProjZ, this.ORIGIN, 'r_{projZ}');
+        var projectionSphereX: string = this.ggb.sphere(midpointProjX, radiusProjX, 'sProjX');
+        var projectionSphereY: string = this.ggb.sphere(midpointProjY, radiusProjY, 'sProjY');
+        var projectionSphereZ: string = this.ggb.sphere(midpointProjZ, radiusProjZ, 'sProjZ');
         this.listOfInvisibleObjects.push(projectionSphereX, projectionSphereY, projectionSphereZ);
-        this.ggb.sphere(midpointProjX, 'Distance[' + midpointProjX + ', ' + this.ORIGIN +']', projectionSphereX);
-        this.ggb.sphere(midpointProjY, 'Distance[' + midpointProjY + ', ' + this.ORIGIN +']', projectionSphereY);
-        this.ggb.sphere(midpointProjZ, 'Distance[' + midpointProjZ + ', ' + this.ORIGIN +']', projectionSphereZ);
-        /*
-        ggbApplet
-            .evalCommand('sProjY = Sphere[MidOfSegOtoProjY, Distance[MidOfSegOtoProjY, O]]');
-        ggbApplet
-            .evalCommand('sProjZ = Sphere[MidOfSegOtoProjZ, Distance[MidOfSegOtoProjZ, O]]');
-        ggbApplet.setVisible('sProjX', false);
-        ggbApplet.setVisible('sProjY', false);
-        ggbApplet.setVisible('sProjZ', false);
+        
         // there seems to be some bug with naming of conics defined by
         // intersect. thus we have to use c,d,e
-        ggbApplet.evalCommand('c = Intersect[sProjX, s_0]');
-        ggbApplet.evalCommand('d = Intersect[sProjY, s_0]');
-        ggbApplet.evalCommand('e = Intersect[sProjZ, s_0]');
-        ggbApplet.renameObject('c', 'coneProjX');
-        ggbApplet.renameObject('d', 'coneProjY');
-        ggbApplet.renameObject('e', 'coneProjZ');
+        var coneX: string = this.ggb.intersect(projectionSphereX, this.ORIGIN_SPHERE, 'c');
+        var coneY: string = this.ggb.intersect(projectionSphereY, this.ORIGIN_SPHERE, 'd');
+        var coneZ: string = this.ggb.intersect(projectionSphereZ, this.ORIGIN_SPHERE, 'e');
+        var coneProjX: string = this.t.renameObject(coneX, 'coneProjX');
+        var coneProjY: string = this.t.renameObject(coneX, 'coneProjY');
+        var coneProjZ: string = this.t.renameObject(coneZ, 'coneProjZ');
+        
+        this.ggb.intersect(coneProjY, coneProjZ, 'TPoint');
+        ggbApplet.renameObject('TPoint_1', 'TPoint_{1,0,0}');
+        ggbApplet.renameObject('TPoint_2', 'TPoint_{-1,0,0}');
+        
+        
+        
+        /*
         ggbApplet.evalCommand('TPoint = Intersect[coneProjY, coneProjZ]');
         ggbApplet.renameObject('TPoint_1', 'TPoint_{1,0,0}');
         ggbApplet.renameObject('TPoint_2', 'TPoint_{-1,0,0}');

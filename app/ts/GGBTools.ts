@@ -5,8 +5,15 @@
  */
 class GGBTools {
 
+    public distance(objName1: string, objName2: string, name?: string): string {
+        var cmd: string = 'Distance[' + objName1 + ', ' + objName2 + ']';
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
+
     public intersect(objName1: string, objName2: string, name?: string): string {
-        var cmd: string = 'Intersect[' + objName1+ ', ' + objName2 + ']';
+        var cmd: string = 'Intersect[' + objName1 + ', ' + objName2 + ']';
+        this.fullCommandAndExec(cmd, name);
         return name;
     }
 

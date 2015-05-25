@@ -22,13 +22,26 @@ class Tools {
         return name;
     }
 
-
+    /**
+     * @return: GeoGebraScript command for distance without executing it.
+     */
+    distanceCmdString(objName1: string, objName2: string): string {
+        return 'Distance[' + objName1 + ', ' + objName2 + ']';
+    }
 
     sphere(region: number[]): string {
         var midpoint: string = 'M_{' + region.toString() + '}';
         var radius: string = 'r_{' + region.toString() + '}';
         var sphereName: string = 's_{' + region.toString() + '}';
         return this.ggb.sphere(midpoint, radius, sphereName);
+    }
+
+    /**
+     * @return the newName input
+     */
+    renameObject(oldName: string, newName: string): string {
+        ggbApplet.renameObject(oldName, newName);
+        return newName;
     }
 
 }
