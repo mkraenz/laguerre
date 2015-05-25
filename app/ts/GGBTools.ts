@@ -43,7 +43,6 @@ class GGBTools {
         return name;
     }
 
-
     public segment(startPoint: string, endPoint: string, name?: string): string {
         var cmd: string = 'Segment[' + startPoint + ', ' + endPoint + ']';
         this.fullCommandAndExec(cmd, name);
@@ -72,7 +71,6 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
-
 
     private fullCommand(cmd: string, name: string): string {
         var fullCommand: string = cmd

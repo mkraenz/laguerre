@@ -3,28 +3,34 @@ class TypeString {
         return objectType + '_{' + index.toString() + '}';
     }
 
-    public static sphereString(index: number[]): string {
+    public static sphere(index: number[]): string {
         return this.typeString('s', index);
     }
 
     /**
-     * tp = tangent plane
+     * tplane = tangent plane
      */
-    public static tpString(index: number[]): string {
+    public static tPlane(index: number[]): string {
         return this.typeString('tp', index);
     }
 
-
-    public static midpointString(index: number[]): string {
+    public static midpoint(index: number[]): string {
         return this.typeString('M', index);
     }
 
-    public static radiusString(index: number[]): string {
+    public static radius(index: number[]): string {
         return this.typeString('r', index);
     }
 
-    public static parameterString(index: number[]): string {
+    public static parameter(index: number[]): string {
         return this.typeString('parameter', index);
+    }
+    
+    /**
+     * tangent point
+     */
+    public static tPoint(index: number[]): string {
+        return this.typeString('TPoint', index);
     }
     
     /**
