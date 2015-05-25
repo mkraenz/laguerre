@@ -43,5 +43,11 @@ class Tools {
         ggbApplet.renameObject(oldName, newName);
         return newName;
     }
+    
+    initialTangentialPlane(region: number[]): string{
+        var name: string = '';
+        Construction.listOfInvisibleObjects.push();
+        return name;
+        }
 
 }

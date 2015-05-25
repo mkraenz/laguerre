@@ -64,13 +64,21 @@ class GGBTools {
     }
 
 
-
     private fullCommand(cmd: string, name: string): string {
         var fullCommand: string = cmd
         if (name) {
             fullCommand = name + ' = ' + fullCommand;
         }
         return fullCommand;
+    }
+    
+    /**
+     * Custom Tool
+     */
+    public tangentialPlaneToSphere(sphere: string, point: string, name?: string): string {
+        var cmd: string = 'TangentialPlaneToSphere[' + sphere + ', ' + point + ']';
+        this.fullCommandAndExec(cmd, name);
+        return name;
     }
 
     /**
