@@ -17,12 +17,18 @@ class GGBTools {
         return name;
     }
 
-    public point(x: string, y: string, z?: string, name?: string): string {
+    public pointFree(x: string, y: string, z?: string, name?: string): string {
         var cmd: string = '(' + x + ',' + y;
         if (z) {
             cmd = cmd + ',' + z;
         }
         cmd = cmd + ')';
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
+
+    public point(targetObj: string, name?: string): string {
+        var cmd: string = 'Point[' + targetObj + ']';
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -77,6 +83,15 @@ class GGBTools {
      */
     public tangentialPlaneToSphere(sphere: string, point: string, name?: string): string {
         var cmd: string = 'TangentialPlaneToSphere[' + sphere + ', ' + point + ']';
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
+    
+    /**
+     * Custom Tool
+     */
+    public rayOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
+        var cmd: string = 'RayOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
         this.fullCommandAndExec(cmd, name);
         return name;
     }

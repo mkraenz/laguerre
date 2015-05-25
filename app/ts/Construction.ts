@@ -1,16 +1,25 @@
 class Construction {
     private t: Tools = new Tools();
     private ggb: GGBTools = new GGBTools;
+
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
     private ORIGIN: string = 'M_{0,0,0}';
     private ORIGIN_SPHERE: string = 's_{0,0,0}';
+    private ORIGIN_REGION: number[] = [0, 0, 0];
+
     public static listOfInvisibleObjects = new Array<string>();
+    
+    // for the parametrizable spheres' slider
+    private PARAMETER_SPHERE_MIDPOINT_MIN = 0.01;
+    private PARAMETER_SPHERE_MIDPOINT_MAX = 0.99;
+    private PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
+    private PARAMETER_SLIDER_NAME = 'parameter';
 
     createInitialSphere() {
         var region: number[] = [0, 0, 0];
-        this.t.sphereMidpoint(region, 0, 0, 0);
+        this.t.sphereMidpointFree(region, 0, 0, 0);
 
         var radiusSliderStr: string = 'r_{' + region.toString() + '}';
         this.ggb.slider(0.1, 10, radiusSliderStr);
@@ -20,9 +29,9 @@ class Construction {
     }
 
     createProjectionPoints() {
-        this.t.point(10, 0, 0, this.PROJECTION_POINT_X);
-        this.t.point(0, 10, 0, this.PROJECTION_POINT_Y);
-        this.t.point(0, 0, 10, this.PROJECTION_POINT_Z);
+        this.t.pointFree(10, 0, 0, this.PROJECTION_POINT_X);
+        this.t.pointFree(0, 10, 0, this.PROJECTION_POINT_Y);
+        this.t.pointFree(0, 0, 10, this.PROJECTION_POINT_Z);
     }
 
     createInitialTangentplanes() {
@@ -38,12 +47,12 @@ class Construction {
         var midpointProjZ: string = this.ggb.midpoint(segmentProjZ, 'MidOfSegOtoProjZ');
         Construction.listOfInvisibleObjects.push(midpointProjX, midpointProjY, midpointProjZ);
 
-        var radiusProjX: string = this.ggb.distance(midpointProjX, this.ORIGIN, 'r_{projX}');
-        var radiusProjY: string = this.ggb.distance(midpointProjY, this.ORIGIN, 'r_{projY}');
-        var radiusProjZ: string = this.ggb.distance(midpointProjZ, this.ORIGIN, 'r_{projZ}');
-        var projectionSphereX: string = this.ggb.sphere(midpointProjX, radiusProjX, 'sProjX');
-        var projectionSphereY: string = this.ggb.sphere(midpointProjY, radiusProjY, 'sProjY');
-        var projectionSphereZ: string = this.ggb.sphere(midpointProjZ, radiusProjZ, 'sProjZ');
+        var radiusProjX: string = this.ggb.distance(midpointProjX, this.ORIGIN, 'r_{' + this.PROJECTION_POINT_X + '}');
+        var radiusProjY: string = this.ggb.distance(midpointProjY, this.ORIGIN, 'r_{' + this.PROJECTION_POINT_Y + '}');
+        var radiusProjZ: string = this.ggb.distance(midpointProjZ, this.ORIGIN, 'r_{' + this.PROJECTION_POINT_Z + '}');
+        var projectionSphereX: string = this.ggb.sphere(midpointProjX, radiusProjX, 's_{' + this.PROJECTION_POINT_X + '}');
+        var projectionSphereY: string = this.ggb.sphere(midpointProjY, radiusProjY, 's_{' + this.PROJECTION_POINT_Y + '}');
+        var projectionSphereZ: string = this.ggb.sphere(midpointProjZ, radiusProjZ, 's_{' + this.PROJECTION_POINT_Z + '}');
         Construction.listOfInvisibleObjects.push(projectionSphereX, projectionSphereY, projectionSphereZ);
         
         // there seems to be some bug with naming of conics defined by
@@ -65,6 +74,7 @@ class Construction {
         var tPointPosZ: string = this.t.renameObject('TPointZ_1', 'TPoint_{0,0,1}');
         var tPointNegZ: string = this.t.renameObject('TPointZ_2', 'TPoint_{0,0,-1}');
         Construction.listOfInvisibleObjects.push(tPointPosX, tPointNegX, tPointNegY, tPointPosY, tPointPosZ, tPointNegZ);
+
         this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, 'tp_{1,0,0}');
         this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, 'tp_{-1,0,0}');
         this.ggb.tangentialPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, 'tp_{0,1,0}');
@@ -79,11 +89,38 @@ class Construction {
         }
     }
 
+    private parameterMidpoints(plane1: number[], plane2: number[], plane3: number[]) {
+
+        var regionIndexArray: number[] = this.t.regionIndex(plane1, plane2, plane3);
+        var regionIndex: string = regionIndexArray.toString();
+
+        var sliderName = TypeString.typeString(this.PARAMETER_SLIDER_NAME, regionIndexArray);
+        this.ggb.slider(this.PARAMETER_SPHERE_MIDPOINT_MIN, this.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
+            this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
+        ggbApplet.setValue(sliderName, 0.5);
+        var direction = this.t.initialMidpointRayEmitterDirection(regionIndexArray);
+        var midpointRayIndex = regionIndexArray.concat(direction);
+        var midpointRayName = this.t.midpointRayToString(midpointRayIndex);
+        
+        
+
+        var createParameterMidpointsSubroutine = function(planeIndex1, planeIndex2,
+            planeIndex3) {
+            ggbApplet.evalCommand('M_{' + regionIndex + '} = Point['
+                + midpointRayName + ', parameter_{' + regionIndex + '}]');
+        }
+    }
+
+    private createParameterMidpoints(){
+//    TODO: implement    
+    }
+
 
     run() {
         this.createInitialSphere();
         this.createProjectionPoints();
         this.createInitialTangentplanes();
+        this.createParameterMidpoints();
 
         this.setHelperObjectsInvisible();
     }
