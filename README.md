@@ -29,10 +29,13 @@ Sphere s_o markes the section 0,0,0 = x,y,z. (This is an “oh”  for origin no
 Now we simply in-/decrease the corrresponding
 index each time we have could inscribe a sphere in there.
 
-For example the sections where the four choosable points lie are
+**Example** The sections where the four choosable points lie are
 1,1,1 with sphere s_{1,1,1} and corresponding radius r_{1,1,1}
+
 1,1,-1 with sphere s_{1,1,-1} and corresponding radius r_{1,1,-1}
+
 1,-1,1 ...
+
 -1,1,1 ...
 Note that due to the list ordering implementation of GeoGebra the -1,1,1 is listed before the others.
 We also denote the midpoints of the sphere inside a sector x0,y0,z0 by
@@ -44,11 +47,24 @@ Then the first 6 tangent planes in x,y,z direction are
 tp_{1,0,0}
 tp_{-1,0,0}
 tp_{0,1,0}
-tp_{0,-1,,0}
+tp_{0,-1,0}
 tp_{0,0,1}
 tp_{0,0,-1}
 Now we just in-/decrease the corresponding index each time we built another row of spheres.
 Due to the nature of the construction it is not neccessary to have mixed terms, e.g. indices where both x and y are unequal to 0. Only one will be unequal to 0,
+
+#### MidpointRay
+For midpointRays we have to use a slightly different notation since we have more than one ray per region.
+We imagine these rays as pointing into a region from one of eight particular direction. These directions are exactly the eight corners of a cube.
+The rays are named like the following example:
+m_{0,1,4,+,-,-}
+
+Here the first three numbers represent the region, i.e. 0,1,4.
+The next three entries are either + or - and represent the direction the ray, i.e. 'where it comes from'.
++,+,+ = x,y,z would represent that it comes from the region 1,2,5 in this example., +,-,- is 1,0,3.
+In general we can simply add (resp. substract) 1 from the corresponding index if we have a + (resp. -) at the corresponding position.
+Internally we work with 1 if we have +, and -1 if we have -.
+
 
 
 ## Setup problems
