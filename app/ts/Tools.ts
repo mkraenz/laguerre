@@ -14,7 +14,13 @@ class Tools {
     }
 
     radius(region: number[]) {
-        var tpIndex: number[] = [0, 0, region[2]];
+        var tpIndex: number[];
+        if (region[0] == 0) {
+            tpIndex = [1, 0, 0];
+        }
+        else {
+            tpIndex = [region[0], 0, 0];
+        }
         var midpoint: string = TypeString.midpoint(region);
         var radiusName: string = TypeString.radius(region);
         return this.ggb.distance(midpoint, TypeString.tPlane(tpIndex),
@@ -30,12 +36,23 @@ class Tools {
         return name;
     }
 
+    /**
+     * Constructs the sphere in the given region. If the radius does not exist yet, it will be created.
+     * Note that the midpoint in that region must exist beforehand.
+     * @return the name of the constructed sphere
+     */
     sphere(region: number[]): string {
         var midpoint: string = TypeString.midpoint(region);
         var radius: string = TypeString.radius(region);
         var sphereName: string = TypeString.sphere(region);
+        if (!ggbApplet.exists(radius)) {
+            this.radius(region);
+        }
         return this.ggb.sphere(midpoint, radius, sphereName);
     }
+    
+    
+    
 
     /**
      * @return the newName input
@@ -58,17 +75,17 @@ class Tools {
     }
 
     rayOfSphereMidpointsFromRegion(targetRegion: number[], startRegion: number[]): string {
-        var planesIndices: number[];
+        var planesIndices: number[] = [];
         for (var i: number = 0; i < targetRegion.length; i++) {
             // equality should not appear by construction
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
                 throw new Error('Your midpointRay goes to a face instead of a corner. See Tools.ts/rayOfSphereMidpointsFromRegion().');
             }
             if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
-                planesIndices[i] = targetRegion[i]
+                planesIndices[i] = targetRegion[i];
             }
             else {
-                planesIndices[i] = startRegion[i]
+                planesIndices[i] = startRegion[i];
             }
         }
         return this.rayOfSphereMidpoints(startRegion, [planesIndices[0], 0, 0], [0, planesIndices[1], 0], [0, 0, planesIndices[1]]);
