@@ -89,7 +89,7 @@ class Tools {
                 planesIndices[i] = startRegion[i];
             }
         }
-        return this.rayOfSphereMidpoints(startRegion, [planesIndices[0], 0, 0], [0, planesIndices[1], 0], [0, 0, planesIndices[1]]);
+        return this.rayOfSphereMidpoints(startRegion, [planesIndices[0], 0, 0], [0, planesIndices[1], 0], [0, 0, planesIndices[2]]);
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
