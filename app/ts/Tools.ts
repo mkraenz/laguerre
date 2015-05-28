@@ -46,6 +46,7 @@ class Tools {
     }
 
     rayOfSphereMidpoints(sphereRegion: number[], plane1: number[], plane2: number[], plane3: number[]): string {
+        //TODO: maybe this is buggy. using initialMidpointRayEmitterDirection() might cause trouble
         var targetRegion: number[] = this.regionIndex(plane1, plane2, plane3);
         var direction: number[] = this.initialMidpointRayEmitterDirection(targetRegion);
         var midpointRayIndex: number[] = targetRegion.concat(direction);
@@ -54,6 +55,23 @@ class Tools {
             TypeString.tPlane(plane2), TypeString.tPlane(plane3), midpointRayName);
         ggbApplet.setVisible(midpointRayName, false);
         return midpointRayName;
+    }
+
+    rayOfSphereMidpointsFromRegion(targetRegion: number[], startRegion: number[]): string {
+        var planesIndices: number[];
+        for (var i: number = 0; i < targetRegion.length; i++) {
+            // equality should not appear by construction
+            if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
+                throw new Error('Your midpointRay goes to a face instead of a corner. See Tools.ts/rayOfSphereMidpointsFromRegion().');
+            }
+            if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
+                planesIndices[i] = targetRegion[i]
+            }
+            else {
+                planesIndices[i] = startRegion[i]
+            }
+        }
+        return this.rayOfSphereMidpoints(startRegion, [planesIndices[0], 0, 0], [0, planesIndices[1], 0], [0, 0, planesIndices[1]]);
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {

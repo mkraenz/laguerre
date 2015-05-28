@@ -132,11 +132,18 @@ class Construction {
         this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[3]);
         this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[2], spheres[3]);
     }
-    
-    private setLabelsInvisible(){
-       for(var i: number = 0; i < this.listOfInvisibleLabels.length; i++){
-          ggbApplet.setLabelVisible(this.listOfInvisibleLabels[i], false); 
-       } 
+
+    private setLabelsInvisible() {
+        for (var i: number = 0; i < this.listOfInvisibleLabels.length; i++) {
+            ggbApplet.setLabelVisible(this.listOfInvisibleLabels[i], false);
+        }
+    }
+
+    private sphereMidpointFromTwoRays(targetRegion: number[], startRegion1: number[],
+        startRegion2: number[]): string {
+        var ray1: string = this.t.rayOfSphereMidpointsFromRegion(targetRegion, startRegion1);
+        var ray2: string = this.t.rayOfSphereMidpointsFromRegion(targetRegion, startRegion2);
+        return this.ggb.intersect(ray1, ray2, TypeString.midpoint(targetRegion));
     }
 
 
