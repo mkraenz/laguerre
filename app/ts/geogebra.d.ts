@@ -8,4 +8,6 @@ declare module ggbApplet {
     function renameObject(oldObjName: string, newObjName: string): boolean;
 
     function setLabelVisible(objName: string, visible: boolean): void;
+    
+    function exists(objName: string): boolean;
 }
