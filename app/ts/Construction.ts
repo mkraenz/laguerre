@@ -182,7 +182,7 @@ class Construction {
         this.createInitialTangentplanes();
         this.createParameterMidpoints();
         this.createParameterSpheresAndTangentplanes();
-        this.constuctInXDirection();
+//        this.constuctInXDirection();
 
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();

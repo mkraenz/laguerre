@@ -65,7 +65,7 @@ class Tools {
     rayOfSphereMidpoints(sphereRegion: number[], plane1: number[], plane2: number[], plane3: number[]): string {
         //TODO: maybe this is buggy. using initialMidpointRayEmitterDirection() might cause trouble
         var targetRegion: number[] = this.regionIndex(plane1, plane2, plane3);
-        var direction: number[] = this.initialMidpointRayEmitterDirection(targetRegion);
+        var direction: number[] = this.midpointRayEmitterDirection(targetRegion, sphereRegion);
         var midpointRayIndex: number[] = targetRegion.concat(direction);
         var midpointRayName: string = TypeString.midpointRayToString(midpointRayIndex);
         this.ggb.rayOfSphereMidpoints(TypeString.sphere(sphereRegion), TypeString.tPlane(plane1),
@@ -149,10 +149,10 @@ class Tools {
      * 
      * @param regionIndex index of the region the ray points into.
      */
-    initialMidpointRayEmitterDirection(regionIndex: number[]): number[] {
+    midpointRayEmitterDirection(targetRegion: number[], startRegion: number[]): number[] {
         var direction: number[] = [];
-        for (var i: number = 0; i < regionIndex.length; i++) {
-            if (regionIndex[i] > 0) {
+        for (var i: number = 0; i < targetRegion.length; i++) {
+            if (targetRegion[i] > 0) {
                 direction.push(-1);
             } else {
                 direction.push(1);

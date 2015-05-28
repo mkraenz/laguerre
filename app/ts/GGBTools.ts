@@ -90,7 +90,8 @@ class GGBTools {
     }
     
     /**
-     * Custom Tool
+     * Custom Tool, where the ray emits from from the midpoint of given sphere and goes through the 
+     * intersection point of the three planes.
      */
     public rayOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
         var cmd: string = 'RayOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
