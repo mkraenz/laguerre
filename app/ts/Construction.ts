@@ -1,10 +1,13 @@
 class Construction {
 
-    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 5;
+    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 20;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
+    private PROJECTION_POINT_X_VALUE: number = 10;
+    private PROJECTION_POINT_Y_VALUE: number = 10;
+    private PROJECTION_POINT_Z_VALUE: number = 10;
     private ORIGIN_REGION: number[] = [0, 0, 0];
     private ORIGIN: string = TypeString.midpoint(this.ORIGIN_REGION);
     private ORIGIN_SPHERE: string = TypeString.sphere(this.ORIGIN_REGION);
@@ -32,9 +35,9 @@ class Construction {
     }
 
     createProjectionPoints() {
-        this.t.pointFree(10, 0, 0, this.PROJECTION_POINT_X);
-        this.t.pointFree(0, 10, 0, this.PROJECTION_POINT_Y);
-        this.t.pointFree(0, 0, 10, this.PROJECTION_POINT_Z);
+        this.t.pointFree(this.PROJECTION_POINT_X_VALUE, 0, 0, this.PROJECTION_POINT_X);
+        this.t.pointFree(0, this.PROJECTION_POINT_Y_VALUE, 0, this.PROJECTION_POINT_Y);
+        this.t.pointFree(0, 0, this.PROJECTION_POINT_Z_VALUE, this.PROJECTION_POINT_Z);
     }
 
     createInitialTangentplanes() {
