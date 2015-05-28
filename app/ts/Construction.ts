@@ -101,7 +101,8 @@ class Construction {
      * @return name of the created object inside GeoGebra
      */
     private parameterMidpoints(plane1: number[], plane2: number[], plane3: number[]): string {
-        var region: number[] = this.t.regionIndex(plane1, plane2, plane3);
+        var tpIndices: number[] = [plane1[0], plane2[1], plane3[2]];
+        var region: number[] = this.t.regionIndex(this.ORIGIN_REGION, tpIndices);
         var regionIndex: string = region.toString();
 
         var sliderName = TypeString.parameter(region);
@@ -155,12 +156,12 @@ class Construction {
             var startRegions2: Array<number[]>;
 
             if (x % 2 == 1) {
-                targetRegions = [[x+1, 0, 0], [x+1, 2, 0], [x+1, 0, 2]];
+                targetRegions = [[x + 1, 0, 0], [x + 1, 2, 0], [x + 1, 0, 2]];
                 startRegions1 = [[x, 1, 1], [x, 1, 1], [x, 1, 1]];
                 startRegions2 = [[x, -1, 1], [x, 1, -1], [x, -1, 1]];
             }
             else {
-                targetRegions = [[x+1, 1, 1], [x+1, -1, 1], [x+1, 1, -1]];
+                targetRegions = [[x + 1, 1, 1], [x + 1, -1, 1], [x + 1, 1, -1]];
                 startRegions1 = [[x, 0, 0], [x, 0, 0], [x, 0, 0]];
                 startRegions2 = [[x, 0, 2], [x, 0, 2], [x, 2, 0]];
             }
@@ -168,7 +169,7 @@ class Construction {
                 midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
                 this.t.sphere(targetRegions[i]);
             }
-            this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);                      
+            this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
         }
     }
 
@@ -176,16 +177,16 @@ class Construction {
 
 
     run() {
-//        console.log('Construction.run() started.'); // TODO: remove debug
+        //        console.log('Construction.run() started.'); // TODO: remove debug
         this.createInitialSphere();
         this.createProjectionPoints();
         this.createInitialTangentplanes();
         this.createParameterMidpoints();
         this.createParameterSpheresAndTangentplanes();
-//        this.constuctInXDirection();
+        this.constuctInXDirection();
 
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();
-//        console.log('Construction.run() completed.'); //TODO: remove debug
+        //        console.log('Construction.run() completed.'); //TODO: remove debug
     }
 }
