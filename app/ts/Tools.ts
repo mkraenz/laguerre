@@ -14,7 +14,13 @@ class Tools {
     }
 
     radius(region: number[]) {
-        var tpIndex: number[] = [0, 0, region[2]];
+        var tpIndex: number[];
+        if (region[0] == 0) {
+            tpIndex = [1, 0, 0];
+        }
+        else {
+            tpIndex = [region[0], 0, 0];
+        }
         var midpoint: string = TypeString.midpoint(region);
         var radiusName: string = TypeString.radius(region);
         return this.ggb.distance(midpoint, TypeString.tPlane(tpIndex),
@@ -30,12 +36,23 @@ class Tools {
         return name;
     }
 
+    /**
+     * Constructs the sphere in the given region. If the radius does not exist yet, it will be created.
+     * Note that the midpoint in that region must exist beforehand.
+     * @return the name of the constructed sphere
+     */
     sphere(region: number[]): string {
         var midpoint: string = TypeString.midpoint(region);
         var radius: string = TypeString.radius(region);
         var sphereName: string = TypeString.sphere(region);
+        if (!ggbApplet.exists(radius)) {
+            this.radius(region);
+        }
         return this.ggb.sphere(midpoint, radius, sphereName);
     }
+    
+    
+    
 
     /**
      * @return the newName input
@@ -45,33 +62,34 @@ class Tools {
         return newName;
     }
 
-    rayOfSphereMidpoints(sphereRegion: number[], plane1: number[], plane2: number[], plane3: number[]): string {
+    rayOfSphereMidpoints(startRegion: number[], plane1: number[], plane2: number[], plane3: number[]): string {
         //TODO: maybe this is buggy. using initialMidpointRayEmitterDirection() might cause trouble
-        var targetRegion: number[] = this.regionIndex(plane1, plane2, plane3);
-        var direction: number[] = this.initialMidpointRayEmitterDirection(targetRegion);
+        var tpIndices: number[] = [plane1[0], plane2[1], plane3[2]];
+        var targetRegion: number[] = this.regionIndex(startRegion, tpIndices);
+        var direction: number[] = this.midpointRayEmitterDirection(targetRegion, startRegion);
         var midpointRayIndex: number[] = targetRegion.concat(direction);
         var midpointRayName: string = TypeString.midpointRayToString(midpointRayIndex);
-        this.ggb.rayOfSphereMidpoints(TypeString.sphere(sphereRegion), TypeString.tPlane(plane1),
+        this.ggb.rayOfSphereMidpoints(TypeString.sphere(startRegion), TypeString.tPlane(plane1),
             TypeString.tPlane(plane2), TypeString.tPlane(plane3), midpointRayName);
         ggbApplet.setVisible(midpointRayName, false);
         return midpointRayName;
     }
 
     rayOfSphereMidpointsFromRegion(targetRegion: number[], startRegion: number[]): string {
-        var planesIndices: number[];
+        var planesIndices: number[] = [];
         for (var i: number = 0; i < targetRegion.length; i++) {
             // equality should not appear by construction
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
                 throw new Error('Your midpointRay goes to a face instead of a corner. See Tools.ts/rayOfSphereMidpointsFromRegion().');
             }
             if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
-                planesIndices[i] = targetRegion[i]
+                planesIndices[i] = targetRegion[i];
             }
             else {
-                planesIndices[i] = startRegion[i]
+                planesIndices[i] = startRegion[i];
             }
         }
-        return this.rayOfSphereMidpoints(startRegion, [planesIndices[0], 0, 0], [0, planesIndices[1], 0], [0, 0, planesIndices[1]]);
+        return this.rayOfSphereMidpoints(startRegion, [planesIndices[0], 0, 0], [0, planesIndices[1], 0], [0, 0, planesIndices[2]]);
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
@@ -105,26 +123,40 @@ class Tools {
     }
     
     /**
-     * Get the index of the next region outlined by the three given tangent planes.
+     * Get the index of the next region outlined by the three given tangent planes that is different from the start region.
      * For example tp_{1,0,0}, tp_{0,1,0}, tp_{0,0,1} define region {1,1,1}. The
      * algorithm works since each tangent planes only has one index x or y or
      * z different from 0.
      * @return {number-Array} index of the outlined region
      */
-    regionIndex(plane1: number[], plane2: number[], plane3: number[]): number[] {
-        var regionIndex: number[] = [];
-        for (var i: number = 0; i < plane1.length; i++) {
-            if (plane1[i] != 0) {
-                regionIndex.push(plane1[i]);
-            } else {
-                if (plane2[i] != 0) {
-                    regionIndex.push(plane2[i]);
-                } else {
-                    regionIndex.push(plane3[i]);
+    regionIndex(startRegion: number[], tpIndices: number[]): number[] {
+        var targetRegion: number[] = [];
+        for (var i: number = 0; i < tpIndices.length; i++) {
+            if (Math.abs(startRegion[i]) < Math.abs(tpIndices[i])) {
+                targetRegion[i] = tpIndices[i];
+            }
+            else {
+                if (startRegion[i] > 0) {
+                    targetRegion[i] = startRegion[i] - 1;
+                }
+                else {
+                    targetRegion[i] = startRegion[i] + 1;
                 }
             }
+            
+            
+            // deprecated from here on down
+            //            if (plane1[i] != 0) {
+            //                targetRegion.push(plane1[i]);
+            //            } else {
+            //                if (plane2[i] != 0) {
+            //                    targetRegion.push(plane2[i]);
+            //                } else {
+            //                    targetRegion.push(plane3[i]);
+            //                }
+            //            }
         }
-        return regionIndex;
+        return targetRegion;
     }
     
     /**
@@ -132,10 +164,10 @@ class Tools {
      * 
      * @param regionIndex index of the region the ray points into.
      */
-    initialMidpointRayEmitterDirection(regionIndex: number[]): number[] {
+    midpointRayEmitterDirection(targetRegion: number[], startRegion: number[]): number[] {
         var direction: number[] = [];
-        for (var i: number = 0; i < regionIndex.length; i++) {
-            if (regionIndex[i] > 0) {
+        for (var i: number = 0; i < targetRegion.length; i++) {
+            if (targetRegion[i] > startRegion[i]) {
                 direction.push(-1);
             } else {
                 direction.push(1);
