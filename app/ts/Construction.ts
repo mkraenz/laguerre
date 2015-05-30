@@ -1,6 +1,6 @@
 class Construction {
 
-    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 3;
+    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 5;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -9,8 +9,8 @@ class Construction {
     private PROJECTION_POINT_Y_VALUE: number = 10;
     private PROJECTION_POINT_Z_VALUE: number = 10;
     private ORIGIN_REGION: number[] = [0, 0, 0];
-    private ORIGIN: string = TypeString.midpoint(this.ORIGIN_REGION);
-    private ORIGIN_SPHERE: string = TypeString.sphere(this.ORIGIN_REGION);
+    private ORIGIN: string;
+    private ORIGIN_SPHERE: string;
 
     private listOfInvisibleObjects = new Array<string>();
     private listOfInvisibleLabels = new Array<string>();
@@ -20,14 +20,23 @@ class Construction {
     private PARAMETER_SPHERE_MIDPOINT_MAX = 0.99;
     private PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
 
-    private ggb: GGBTools = new GGBTools();
-    private t: Tools = new Tools(this.ggb, this.ORIGIN);
+    private ggb: GGBTools;
+    private t: Tools;
+
+    constructor() {
+        var toStr: TypeString = new TypeString();
+        this.ORIGIN = toStr.midpoint(this.ORIGIN_REGION);
+        this.ORIGIN_SPHERE = toStr.sphere(this.ORIGIN_REGION);
+        this.ggb = new GGBTools();
+        this.t = new Tools(toStr, this.ggb, this.ORIGIN);
+    }
 
     createInitialSphere() {
+        var toStr: TypeString = new TypeString();
         var region: number[] = [0, 0, 0];
         this.t.sphereMidpointFree(region, 0, 0, 0);
 
-        var radiusSliderStr: string = TypeString.radius(region);
+        var radiusSliderStr: string = toStr.radius(region);
         this.ggb.slider(0.1, 10, radiusSliderStr);
         ggbApplet.setValue(radiusSliderStr, 1);
         var sphereName: string = this.t.sphere(region);
@@ -41,6 +50,8 @@ class Construction {
     }
 
     createInitialTangentplanes() {
+        var toStr: TypeString = new TypeString();
+        
         var segmentProjX: string = "segmentProjXToOrigin";
         var segmentProjY: string = "segmentProjYToOrigin";
         var segmentProjZ: string = "segmentProjZToOrigin";
@@ -72,26 +83,26 @@ class Construction {
         this.listOfInvisibleObjects.push(coneProjX, coneProjY, coneProjZ);
 
         this.ggb.intersect(coneProjY, coneProjZ, 'TPointX');
-        var tPointPosX: string = this.t.renameObject('TPointX_1', TypeString.tPoint([1, 0, 0]));
-        var tPointNegX: string = this.t.renameObject('TPointX_2', TypeString.tPoint([-1, 0, 0]));
+        var tPointPosX: string = this.t.renameObject('TPointX_1', toStr.tPoint([1, 0, 0]));
+        var tPointNegX: string = this.t.renameObject('TPointX_2', toStr.tPoint([-1, 0, 0]));
         this.ggb.intersect(coneProjX, coneProjZ, 'TPointY');
-        var tPointNegY: string = this.t.renameObject('TPointY_1', TypeString.tPoint([0, -1, 0]));
-        var tPointPosY: string = this.t.renameObject('TPointY_2', TypeString.tPoint([0, 1, 0]));
+        var tPointNegY: string = this.t.renameObject('TPointY_1', toStr.tPoint([0, -1, 0]));
+        var tPointPosY: string = this.t.renameObject('TPointY_2', toStr.tPoint([0, 1, 0]));
         this.ggb.intersect(coneProjX, coneProjY, 'TPointZ');
-        var tPointPosZ: string = this.t.renameObject('TPointZ_1', TypeString.tPoint([0, 0, 1]));
-        var tPointNegZ: string = this.t.renameObject('TPointZ_2', TypeString.tPoint([0, 0, -1]));
+        var tPointPosZ: string = this.t.renameObject('TPointZ_1', toStr.tPoint([0, 0, 1]));
+        var tPointNegZ: string = this.t.renameObject('TPointZ_2', toStr.tPoint([0, 0, -1]));
         this.listOfInvisibleObjects.push(tPointPosX, tPointNegX, tPointNegY, tPointPosY, tPointPosZ, tPointNegZ);
 
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, TypeString.tPlane([1, 0, 0]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, TypeString.tPlane([-1, 0, 0]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, TypeString.tPlane([0, 1, 0]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, TypeString.tPlane([0, -1, 0]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, TypeString.tPlane([0, 0, 1]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, TypeString.tPlane([0, 0, -1]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, toStr.tPlane([1, 0, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, toStr.tPlane([-1, 0, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, toStr.tPlane([0, 1, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, toStr.tPlane([0, -1, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, toStr.tPlane([0, 0, 1]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, toStr.tPlane([0, 0, -1]));
 
-        this.listOfInvisibleLabels.push(TypeString.tPlane([1, 0, 0]), TypeString.tPlane([-1, 0, 0]),
-            TypeString.tPlane([0, 1, 0]), TypeString.tPlane([0, -1, 0]), TypeString.tPlane([0, 0, 1]),
-            TypeString.tPlane([0, 0, -1]));
+        this.listOfInvisibleLabels.push(toStr.tPlane([1, 0, 0]), toStr.tPlane([-1, 0, 0]),
+            toStr.tPlane([0, 1, 0]), toStr.tPlane([0, -1, 0]), toStr.tPlane([0, 0, 1]),
+            toStr.tPlane([0, 0, -1]));
     }
 
     private setHelperObjectsInvisible() {
@@ -104,26 +115,28 @@ class Construction {
      * @return name of the created object inside GeoGebra
      */
     private parameterMidpoints(planeIndices: number[]): string {
+        var toStr: TypeString = new TypeString();
+        
         var region: number[] = this.t.regionIndex(this.ORIGIN_REGION, planeIndices);
         var regionIndex: string = region.toString();
 
-        var sliderName = TypeString.parameter(region);
+        var sliderName = toStr.parameter(region);
         this.ggb.slider(this.PARAMETER_SPHERE_MIDPOINT_MIN, this.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
             this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
         ggbApplet.setValue(sliderName, 0.5);
         var midpointRayName = this.t.rayOfSphereMidpoints([0, 0, 0], planeIndices);
-        var pointName = this.ggb.point(midpointRayName, TypeString.midpoint(region),
-            TypeString.parameter(region));
+        var pointName = this.ggb.point(midpointRayName, toStr.midpoint(region),
+            toStr.parameter(region));
         return pointName;
     }
 
     private createParameterMidpoints() {
         var planeArray = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0],
             [0, 0, 1], [0, 0, -1]];
-        this.parameterMidpoints([1,1,1]);
-        this.parameterMidpoints([-1,1,1]);
-        this.parameterMidpoints([1,-1,1]);
-        this.parameterMidpoints([1,1,-1]);
+        this.parameterMidpoints([1, 1, 1]);
+        this.parameterMidpoints([-1, 1, 1]);
+        this.parameterMidpoints([1, -1, 1]);
+        this.parameterMidpoints([1, 1, -1]);
     }
 
     private createParameterSpheresAndTangentplanes() {
@@ -145,9 +158,10 @@ class Construction {
 
     private sphereMidpointFromTwoRays(targetRegion: number[], startRegion1: number[],
         startRegion2: number[]): string {
+        var toStr: TypeString = new TypeString();
         var ray1: string = this.t.rayOfSphereMidpointsFromRegion(startRegion1, targetRegion);
         var ray2: string = this.t.rayOfSphereMidpointsFromRegion(startRegion2, targetRegion);
-        return this.ggb.intersect(ray1, ray2, TypeString.midpoint(targetRegion));
+        return this.ggb.intersect(ray1, ray2, toStr.midpoint(targetRegion));
     }
 
     private constuctInXDirection(): void {

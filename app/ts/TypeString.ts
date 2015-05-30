@@ -1,35 +1,35 @@
 class TypeString {
-    public static typeString(objectType: string, index: number[]): string {
+    public typeString(objectType: string, index: number[]): string {
         return objectType + '_{' + index.toString() + '}';
     }
 
-    public static sphere(index: number[]): string {
+    public sphere(index: number[]): string {
         return this.typeString('s', index);
     }
 
     /**
      * tplane = tangent plane
      */
-    public static tPlane(index: number[]): string {
+    public tPlane(index: number[]): string {
         return this.typeString('tp', index);
     }
 
-    public static midpoint(index: number[]): string {
+    public midpoint(index: number[]): string {
         return this.typeString('M', index);
     }
 
-    public static radius(index: number[]): string {
+    public radius(index: number[]): string {
         return this.typeString('r', index);
     }
 
-    public static parameter(index: number[]): string {
+    public parameter(index: number[]): string {
         return this.typeString('parameter', index);
     }
     
     /**
      * tangent point
      */
-    public static tPoint(index: number[]): string {
+    public tPoint(index: number[]): string {
         return this.typeString('TPoint', index);
     }
     
@@ -40,7 +40,7 @@ class TypeString {
     *            where the last three entries are either 1 or -1
     * @returns {String} of the form 'midpointRay_{0,1,54,+,+,-}'
     */
-    public static midpointRayToString(index: number[]): string {
+    public midpointRayToString(index: number[]): string {
         var indexCopy: Array<string> = new Array<string>(index.length);
         for (var i: number = 0; i < index.length; i++) {
             indexCopy[i] = index[i].toString();
