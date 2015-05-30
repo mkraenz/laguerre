@@ -51,7 +51,7 @@ class Construction {
 
     createInitialTangentplanes() {
         var toStr: TypeString = new TypeString();
-        
+
         var segmentProjX: string = "segmentProjXToOrigin";
         var segmentProjY: string = "segmentProjYToOrigin";
         var segmentProjZ: string = "segmentProjZToOrigin";
@@ -116,7 +116,7 @@ class Construction {
      */
     private parameterMidpoints(planeIndices: number[]): string {
         var toStr: TypeString = new TypeString();
-        
+
         var region: number[] = this.t.regionIndex(this.ORIGIN_REGION, planeIndices);
         var regionIndex: string = region.toString();
 
@@ -124,8 +124,7 @@ class Construction {
         this.ggb.slider(this.PARAMETER_SPHERE_MIDPOINT_MIN, this.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
             this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
         ggbApplet.setValue(sliderName, 0.5);
-        var midpointRayName = this.t.rayOfSphereMidpoints([0, 0, 0], planeIndices);
-        var pointName = this.ggb.point(midpointRayName, toStr.midpoint(region),
+        var pointName = this.ggb.point(toStr.midpointRay(region), toStr.midpoint(region),
             toStr.parameter(region));
         return pointName;
     }
@@ -189,6 +188,16 @@ class Construction {
         }
     }
 
+    createInitialMidpointRays() {
+        for (var x: number = -1; x < 2; x = x + 2) {
+            for (var y: number = -1; y < 2; y = y + 2) {
+                for (var z: number = -1; z < 2; z = z + 2) {
+                    this.t.rayOfSphereMidpoints([0, 0, 0], [x, y, z]);
+                }
+            }
+        }
+    }
+
 
 
 
@@ -196,6 +205,7 @@ class Construction {
         this.createInitialSphere();
         this.createProjectionPoints();
         this.createInitialTangentplanes();
+        this.createInitialMidpointRays();
         this.createParameterMidpoints();
         this.createParameterSpheresAndTangentplanes();
         this.constuctInXDirection();

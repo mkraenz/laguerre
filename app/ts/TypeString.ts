@@ -40,7 +40,7 @@ class TypeString {
     *            where the last three entries are either 1 or -1
     * @returns {String} of the form 'midpointRay_{0,1,54,+,+,-}'
     */
-    public midpointRayToString(index: number[]): string {
+    public midpointRay(index: number[]): string {
         var indexCopy: Array<string> = new Array<string>(index.length);
         for (var i: number = 0; i < index.length; i++) {
             indexCopy[i] = index[i].toString();
