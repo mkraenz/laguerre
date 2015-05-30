@@ -1,6 +1,6 @@
 class Construction {
 
-    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 20;
+    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 3;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -103,16 +103,15 @@ class Construction {
     /**
      * @return name of the created object inside GeoGebra
      */
-    private parameterMidpoints(plane1: number[], plane2: number[], plane3: number[]): string {
-        var tpIndices: number[] = [plane1[0], plane2[1], plane3[2]];
-        var region: number[] = this.t.regionIndex(this.ORIGIN_REGION, tpIndices);
+    private parameterMidpoints(planeIndices: number[]): string {
+        var region: number[] = this.t.regionIndex(this.ORIGIN_REGION, planeIndices);
         var regionIndex: string = region.toString();
 
         var sliderName = TypeString.parameter(region);
         this.ggb.slider(this.PARAMETER_SPHERE_MIDPOINT_MIN, this.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
             this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
         ggbApplet.setValue(sliderName, 0.5);
-        var midpointRayName = this.t.rayOfSphereMidpoints([0, 0, 0], plane1, plane2, plane3);
+        var midpointRayName = this.t.rayOfSphereMidpoints([0, 0, 0], planeIndices);
         var pointName = this.ggb.point(midpointRayName, TypeString.midpoint(region),
             TypeString.parameter(region));
         return pointName;
@@ -121,10 +120,10 @@ class Construction {
     private createParameterMidpoints() {
         var planeArray = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0],
             [0, 0, 1], [0, 0, -1]];
-        this.parameterMidpoints(planeArray[0], planeArray[2], planeArray[4]);
-        this.parameterMidpoints(planeArray[1], planeArray[2], planeArray[4]);
-        this.parameterMidpoints(planeArray[0], planeArray[3], planeArray[4]);
-        this.parameterMidpoints(planeArray[0], planeArray[2], planeArray[5]);
+        this.parameterMidpoints([1,1,1]);
+        this.parameterMidpoints([-1,1,1]);
+        this.parameterMidpoints([1,-1,1]);
+        this.parameterMidpoints([1,1,-1]);
     }
 
     private createParameterSpheresAndTangentplanes() {
@@ -146,8 +145,8 @@ class Construction {
 
     private sphereMidpointFromTwoRays(targetRegion: number[], startRegion1: number[],
         startRegion2: number[]): string {
-        var ray1: string = this.t.rayOfSphereMidpointsFromRegion(targetRegion, startRegion1);
-        var ray2: string = this.t.rayOfSphereMidpointsFromRegion(targetRegion, startRegion2);
+        var ray1: string = this.t.rayOfSphereMidpointsFromRegion(startRegion1, targetRegion);
+        var ray2: string = this.t.rayOfSphereMidpointsFromRegion(startRegion2, targetRegion);
         return this.ggb.intersect(ray1, ray2, TypeString.midpoint(targetRegion));
     }
 
@@ -180,7 +179,6 @@ class Construction {
 
 
     run() {
-        //        console.log('Construction.run() started.'); // TODO: remove debug
         this.createInitialSphere();
         this.createProjectionPoints();
         this.createInitialTangentplanes();
@@ -190,6 +188,5 @@ class Construction {
 
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();
-        //        console.log('Construction.run() completed.'); //TODO: remove debug
     }
 }
