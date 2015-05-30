@@ -114,28 +114,32 @@ class Construction {
     /**
      * @return name of the created object inside GeoGebra
      */
-    private parameterMidpoints(planeIndices: number[]): string {
+    private parameterMidpoint(planeIndices: number[]): string {
         var toStr: TypeString = new TypeString();
 
-        var region: number[] = this.t.regionIndex(this.ORIGIN_REGION, planeIndices);
-        var regionIndex: string = region.toString();
+        var regionIndex: string = planeIndices.toString();
 
-        var sliderName = toStr.parameter(region);
+        var sliderName = toStr.parameter(planeIndices);
         this.ggb.slider(this.PARAMETER_SPHERE_MIDPOINT_MIN, this.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
             this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
         ggbApplet.setValue(sliderName, 0.5);
-        var pointName = this.ggb.point(toStr.midpointRay(region), toStr.midpoint(region),
-            toStr.parameter(region));
+        var planeIndicesNegate: number[] = [];
+        for( var i: number = 0; i < planeIndices.length; i++){
+            planeIndicesNegate[i] = -planeIndices[i];
+        }
+        var rayIndices: number[] = planeIndices.concat(planeIndicesNegate);
+        var pointName = this.ggb.point(toStr.midpointRay(rayIndices), toStr.midpoint(planeIndices),
+            toStr.parameter(planeIndices));
         return pointName;
     }
 
     private createParameterMidpoints() {
         var planeArray = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0],
             [0, 0, 1], [0, 0, -1]];
-        this.parameterMidpoints([1, 1, 1]);
-        this.parameterMidpoints([-1, 1, 1]);
-        this.parameterMidpoints([1, -1, 1]);
-        this.parameterMidpoints([1, 1, -1]);
+        this.parameterMidpoint([1, 1, 1]);
+        this.parameterMidpoint([-1, 1, 1]);
+        this.parameterMidpoint([1, -1, 1]);
+        this.parameterMidpoint([1, 1, -1]);
     }
 
     private createParameterSpheresAndTangentplanes() {
@@ -163,7 +167,7 @@ class Construction {
         return this.ggb.intersect(ray1, ray2, toStr.midpoint(targetRegion));
     }
 
-    private constuctInXDirection(): void {
+    private constructInXDirection(): void {
         for (var x = 1; x < this.REGIONS_IN_POSITIVE_X_DIRECTION; x++) {
             var midpoints: string[] = [];
             var targetRegions: Array<number[]>;
@@ -192,7 +196,7 @@ class Construction {
         for (var x: number = -1; x < 2; x = x + 2) {
             for (var y: number = -1; y < 2; y = y + 2) {
                 for (var z: number = -1; z < 2; z = z + 2) {
-                    this.t.rayOfSphereMidpoints([0, 0, 0], [x, y, z]);
+                    this.t.rayOfSphereMidpointsFromRegion([0, 0, 0], [x, y, z]);
                 }
             }
         }
@@ -208,7 +212,7 @@ class Construction {
         this.createInitialMidpointRays();
         this.createParameterMidpoints();
         this.createParameterSpheresAndTangentplanes();
-        this.constuctInXDirection();
+        this.constructInXDirection();
 
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();

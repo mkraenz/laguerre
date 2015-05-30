@@ -147,18 +147,6 @@ class Tools {
                     targetRegion[i] = startRegion[i] + 1;
                 }
             }
-            
-            
-            // deprecated from here on down
-            //            if (plane1[i] != 0) {
-            //                targetRegion.push(plane1[i]);
-            //            } else {
-            //                if (plane2[i] != 0) {
-            //                    targetRegion.push(plane2[i]);
-            //                } else {
-            //                    targetRegion.push(plane3[i]);
-            //                }
-            //            }
         }
         return targetRegion;
     }
