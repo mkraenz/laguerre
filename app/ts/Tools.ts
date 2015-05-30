@@ -68,7 +68,7 @@ class Tools {
         var targetRegion: number[] = this.regionIndex(startRegion, tpIndices);
         var direction: number[] = this.midpointRayEmitterDirection(targetRegion, startRegion);
         var midpointRayIndex: number[] = targetRegion.concat(direction);
-        var midpointRayName: string = this.toStr.midpointRayToString(midpointRayIndex);
+        var midpointRayName: string = this.toStr.midpointRay(midpointRayIndex);
         var plane1: string = this.toStr.tPlane([planeIndices[0], 0, 0]);
         var plane2: string = this.toStr.tPlane([0,planeIndices[1], 0]);
         var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
@@ -147,18 +147,6 @@ class Tools {
                     targetRegion[i] = startRegion[i] + 1;
                 }
             }
-            
-            
-            // deprecated from here on down
-            //            if (plane1[i] != 0) {
-            //                targetRegion.push(plane1[i]);
-            //            } else {
-            //                if (plane2[i] != 0) {
-            //                    targetRegion.push(plane2[i]);
-            //                } else {
-            //                    targetRegion.push(plane3[i]);
-            //                }
-            //            }
         }
         return targetRegion;
     }

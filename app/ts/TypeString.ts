@@ -36,22 +36,22 @@ class TypeString {
     /**
     * 
     * @param index
-    *            {int-Array} the index as an array in the form [0,1,54,1,-1,1]
+    *            {number-Array} the index as an array in the form [0,1,54,1,-1,1]
     *            where the last three entries are either 1 or -1
-    * @returns {String} of the form 'midpointRay_{0,1,54,+,+,-}'
+    * @returns {String} of the form 'midpointRay_{0,1,54,+,-,+}'
     */
-    public midpointRayToString(index: number[]): string {
-        var indexCopy: Array<string> = new Array<string>(index.length);
-        for (var i: number = 0; i < index.length; i++) {
-            indexCopy[i] = index[i].toString();
+    public midpointRay(indices: number[]): string {
+        var indicesStringArray: Array<string> = new Array<string>(indices.length);
+        for (var i: number = 0; i < indices.length; i++) {
+            indicesStringArray[i] = indices[i].toString();
         }
-        for (var i = 3; i < indexCopy.length; i++) {
-            if (indexCopy[i] == '1') {
-                indexCopy[i] = '+';
+        for (var i = 3; i < indicesStringArray.length; i++) {
+            if (indicesStringArray[i] == '1') {
+                indicesStringArray[i] = '+';
             } else {
-                indexCopy[i] = '-';
+                indicesStringArray[i] = '-';
             }
         }
-        return 'midpointRay_{' + indexCopy.toString() + '}';
+        return 'midpointRay_{' + indicesStringArray.toString() + '}';
     }
 }
