@@ -13,8 +13,13 @@ class GGBTools {
 
     public intersect(objName1: string, objName2: string, name?: string): string {
         var cmd: string = 'Intersect[' + objName1 + ', ' + objName2 + ']';
-        this.fullCommandAndExec(cmd, name);
-        return name;
+        var isSuccessful: boolean = this.fullCommandAndExec(cmd, name);
+        if (isSuccessful) {
+            return name;
+        }
+        else{
+           return ''; 
+        }
     }
 
     public pointFree(x: string, y: string, z?: string, name?: string): string {

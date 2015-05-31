@@ -56,7 +56,10 @@ class TypeString {
     }
     
     public midpointRayFromOrigin(targetRegion: number[]){
-        var indices: number[] = targetRegion;
+        var indices: number[] = [];
+        for(var i: number = 0; i < targetRegion.length; i++){
+           indices[i] = targetRegion[i]; 
+        }
         for( var i: number = 0; i< targetRegion.length; i++){
            indices[i +targetRegion.length] = -targetRegion[i];
         }
