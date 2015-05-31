@@ -13,13 +13,8 @@ class GGBTools {
 
     public intersect(objName1: string, objName2: string, name?: string): string {
         var cmd: string = 'Intersect[' + objName1 + ', ' + objName2 + ']';
-        var isSuccessful: boolean = this.fullCommandAndExec(cmd, name);
-        if (isSuccessful) {
-            return name;
-        }
-        else{
-           return ''; 
-        }
+        this.fullCommandAndExec(cmd, name);
+        return name;
     }
 
     public pointFree(x: string, y: string, z?: string, name?: string): string {
@@ -59,7 +54,11 @@ class GGBTools {
      * @param color: string See GeoGebra page https://wiki.geogebra.org/en/Reference:Colors for reference.
      */
     public setColor(name: string, color: string): void {
-        ggbApplet.evalCommand('SetColor[' + name + ',' + color + ']');
+        var command: string = 'SetColor[' + name + ',' + color + ']';
+        var isSuccessful: boolean = ggbApplet.evalCommand(command);
+        if (!isSuccessful) {
+            throw new Error(name + ' has not been defined successfully.\nCorresponding command: \n' + command);
+        }
     }
     
     /**
@@ -119,8 +118,11 @@ class GGBTools {
      */
     private fullCommandAndExec(command: string, name: string): boolean {
         command = this.fullCommand(command, name);
-        var result: boolean = ggbApplet.evalCommand(command);
-        return result;
+        var isSuccessful: boolean = ggbApplet.evalCommand(command);
+        if (!isSuccessful) {
+            throw new Error(name + ' has not been defined successfully.\nCorresponding command: \n' + command);
+        }
+        return isSuccessful;
     }
 
 
