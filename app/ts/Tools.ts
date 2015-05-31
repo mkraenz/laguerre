@@ -118,7 +118,12 @@ class Tools {
         var nextPlane: number[] = new Array<number>(3);
         for (var i = 0; i < index1.length; i++) {
             if (i == commonIndex) {
-                nextPlane[i] = 1 + index1[i];
+                if(index1[commonIndex] > 0) {
+                    nextPlane[i] = 1 + index1[i];
+                }
+                else{
+                    nextPlane[i] = index1[i] - 1;
+                }
             } else {
                 nextPlane[i] = 0;
             }

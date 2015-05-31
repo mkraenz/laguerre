@@ -1,6 +1,6 @@
 class Construction {
 
-    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 5;
+    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 0;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -124,7 +124,7 @@ class Construction {
             this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
         ggbApplet.setValue(sliderName, 0.5);
         var planeIndicesNegate: number[] = [];
-        for( var i: number = 0; i < planeIndices.length; i++){
+        for (var i: number = 0; i < planeIndices.length; i++) {
             planeIndicesNegate[i] = -planeIndices[i];
         }
         var rayIndices: number[] = planeIndices.concat(planeIndicesNegate);
@@ -164,7 +164,8 @@ class Construction {
         var toStr: TypeString = new TypeString();
         var ray1: string = this.t.rayOfSphereMidpointsFromRegion(startRegion1, targetRegion);
         var ray2: string = this.t.rayOfSphereMidpointsFromRegion(startRegion2, targetRegion);
-        return this.ggb.intersect(ray1, ray2, toStr.midpoint(targetRegion));
+        var midpoint: string = this.ggb.intersect(ray1, ray2, toStr.midpoint(targetRegion));
+        return midpoint;
     }
 
     private constructInXDirection(): void {
@@ -202,8 +203,49 @@ class Construction {
         }
     }
 
+    private createMissingFourthInitialSphere(targetRegion: number[], startRegion2: number[]) {
+        var helpRegion: number[] = []; // either [2,0,0], [0,2,0] or [0,0,2]
+        for (var i: number = 0; i < targetRegion.length; i++) {
+            if (targetRegion[i] == 1) {
+                helpRegion[i] = 2;
+                helpRegion[(i + 1) % targetRegion.length] = 0;
+                helpRegion[(i + 2) % targetRegion.length] = 0;
+                break;
+            }
+        }
+        var startRegion1: number[] = [1, 1, 1];
+        this.initialMissingSpheresSubroutine(targetRegion, helpRegion, startRegion1, startRegion2);
+    }
 
+    private createMissingInitialSpheres() {
+        this.createMissingFourthInitialSphere([-1, 1, -1], [-1, 1, 1]);
+        this.createMissingFourthInitialSphere([1, -1, -1], [1, -1, 1]);
+        this.createMissingFourthInitialSphere([-1, -1, 1], [-1, 1, 1]);
+    }
 
+    private createEighthSphere() {
+        var tpName: string = this.t.tangentPlaneToThreeSpheres([-1,1,1],[-1,-1,1],[-1,1,-1]);
+        var targetRegion: number[] = [-1, -1, -1];
+        var helpRegion: number[] = [-2, 0, 0];
+        var startRegion1: number[] = [-1, -1, 1];
+        var startRegion2: number[] = [-1, 1, 1];
+        this.initialMissingSpheresSubroutine(targetRegion, helpRegion, startRegion1, startRegion2);
+    }
+
+    private initialMissingSpheresSubroutine(targetRegion: number[], helpRegion: number[], startRegion1: number[], startRegion2: number[]) {
+        var toStr: TypeString = new TypeString();
+
+        this.sphereMidpointFromTwoRays(helpRegion, startRegion1, startRegion2);
+        this.t.radius(helpRegion);
+        this.t.sphere(helpRegion);
+
+        var rayName: string = this.t.rayOfSphereMidpointsFromRegion(helpRegion, targetRegion);
+        var rayFromOrigin: string = toStr.midpointRayFromOrigin(targetRegion);
+        var midpointStr: string = toStr.midpoint(targetRegion);
+        var midpoint: string = this.ggb.intersect(rayName, rayFromOrigin, midpointStr);
+        this.t.radius(targetRegion);
+        this.t.sphere(targetRegion);
+    }
 
     run() {
         this.createInitialSphere();
@@ -212,6 +254,8 @@ class Construction {
         this.createInitialMidpointRays();
         this.createParameterMidpoints();
         this.createParameterSpheresAndTangentplanes();
+        this.createMissingInitialSpheres();
+        this.createEighthSphere();
         this.constructInXDirection();
 
         this.setHelperObjectsInvisible();

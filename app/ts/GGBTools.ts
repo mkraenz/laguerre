@@ -54,7 +54,11 @@ class GGBTools {
      * @param color: string See GeoGebra page https://wiki.geogebra.org/en/Reference:Colors for reference.
      */
     public setColor(name: string, color: string): void {
-        ggbApplet.evalCommand('SetColor[' + name + ',' + color + ']');
+        var command: string = 'SetColor[' + name + ',' + color + ']';
+        var isSuccessful: boolean = ggbApplet.evalCommand(command);
+        if (!isSuccessful) {
+            throw new Error(name + ' has not been defined successfully.\nCorresponding command: \n' + command);
+        }
     }
     
     /**
@@ -114,8 +118,11 @@ class GGBTools {
      */
     private fullCommandAndExec(command: string, name: string): boolean {
         command = this.fullCommand(command, name);
-        var result: boolean = ggbApplet.evalCommand(command);
-        return result;
+        var isSuccessful: boolean = ggbApplet.evalCommand(command);
+        if (!isSuccessful) {
+            throw new Error(name + ' has not been defined successfully.\nCorresponding command: \n' + command);
+        }
+        return isSuccessful;
     }
 
 

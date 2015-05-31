@@ -54,4 +54,15 @@ class TypeString {
         }
         return 'midpointRay_{' + indicesStringArray.toString() + '}';
     }
+    
+    public midpointRayFromOrigin(targetRegion: number[]){
+        var indices: number[] = [];
+        for(var i: number = 0; i < targetRegion.length; i++){
+           indices[i] = targetRegion[i]; 
+        }
+        for( var i: number = 0; i< targetRegion.length; i++){
+           indices[i +targetRegion.length] = -targetRegion[i];
+        }
+        return this.midpointRay(indices);
+    }
 }
