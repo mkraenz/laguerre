@@ -1,6 +1,6 @@
 class Construction {
 
-    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 0;
+    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 5;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -169,6 +169,8 @@ class Construction {
     }
 
     private constructInXDirection(): void {
+        var y: number = 0;
+        var z: number = 0;
         for (var x = 1; x < this.REGIONS_IN_POSITIVE_X_DIRECTION; x++) {
             var midpoints: string[] = [];
             var targetRegions: Array<number[]>;
@@ -176,14 +178,14 @@ class Construction {
             var startRegions2: Array<number[]>;
 
             if (x % 2 == 1) {
-                targetRegions = [[x + 1, 0, 0], [x + 1, 2, 0], [x + 1, 0, 2]];
-                startRegions1 = [[x, 1, 1], [x, 1, 1], [x, 1, 1]];
-                startRegions2 = [[x, -1, 1], [x, 1, -1], [x, -1, 1]];
+                targetRegions = [[x + 1, y, z], [x + 1, y+2, z], [x + 1, y, z+2]];
+                startRegions1 = [[x, y+1, z+1], [x, y+1, z+1], [x, y+1, z+1]];
+                startRegions2 = [[x, y-1, z+1], [x, y+1, z-1], [x, y-1, z+1]];
             }
             else {
-                targetRegions = [[x + 1, 1, 1], [x + 1, -1, 1], [x + 1, 1, -1]];
-                startRegions1 = [[x, 0, 0], [x, 0, 0], [x, 0, 0]];
-                startRegions2 = [[x, 0, 2], [x, 0, 2], [x, 2, 0]];
+                targetRegions = [[x + 1, y+1, z+1], [x + 1, y-1, z+1], [x + 1, y+1, z-1]];
+                startRegions1 = [[x, y, z], [x, y, z], [x, y, z]];
+                startRegions2 = [[x, y, z+2], [x, y, z+2], [x, y+2, z]];
             }
             for (var i = 0; i < targetRegions.length; i++) {
                 midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
