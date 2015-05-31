@@ -224,7 +224,7 @@ class Construction {
     }
 
     private createEighthSphere() {
-        this.t.tangentPlaneToThreeSpheres([-1,1,1],[-1,-1,1],[-1,1,-1]);
+        var tpName: string = this.t.tangentPlaneToThreeSpheres([-1,1,1],[-1,-1,1],[-1,1,-1]);
         var targetRegion: number[] = [-1, -1, -1];
         var helpRegion: number[] = [-2, 0, 0];
         var startRegion1: number[] = [-1, -1, 1];
@@ -236,9 +236,6 @@ class Construction {
         var toStr: TypeString = new TypeString();
 
         this.sphereMidpointFromTwoRays(helpRegion, startRegion1, startRegion2);
-        if(! ggbApplet.exists(toStr.midpoint(helpRegion))){
-           throw new Error('Midpoint ' + toStr.midpoint(helpRegion) + ' does not exist.'); 
-        }
         this.t.radius(helpRegion);
         this.t.sphere(helpRegion);
 
