@@ -1,8 +1,8 @@
 class Construction {
 
     private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 0;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 3;
-    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 2;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 1;
+    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 10;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -15,12 +15,15 @@ class Construction {
     private ORIGIN_SPHERE: string;
 
     private listOfInvisibleObjects = new Array<string>();
+    private listOfInvisiblePlanes = new Array<string>();
     private listOfInvisibleLabels = new Array<string>();
     
     // for the parametrizable spheres' slider
     private PARAMETER_SPHERE_MIDPOINT_MIN = 0.01;
     private PARAMETER_SPHERE_MIDPOINT_MAX = 0.99;
     private PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
+
+    private ORIGIN_SPHERE_SCALING = 0.3;
 
     private ggb: GGBTools;
     private t: Tools;
@@ -39,8 +42,8 @@ class Construction {
         this.t.sphereMidpointFree(region, 0, 0, 0);
 
         var radiusSliderStr: string = toStr.radius(region);
-        this.ggb.slider(0.1, 10, radiusSliderStr);
-        ggbApplet.setValue(radiusSliderStr, 1);
+        this.ggb.slider(0.1, 1, radiusSliderStr);
+        ggbApplet.setValue(radiusSliderStr, this.ORIGIN_SPHERE_SCALING);
         var sphereName: string = this.t.sphere(region);
         this.ggb.setColor(sphereName, "Gold");
     }
@@ -102,14 +105,16 @@ class Construction {
         this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, toStr.tPlane([0, 0, 1]));
         this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, toStr.tPlane([0, 0, -1]));
 
-        this.listOfInvisibleLabels.push(toStr.tPlane([1, 0, 0]), toStr.tPlane([-1, 0, 0]),
-            toStr.tPlane([0, 1, 0]), toStr.tPlane([0, -1, 0]), toStr.tPlane([0, 0, 1]),
-            toStr.tPlane([0, 0, -1]));
+        this.listOfInvisiblePlanes.push(toStr.tPlane([1, 0, 0]), toStr.tPlane([-1, 0, 0]), toStr.tPlane([0, 1, 0]),
+            toStr.tPlane([0, -1, 0]), toStr.tPlane([0, 0, 1]), toStr.tPlane([0, 0, -1]));
     }
 
     private setHelperObjectsInvisible() {
         for (var i: number = 0; i < this.listOfInvisibleObjects.length; i++) {
             ggbApplet.setVisible(this.listOfInvisibleObjects[i], false);
+        }
+        for (var i: number = 0; i < this.listOfInvisiblePlanes.length; i++) {
+            ggbApplet.setVisible(this.listOfInvisiblePlanes[i], false);
         }
     }
 
@@ -150,9 +155,10 @@ class Construction {
             this.t.radius(spheres[i]);
             this.t.sphere(spheres[i]);
         }
-        this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[2]);
-        this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[3]);
-        this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[2], spheres[3]);
+        var plane1Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[2]);
+        var plane2Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[3]);
+        var plane3Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[2], spheres[3]);
+        this.listOfInvisiblePlanes.push(plane1Name, plane2Name, plane3Name);
     }
 
     private setLabelsInvisible(): void {
@@ -191,7 +197,8 @@ class Construction {
                 midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
                 this.t.sphere(targetRegions[i]);
             }
-            this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+            var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+            this.listOfInvisiblePlanes.push(tPlaneName);
         }
     }
 
@@ -217,7 +224,9 @@ class Construction {
                 midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
                 this.t.sphere(targetRegions[i]);
             }
-            this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+            var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+            this.listOfInvisiblePlanes.push(tPlaneName);
+            
         }
     }
 
@@ -244,7 +253,9 @@ class Construction {
                 midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
                 this.t.sphere(targetRegions[i]);
             }
-            this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+            var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+            console.log(tPlaneName);
+            this.listOfInvisiblePlanes.push(tPlaneName);
         }
     }
 
@@ -312,7 +323,7 @@ class Construction {
         for (var x: number = -1; x < 2; x = x + 2) {
             for (var y: number = -1; y < 2; y = y + 2) {
                 for (var z: number = -1; z < 2; z = z + 2) {
-                    this.t.setColorOfSphere([x,y,z], 'Green');
+                    this.t.setColorOfSphere([x, y, z], 'Green');
                 }
             }
         }
