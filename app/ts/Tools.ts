@@ -105,7 +105,7 @@ class Tools {
         return name;
     }
 
-    tangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
+    private tangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
         var commonIndex: number = null;
         for (var i = 0; i < index1.length; i++) {
             // here one might have to use parseInt(indexArray[i]
@@ -171,6 +171,10 @@ class Tools {
             }
         }
         return direction;
+    }
+    
+    setColorOfSphere(targetRegion:number[], color: string){
+       this.ggb.setColor(this.toStr.sphere(targetRegion), color); 
     }
 
 

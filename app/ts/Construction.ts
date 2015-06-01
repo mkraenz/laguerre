@@ -1,14 +1,14 @@
 class Construction {
 
-    private REGIONS_IN_POSITIVE_X_DIRECTION: number = 5;
-    private REGIONS_IN_POSITIVE_Y_DIRECTION: number = 5;
-    private REGIONS_IN_POSITIVE_Z_DIRECTION: number = 5;
+    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 0;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 3;
+    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 2;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
     private PROJECTION_POINT_X_VALUE: number = 10;
-    private PROJECTION_POINT_Y_VALUE: number = 10;
+    private PROJECTION_POINT_Y_VALUE: number = 100;
     private PROJECTION_POINT_Z_VALUE: number = 10;
     private ORIGIN_REGION: number[] = [0, 0, 0];
     private ORIGIN: string;
@@ -171,7 +171,7 @@ class Construction {
     }
 
     private constructInXDirection(y: number, z: number): void {
-        for (var x = 1; x < this.REGIONS_IN_POSITIVE_X_DIRECTION; x++) {
+        for (var x = 1; x < this.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
             var midpoints: string[] = [];
             var targetRegions: Array<number[]>;
             var startRegions1: Array<number[]>;
@@ -197,7 +197,7 @@ class Construction {
 
     private constructInYDirection(z: number): void {
         var x: number = 0;
-        for (var y = 1; y < this.REGIONS_IN_POSITIVE_Y_DIRECTION; y++) {
+        for (var y = 1; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
             var midpoints: string[] = [];
             var targetRegions: Array<number[]>;
             var startRegions1: Array<number[]>;
@@ -224,7 +224,7 @@ class Construction {
     private constructInZDirection(): void {
         var x: number = 0;
         var y: number = 0;
-        for (var z = 1; z < this.REGIONS_IN_POSITIVE_Z_DIRECTION; z++) {
+        for (var z = 1; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
             var midpoints: string[] = [];
             var targetRegions: Array<number[]>;
             var startRegions1: Array<number[]>;
@@ -301,11 +301,21 @@ class Construction {
         this.t.radius(targetRegion);
         this.t.sphere(targetRegion);
     }
-    constructInPositiveDirection(){
-       this.constructInZDirection();
-       for(var z: number = 0; z < this.REGIONS_IN_POSITIVE_Z_DIRECTION; z++){
-          this.constructInYDirection(z); 
-       } 
+    private constructInPositiveDirection() {
+        this.constructInZDirection();
+        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
+            this.constructInYDirection(z);
+        }
+    }
+
+    private setColorOfFirstOrderSpheres() {
+        for (var x: number = -1; x < 2; x = x + 2) {
+            for (var y: number = -1; y < 2; y = y + 2) {
+                for (var z: number = -1; z < 2; z = z + 2) {
+                    this.t.setColorOfSphere([x,y,z], 'Green');
+                }
+            }
+        }
     }
 
     run() {
@@ -317,6 +327,8 @@ class Construction {
         this.createParameterSpheresAndTangentplanes();
         this.createMissingInitialSpheres();
         this.createEighthSphere();
+        this.setHelperObjectsInvisible();
+        this.setColorOfFirstOrderSpheres();
         this.constructInPositiveDirection();
 
         this.setHelperObjectsInvisible();
