@@ -84,7 +84,8 @@ class Tools {
         for (var i: number = 0; i < targetRegion.length; i++) {
             // equality should not appear by construction
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
-                throw new Error('Your midpointRay goes to a face instead of a corner. See Tools.ts/rayOfSphereMidpointsFromRegion().');
+                throw new Error('Your midpointRay goes to a face instead of a corner. See Tools.ts/rayOfSphereMidpointsFromRegion().'
+                + ' Parameters:\nstartRegion = ' + startRegion.toString() + '\ntargetRegion = ' + targetRegion.toString());
             }
             if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
                 planeIndices[i] = targetRegion[i];
@@ -105,7 +106,7 @@ class Tools {
         return name;
     }
 
-    tangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
+    private tangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
         var commonIndex: number = null;
         for (var i = 0; i < index1.length; i++) {
             // here one might have to use parseInt(indexArray[i]
@@ -171,6 +172,10 @@ class Tools {
             }
         }
         return direction;
+    }
+    
+    setColorOfSphere(targetRegion:number[], color: string){
+       this.ggb.setColor(this.toStr.sphere(targetRegion), color); 
     }
 
 

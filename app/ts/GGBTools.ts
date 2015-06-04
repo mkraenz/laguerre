@@ -99,6 +99,19 @@ class GGBTools {
      */
     public rayOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
         var cmd: string = 'RayOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
+
+        if (!ggbApplet.exists(sphere)) {
+            throw new Error(sphere + ' not existing for command:\n' + cmd);
+        }
+        if (!ggbApplet.exists(plane1)) {
+            throw new Error(plane1 + ' not existing for command:\n' + cmd);
+        }
+        if (!ggbApplet.exists(plane2)) {
+            throw new Error(plane2 + ' not existing for command:\n' + cmd);
+        }
+        if (!ggbApplet.exists(plane3)) {
+            throw new Error(plane3 + ' not existing for command:\n' + cmd);
+        }
         this.fullCommandAndExec(cmd, name);
         return name;
     }
