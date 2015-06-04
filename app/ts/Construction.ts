@@ -1,7 +1,7 @@
 class Construction {
 
-    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 0;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 5;
+    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 5;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 6;
     private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 6;
 
     private PROJECTION_POINT_X: string = 'ProjX';
@@ -200,8 +200,10 @@ class Construction {
                     this.t.sphere(targetRegions[i]);
                 }
             }
-            var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-            this.listOfInvisiblePlanes.push(tPlaneName);
+            if (z == 0 && y == 0) {
+                var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+                this.listOfInvisiblePlanes.push(tPlaneName);
+            }
         }
     }
 
@@ -337,8 +339,11 @@ class Construction {
     }
     private constructInPositiveDirection() {
         this.constructInZDirection();
-        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z = z + 4) {
+        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
             this.constructInYDirection(z);
+            for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
+                this.constructInXDirection(y, z);
+            }
         }
     }
 
