@@ -1,15 +1,15 @@
 class Construction {
 
     private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 0;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 1;
-    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 10;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 0;
+    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 6;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
     private PROJECTION_POINT_X_VALUE: number = 10;
     private PROJECTION_POINT_Y_VALUE: number = 100;
-    private PROJECTION_POINT_Z_VALUE: number = 10;
+    private PROJECTION_POINT_Z_VALUE: number = 100;
     private ORIGIN_REGION: number[] = [0, 0, 0];
     private ORIGIN: string;
     private ORIGIN_SPHERE: string;
@@ -177,6 +177,7 @@ class Construction {
     }
 
     private constructInXDirection(y: number, z: number): void {
+        var toStr: TypeString = new TypeString();
         for (var x = 1; x < this.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
             var midpoints: string[] = [];
             var targetRegions: Array<number[]>;
@@ -194,8 +195,10 @@ class Construction {
                 startRegions2 = [[x, y, z + 2], [x, y, z + 2], [x, y + 2, z]];
             }
             for (var i = 0; i < targetRegions.length; i++) {
-                midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
-                this.t.sphere(targetRegions[i]);
+                if (!ggbApplet.exists(toStr.midpoint(targetRegions[i]))) {
+                    midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
+                    this.t.sphere(targetRegions[i]);
+                }
             }
             var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
             this.listOfInvisiblePlanes.push(tPlaneName);
@@ -226,7 +229,7 @@ class Construction {
             }
             var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
             this.listOfInvisiblePlanes.push(tPlaneName);
-            
+
         }
     }
 
@@ -234,27 +237,27 @@ class Construction {
         var x: number = 0;
         var y: number = 0;
         for (var z = 1; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
-            var midpoints: string[] = [];
             var targetRegions: Array<number[]>;
-            var startRegions1: Array<number[]>;
+            var startRegions1: number[];
             var startRegions2: Array<number[]>;
 
             if (z % 2 == 1) {
                 targetRegions = [[x, y, z + 1], [x + 2, y, z + 1], [x, y + 2, z + 1]];
-                startRegions1 = [[x + 1, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 1, z]]
-                startRegions2 = [[x - 1, y + 1, z], [x + 1, y - 1, z], [x - 1, y + 1, z]];
+                startRegions1 = [x + 1, y + 1, z];
+                startRegions2 = [[x + 1, y - 1, z], [x + 1, y - 1, z], [x - 1, y + 1, z]];
             }
             else {
-                targetRegions = [[x + 1, y + 1, z + 1], [x - 1, y + 1, z + 1], [x + 1, y - 1, z + 1]];
-                startRegions1 = [[x, y, z], [x, y, z], [x, y, z]];
-                startRegions2 = [[x, y + 2, z], [x, y + 2, z], [x + 2, y, z]];
+                targetRegions = [[x + 1, y + 1, z + 1], [x + 1, y - 1, z + 1], [x - 1, y + 1, z + 1]];
+                startRegions1 = [x, y, z];
+                startRegions2 = [[x + 2, y, z], [x + 2, y, z], [x, y + 2, z]];
             }
             for (var i = 0; i < targetRegions.length; i++) {
-                midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
-                this.t.sphere(targetRegions[i]);
+                var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1, startRegions2[i]);
+                var sphereName: string = this.t.sphere(targetRegions[i]);
+                this.listOfInvisibleObjects.push(midpointName);
+                this.listOfInvisibleLabels.push(sphereName);
             }
             var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-            console.log(tPlaneName);
             this.listOfInvisiblePlanes.push(tPlaneName);
         }
     }
@@ -314,16 +317,27 @@ class Construction {
     }
     private constructInPositiveDirection() {
         this.constructInZDirection();
-        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
+        /*for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z = z + 2) {
             this.constructInYDirection(z);
-        }
+        }*/
     }
 
-    private setColorOfFirstOrderSpheres() {
-        for (var x: number = -1; x < 2; x = x + 2) {
-            for (var y: number = -1; y < 2; y = y + 2) {
-                for (var z: number = -1; z < 2; z = z + 2) {
-                    this.t.setColorOfSphere([x, y, z], 'Green');
+    private setColorOfnthOrderSphere(order: number, color: string) {
+        //TODO: currently not working for e.g. order = 5
+        if (order < 0) {
+            throw new Error('Illegal Argument: Order must be greater zero. Given parameter: order = ' + order);
+        }
+        var toStr: TypeString = new TypeString();
+        for (var i: number = -order ; i <= order; i++) {
+            for (var j: number = -order; j <= order; j++) {
+                var targetRegions: Array<number[]> = [[-order, i, j], [order, i, j], [i, -order, j], [i, order, j],
+                    [i, j, -order], [i, j, order]];
+                for (var k: number = 0; k < targetRegions.length; k++) {
+                    var sphereName: string = toStr.sphere(targetRegions[k]);
+                    var isSphereExistent: boolean = ggbApplet.exists(sphereName);
+                    if (isSphereExistent) {
+                        this.t.setColorOfSphere(targetRegions[k], color);
+                    }
                 }
             }
         }
@@ -339,7 +353,10 @@ class Construction {
         this.createMissingInitialSpheres();
         this.createEighthSphere();
         this.setHelperObjectsInvisible();
-        this.setColorOfFirstOrderSpheres();
+        this.setColorOfnthOrderSphere(5, 'Green');
+        /*for(var k:number = 1; k< this.MAX_REGION_IN_POSITIVE_Z_DIRECTION /2; k++) {
+           this.setColorOfnthOrderSphere(2*k, 'Navy'); 
+        }*/
         this.constructInPositiveDirection();
 
         this.setHelperObjectsInvisible();
