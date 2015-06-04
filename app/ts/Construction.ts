@@ -1,7 +1,7 @@
 class Construction {
 
     private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 0;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 0;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 5;
     private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 6;
 
     private PROJECTION_POINT_X: string = 'ProjX';
@@ -206,29 +206,42 @@ class Construction {
     }
 
     private constructInYDirection(z: number): void {
+        // special case for y = 1
+        var targetRegion1: number[] = [2, 2, z];
+        var midpoint1: string = this.sphereMidpointFromTwoRays(targetRegion1, [1, 1, z + 1], [1, 1, z - 1]);
+        var sphere1Name: string = this.t.sphere(targetRegion1);
+
+        var targetRegion2: number[] = [0, 2, z + 2];
+        var midpoint2: string = this.sphereMidpointFromTwoRays(targetRegion2, [1, 1, z + 1], [-1, 1, z + 1]);
+        var sphere2Name: string = this.t.sphere(targetRegion2);
+        var tPlane1Name: string = this.t.tangentPlaneToThreeSpheres([0, 2, z], targetRegion1, targetRegion2);
+        this.listOfInvisiblePlanes.push(tPlane1Name);
+
+
         var x: number = 0;
-        for (var y = 1; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
-            var midpoints: string[] = [];
+        for (var y = 2; y <= this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
             var targetRegions: Array<number[]>;
-            var startRegions1: Array<number[]>;
+            var startRegion1: number[];
             var startRegions2: Array<number[]>;
 
             if (y % 2 == 1) {
-                targetRegions = [[x, y + 1, z], [x, y + 1, z + 2], [x + 2, y + 1, z]];
-                startRegions1 = [[x + 1, y, z + 1], [x + 1, y, z + 1], [x + 1, y, z + 1]];
-                startRegions2 = [[x + 1, y, z - 1], [x - 1, y, z + 1], [x + 1, y, z - 1]];
+                targetRegions = [[x + 2, y + 1, z], [x, y + 1, z], [x, y + 1, z + 2]];
+                startRegion1 = [x + 1, y, z + 1];
+                startRegions2 = [[x + 1, y, z - 1], [x, y, z - 1], [x - 1, y, z + 1]];
             }
             else {
                 targetRegions = [[x + 1, y + 1, z + 1], [x + 1, y + 1, z - 1], [x - 1, y + 1, z + 1]];
-                startRegions1 = [[x, y, z], [x, y, z], [x, y, z]];
+                startRegion1 = [x, y, z];
                 startRegions2 = [[x + 2, y, z], [x + 2, y, z], [x, y, z + 2]];
             }
             for (var i = 0; i < targetRegions.length; i++) {
-                midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
+                var midpoint: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegion1, startRegions2[i]);
                 this.t.sphere(targetRegions[i]);
             }
-            var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-            this.listOfInvisiblePlanes.push(tPlaneName);
+            if (z == 0) {
+                var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+                this.listOfInvisiblePlanes.push(tPlaneName);
+            }
 
         }
     }
@@ -238,21 +251,21 @@ class Construction {
         var y: number = 0;
         for (var z = 1; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
             var targetRegions: Array<number[]>;
-            var startRegions1: number[];
+            var startRegion1: number[];
             var startRegions2: Array<number[]>;
 
             if (z % 2 == 1) {
                 targetRegions = [[x, y, z + 1], [x + 2, y, z + 1], [x, y + 2, z + 1]];
-                startRegions1 = [x + 1, y + 1, z];
+                startRegion1 = [x + 1, y + 1, z];
                 startRegions2 = [[x + 1, y - 1, z], [x + 1, y - 1, z], [x - 1, y + 1, z]];
             }
             else {
                 targetRegions = [[x + 1, y + 1, z + 1], [x + 1, y - 1, z + 1], [x - 1, y + 1, z + 1]];
-                startRegions1 = [x, y, z];
+                startRegion1 = [x, y, z];
                 startRegions2 = [[x + 2, y, z], [x + 2, y, z], [x, y + 2, z]];
             }
             for (var i = 0; i < targetRegions.length; i++) {
-                var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1, startRegions2[i]);
+                var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegion1, startRegions2[i]);
                 var sphereName: string = this.t.sphere(targetRegions[i]);
                 this.listOfInvisibleObjects.push(midpointName);
                 this.listOfInvisibleLabels.push(sphereName);
@@ -317,9 +330,9 @@ class Construction {
     }
     private constructInPositiveDirection() {
         this.constructInZDirection();
-        /*for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z = z + 2) {
+        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z = z + 4) {
             this.constructInYDirection(z);
-        }*/
+        }
     }
 
     private setColorOfnthOrderSphere(order: number, color: string) {
@@ -328,7 +341,7 @@ class Construction {
             throw new Error('Illegal Argument: Order must be greater zero. Given parameter: order = ' + order);
         }
         var toStr: TypeString = new TypeString();
-        for (var i: number = -order ; i <= order; i++) {
+        for (var i: number = -order; i <= order; i++) {
             for (var j: number = -order; j <= order; j++) {
                 var targetRegions: Array<number[]> = [[-order, i, j], [order, i, j], [i, -order, j], [i, order, j],
                     [i, j, -order], [i, j, order]];

@@ -84,7 +84,8 @@ class Tools {
         for (var i: number = 0; i < targetRegion.length; i++) {
             // equality should not appear by construction
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
-                throw new Error('Your midpointRay goes to a face instead of a corner. See Tools.ts/rayOfSphereMidpointsFromRegion().');
+                throw new Error('Your midpointRay goes to a face instead of a corner. See Tools.ts/rayOfSphereMidpointsFromRegion().'
+                + ' Parameters:\nstartRegion = ' + startRegion.toString() + '\ntargetRegion = ' + targetRegion.toString());
             }
             if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
                 planeIndices[i] = targetRegion[i];
