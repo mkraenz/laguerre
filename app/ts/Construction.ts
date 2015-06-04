@@ -227,7 +227,7 @@ class Construction {
             if (y % 2 == 1) {
                 targetRegions = [[x + 2, y + 1, z], [x, y + 1, z], [x, y + 1, z + 2]];
                 startRegion1 = [x + 1, y, z + 1];
-                startRegions2 = [[x + 1, y, z - 1], [x, y, z - 1], [x - 1, y, z + 1]];
+                startRegions2 = [[x + 1, y, z - 1], [x+1, y, z - 1], [x - 1, y, z + 1]];
             }
             else {
                 targetRegions = [[x + 1, y + 1, z + 1], [x + 1, y + 1, z - 1], [x - 1, y + 1, z + 1]];
