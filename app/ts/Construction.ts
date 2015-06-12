@@ -225,9 +225,9 @@ class Construction {
         }
     }
 
-    private constructInYDirection(z: number): void {
+    private constructInPositiveYDirection(z: number): void {
         var x: number = 0;
-        for (var y = 2; y <= this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
+        for (var y = 2; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
             var targetRegions: Array<number[]>;
             var startRegions1: Array<number[]>;
             var startRegions2: Array<number[]>;
@@ -259,7 +259,7 @@ class Construction {
         var targetRegions: Array<number[]>;
         var startRegions1: Array<number[]>;
         var startRegions2: Array<number[]>;
-        for (var y = 1; y <= this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
+        for (var y = 1; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
             if (y % 2 == 1) {
                 targetRegions = [[x + 2, -(y + 1), z], [x, -(y + 1), z], [x, -(y + 1), z + 2]];
                 startRegions1 = [[x + 1, -y, z + 1], [x + 1, -y, z + 1], [x + 1, -y, z + 1]];
@@ -268,7 +268,7 @@ class Construction {
             else {
                 targetRegions = [[x + 1, -(y + 1), z + 1], [x + 1, -(y + 1), z - 1], [x - 1, -(y + 1), z + 1]];
                 startRegions1 = [[x, -y, z], [x, -y, z], [x, -y, z]];
-                startRegions2 = [[x + 2, -y, z], [x + 2, -y, z], [x, -y, -z + 2]];
+                startRegions2 = [[x + 2, -y, z], [x + 2, -y, z], [x, -y, z + 2]];
             }
             for (var i = 0; i < targetRegions.length; i++) {
                 var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
@@ -384,12 +384,12 @@ class Construction {
         this.constructFourthSpheresInZDirection();
         for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
             this.constructInPositiveZDirectionForYEqualToOne(z)
-            this.constructInYDirection(z);
+            this.constructInPositiveYDirection(z);
             this.constructInNegativeYDirection(z);
 
             if (z != 0) {
                 this.constructInNegativeZDirectionForYEqualToOne(z)
-                this.constructInYDirection(-z);
+                this.constructInPositiveYDirection(-z);
                 this.constructInNegativeYDirection(-z);
             }
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
