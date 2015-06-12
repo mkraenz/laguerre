@@ -352,7 +352,7 @@ class Construction {
         this.t.radius(targetRegion);
         this.t.sphere(targetRegion);
     }
-    private constructInPositiveDirection(): void {
+    private constructIteratively(): void {
         this.constructInZDirection();
         this.constructFourthSpheresInZDirection();
         for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
@@ -470,7 +470,7 @@ class Construction {
            this.setColorOfnthOrderSphere(2*k, 'Navy'); 
         }*/
         this.constructSecondOrderTangentPlanesInNegZAndYDirection()
-        this.constructInPositiveDirection();
+        this.constructIteratively();
 
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();
