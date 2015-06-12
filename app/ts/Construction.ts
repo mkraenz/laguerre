@@ -1,8 +1,8 @@
 class Construction {
 
-    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 5;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 6;
-    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 6;
+    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 3;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 3;
+    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 3;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -179,20 +179,36 @@ class Construction {
     private constructInXDirection(y: number, z: number): void {
         var toStr: TypeString = new TypeString();
         for (var x = 1; x < this.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
-            var targetRegions: Array<number[]>;
-            var startRegions1: Array<number[]>;
-            var startRegions2: Array<number[]>;
+            var posTargetRegions: Array<number[]>;
+            var posStartRegions1: Array<number[]>;
+            var posStartRegions2: Array<number[]>;
+            var negTargetRegions: Array<number[]> = []; // TODO: remove the initialization as an empty array. This is just for
+            var negStartRegions1: Array<number[]> = []; // the moment to still produce productive code
+            var negStartRegions2: Array<number[]> = [];
 
             if (x % 2 == 1) {
-                targetRegions = [[x + 1, y, z], [x + 1, y + 2, z], [x + 1, y, z + 2]];
-                startRegions1 = [[x, y + 1, z + 1], [x, y + 1, z + 1], [x, y + 1, z + 1]];
-                startRegions2 = [[x, y - 1, z + 1], [x, y + 1, z - 1], [x, y - 1, z + 1]];
+                posTargetRegions = [[x + 1, y, z], [x + 1, y + 2, z], [x + 1, y, z + 2]];
+                posStartRegions1 = [[x, y + 1, z + 1], [x, y + 1, z + 1], [x, y + 1, z + 1]];
+                posStartRegions2 = [[x, y - 1, z + 1], [x, y + 1, z - 1], [x, y - 1, z + 1]];
+                /*TODO: 
+                negTargetRegions = [[-(x + 1), y, z], [-(x + 1), y + 2, z], [-(x + 1), y, z + 2]];
+                negStartRegions1 = [[-x, y + 1, z + 1], [-x, y + 1, z + 1], [-x, y + 1, z + 1]];
+                negStartRegions2 = [[-x, y - 1, z + 1], [-x, y + 1, z - 1], [-x, y - 1, z + 1]];*/
             }
             else {
-                targetRegions = [[x + 1, y + 1, z + 1], [x + 1, y - 1, z + 1], [x + 1, y + 1, z - 1]];
-                startRegions1 = [[x, y, z], [x, y, z], [x, y, z]];
-                startRegions2 = [[x, y, z + 2], [x, y, z + 2], [x, y + 2, z]];
+                posTargetRegions = [[x + 1, y + 1, z + 1], [x + 1, y - 1, z + 1], [x + 1, y + 1, z - 1]];
+                posStartRegions1 = [[x, y, z], [x, y, z], [x, y, z]];
+                posStartRegions2 = [[x, y, z + 2], [x, y, z + 2], [x, y + 2, z]];
+               /* TODO: 
+                negTargetRegions = [[-(x + 1), y + 1, z + 1], [-(x + 1), y - 1, z + 1], [-(x + 1), y + 1, z - 1]];
+                negStartRegions1 = [[-x, y, z], [-x, y, z], [-x, y, z]];
+                negStartRegions2 = [[-x, y, z + 2], [-x, y, z + 2], [-x, y + 2, z]];*/
             }
+            
+            var targetRegions: Array<number[]> = posTargetRegions.concat(negTargetRegions);
+            var startRegions1: Array<number[]> = posStartRegions1.concat(negStartRegions1);
+            var startRegions2: Array<number[]> = posStartRegions2.concat(negStartRegions2);
+
             for (var i = 0; i < targetRegions.length; i++) {
                 if (!ggbApplet.exists(toStr.midpoint(targetRegions[i]))) {
                     var midpointName:string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
@@ -204,6 +220,7 @@ class Construction {
             if (z == 0 && y == 0) {
                 var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
                 this.listOfInvisiblePlanes.push(tPlaneName);
+                //TODO: var negTPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[3], targetRegions[4], targetRegions[5]);
             }
         }
     }
