@@ -1,7 +1,7 @@
 class Construction {
 
     private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 4;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 4;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 3;
     private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 4;
 
     private PROJECTION_POINT_X: string = 'ProjX';
@@ -182,27 +182,25 @@ class Construction {
             var posTargetRegions: Array<number[]>;
             var posStartRegions1: Array<number[]>;
             var posStartRegions2: Array<number[]>;
-            var negTargetRegions: Array<number[]> = []; // TODO: remove the initialization as an empty array. This is just for
-            var negStartRegions1: Array<number[]> = []; // the moment to still produce productive code
-            var negStartRegions2: Array<number[]> = [];
+            var negTargetRegions: Array<number[]>;
+            var negStartRegions1: Array<number[]>;
+            var negStartRegions2: Array<number[]>;
 
             if (x % 2 == 1) {
                 posTargetRegions = [[x + 1, y, z], [x + 1, y + 2, z], [x + 1, y, z + 2]];
                 posStartRegions1 = [[x, y + 1, z + 1], [x, y + 1, z + 1], [x, y + 1, z + 1]];
                 posStartRegions2 = [[x, y - 1, z + 1], [x, y + 1, z - 1], [x, y - 1, z + 1]];
-                /*TODO: 
                 negTargetRegions = [[-(x + 1), y, z], [-(x + 1), y + 2, z], [-(x + 1), y, z + 2]];
                 negStartRegions1 = [[-x, y + 1, z + 1], [-x, y + 1, z + 1], [-x, y + 1, z + 1]];
-                negStartRegions2 = [[-x, y - 1, z + 1], [-x, y + 1, z - 1], [-x, y - 1, z + 1]];*/
+                negStartRegions2 = [[-x, y - 1, z + 1], [-x, y + 1, z - 1], [-x, y - 1, z + 1]];
             }
             else {
                 posTargetRegions = [[x + 1, y + 1, z + 1], [x + 1, y - 1, z + 1], [x + 1, y + 1, z - 1]];
                 posStartRegions1 = [[x, y, z], [x, y, z], [x, y, z]];
                 posStartRegions2 = [[x, y, z + 2], [x, y, z + 2], [x, y + 2, z]];
-                /* TODO: 
-                 negTargetRegions = [[-(x + 1), y + 1, z + 1], [-(x + 1), y - 1, z + 1], [-(x + 1), y + 1, z - 1]];
-                 negStartRegions1 = [[-x, y, z], [-x, y, z], [-x, y, z]];
-                 negStartRegions2 = [[-x, y, z + 2], [-x, y, z + 2], [-x, y + 2, z]];*/
+                negTargetRegions = [[-(x + 1), y + 1, z + 1], [-(x + 1), y - 1, z + 1], [-(x + 1), y + 1, z - 1]];
+                negStartRegions1 = [[-x, y, z], [-x, y, z], [-x, y, z]];
+                negStartRegions2 = [[-x, y, z + 2], [-x, y, z + 2], [-x, y + 2, z]];
             }
 
             var targetRegions: Array<number[]> = posTargetRegions.concat(negTargetRegions);
@@ -211,6 +209,15 @@ class Construction {
 
             for (var i = 0; i < targetRegions.length; i++) {
                 if (!ggbApplet.exists(toStr.midpoint(targetRegions[i]))) {
+                    console.log('x = ' +x);
+                    console.log('y = ' +y);
+                    console.log('z = ' +z);
+                    
+                    console.log('i = ' +i);
+                    console.log('target = ' + targetRegions[i].toString());
+                    console.log('start1 = ' + startRegions1[i].toString());
+                    console.log('start2 = ' + startRegions2[i].toString());
+                    
                     var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
                     var sphereName: string = this.t.sphere(targetRegions[i]);
                     this.listOfInvisibleObjects.push(midpointName);
@@ -220,7 +227,7 @@ class Construction {
             if (z == 0 && y == 0) {
                 var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
                 this.listOfInvisiblePlanes.push(tPlaneName);
-                //TODO: var negTPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[3], targetRegions[4], targetRegions[5]);
+                var negTPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[3], targetRegions[4], targetRegions[5]);
             }
         }
     }
@@ -395,7 +402,7 @@ class Construction {
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
                 this.constructInXDirection(-y, z);
                 this.constructInXDirection(-y, -z);
-                
+
                 this.constructInXDirection(y, z);
                 this.constructInXDirection(y, -z);
             }
