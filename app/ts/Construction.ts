@@ -369,8 +369,9 @@ class Construction {
         this.t.radius(targetRegion);
         this.t.sphere(targetRegion);
     }
-    private constructInPositiveDirection() {
+    private constructInPositiveDirection(): void {
         this.constructInZDirection();
+        this.constructFourthSpheresInZDirection();
         for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
             this.constructInYDirection(z);
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
@@ -412,7 +413,24 @@ class Construction {
         this.listOfInvisiblePlanes.push(planeInNegZDirection, planeInNegYDirection);
     }
 
-    run() {
+    private constructFourthSpheresInZDirection(): void {
+        for (var z: number = 3; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
+            this.constructAFourthSphereInZDirection(z);
+            this.constructAFourthSphereInZDirection(-z);
+        }
+    }
+
+    private constructAFourthSphereInZDirection(z: number): void {
+        var toStr: TypeString = new TypeString();
+        var targetRegion: number[] = [-1, -1, z];
+        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, 0, z - 1], targetRegion);
+        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, 0, z+1], targetRegion);
+        var midpointStr: string = toStr.midpoint(targetRegion);
+        var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
+        var sphere: string = this.t.sphere(targetRegion);
+    }
+
+    public run() {
         this.createInitialSphere();
         this.createProjectionPoints();
         this.createInitialTangentplanes();
