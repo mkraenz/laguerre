@@ -356,11 +356,11 @@ class Construction {
         this.constructInZDirection();
         this.constructFourthSpheresInZDirection();
         for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
-            this.constructInPositiveYDirectionForYEqualToOne(z)
+            this.constructInPositiveZDirectionForYEqualToOne(z)
             this.constructInYDirection(z);
 
             if (z != 0) {
-                this.constructInNegativeYDirectionForYEqualToOne(z)
+                this.constructInNegativeZDirectionForYEqualToOne(z)
                 this.constructInYDirection(-z);
             }
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
@@ -420,7 +420,7 @@ class Construction {
         var sphere: string = this.t.sphere(targetRegion);
     }
 
-    private constructInPositiveYDirectionForYEqualToOne(z: number): void {
+    private constructInPositiveZDirectionForYEqualToOne(z: number): void {
 
         var targetRegion1: number[] = [2, 2, z];
         var midpoint1: string = this.sphereMidpointFromTwoRays(targetRegion1, [1, 1, z + 1], [1, 1, z - 1]);
@@ -440,7 +440,7 @@ class Construction {
         }
     }
     
-    private constructInNegativeYDirectionForYEqualToOne(z: number): void {
+    private constructInNegativeZDirectionForYEqualToOne(z: number): void {
 
         var targetRegion1: number[] = [2, 2, -z];
         var midpoint1: string = this.sphereMidpointFromTwoRays(targetRegion1, [1, 1,  -(z+ 1)], [1, 1, -(z - 1)]);
