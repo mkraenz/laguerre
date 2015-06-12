@@ -179,7 +179,6 @@ class Construction {
     private constructInXDirection(y: number, z: number): void {
         var toStr: TypeString = new TypeString();
         for (var x = 1; x < this.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
-            var midpoints: string[] = [];
             var targetRegions: Array<number[]>;
             var startRegions1: Array<number[]>;
             var startRegions2: Array<number[]>;
@@ -196,8 +195,10 @@ class Construction {
             }
             for (var i = 0; i < targetRegions.length; i++) {
                 if (!ggbApplet.exists(toStr.midpoint(targetRegions[i]))) {
-                    midpoints[i] = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
-                    this.t.sphere(targetRegions[i]);
+                    var midpointName:string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
+                    var sphereName: string = this.t.sphere(targetRegions[i]);
+                    this.listOfInvisibleObjects.push(midpointName);
+                    this.listOfInvisibleLabels.push(sphereName);
                 }
             }
             if (z == 0 && y == 0) {
