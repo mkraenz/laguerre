@@ -365,6 +365,7 @@ class Construction {
             }
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
                 this.constructInXDirection(y, z);
+                this.constructInXDirection(y, -z);
             }
         }
     }
