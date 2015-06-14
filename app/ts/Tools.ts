@@ -63,7 +63,6 @@ class Tools {
     }
 
     rayOfSphereMidpoints(startRegion: number[], planeIndices: number[]): string {
-        //TODO: maybe this is buggy. using initialMidpointRayEmitterDirection() might cause trouble
         var tpIndices: number[] = [planeIndices[0], planeIndices[1], planeIndices[2]];
         var targetRegion: number[] = this.regionIndex(startRegion, tpIndices);
         var direction: number[] = this.midpointRayEmitterDirection(targetRegion, startRegion);
@@ -82,9 +81,8 @@ class Tools {
     rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
         var planeIndices: number[] = [];
         for (var i: number = 0; i < targetRegion.length; i++) {
-            // equality should not appear by construction
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
-                throw new Error('Your midpointRay goes to a face instead of a corner. See Tools.ts/rayOfSphereMidpointsFromRegion().'
+                throw new Error('Your midpointRay goes to a face instead of a corner. This is not possible by construction. See Tools.ts/rayOfSphereMidpointsFromRegion().'
                 + ' Parameters:\nstartRegion = ' + startRegion.toString() + '\ntargetRegion = ' + targetRegion.toString());
             }
             if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
