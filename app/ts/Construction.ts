@@ -1,10 +1,10 @@
 class Construction {
 
     private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 4;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 4;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 1;
     private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 4;
 
-    private MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 4; // TODO not used yet see #59
+    private MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 4;
     private MAX_REGION_IN_NEGATIVE_Y_DIRECTION: number = 4;
     private MAX_REGION_IN_NEGATIVE_Z_DIRECTION: number = 4;
 
@@ -194,7 +194,7 @@ class Construction {
 
     private constructInXDirection(y: number, z: number): void {
         this.constructInPositiveXDirection(y, z);
-        //this.constructInNegativeXDirection(y,z);
+        this.constructInNegativeXDirection(y, z);
     }
 
     private constructInPositiveXDirection(y: number, z: number): void {
@@ -413,6 +413,15 @@ class Construction {
         for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
             this.constructInPositiveYDirection(z);
             this.constructInNegativeYDirection(z);
+        }
+
+        for (var z: number = 0; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
+            this.constructInPositiveYDirection(-z);
+            this.constructInNegativeYDirection(-z);
+        }
+        this.constructFourthSpheresInYDirection();
+
+        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
 
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
                 this.constructInXDirection(y, z);
@@ -421,10 +430,8 @@ class Construction {
                 this.constructInXDirection(-y, z);
             }
         }
+        
         for (var z: number = 0; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
-            this.constructInPositiveYDirection(-z);
-            this.constructInNegativeYDirection(-z);
-
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
                 this.constructInXDirection(y, -z);
             }
@@ -489,6 +496,30 @@ class Construction {
         var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
         var sphere: string = this.t.sphere(targetRegion);
     }
+
+
+    private constructFourthSpheresInYDirection(): void {
+        /**
+         * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
+         */
+        for (var y: number = 3; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
+            this.constructAFourthSphereInYDirection(y);
+        }
+        for (var y: number = 3; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
+            this.constructAFourthSphereInYDirection(-y);
+        }
+    }
+
+    private constructAFourthSphereInYDirection(y: number): void {
+        var toStr: TypeString = new TypeString();
+        var targetRegion: number[] = [-1, y, -1];
+        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, y - 1, 0], targetRegion);
+        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, y + 1, 0], targetRegion);
+        var midpointStr: string = toStr.midpoint(targetRegion);
+        var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
+        var sphere: string = this.t.sphere(targetRegion);
+    }
+
 
     public run() {
         this.createInitialSphere();
