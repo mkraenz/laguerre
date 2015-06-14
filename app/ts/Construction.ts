@@ -192,7 +192,7 @@ class Construction {
         }
     }
 
-    private constructInXDirection(y: number, z: number): void {
+    private constructInBothXDirection(y: number, z: number): void {
         this.constructInPositiveXDirection(y, z);
         this.constructInNegativeXDirection(y, z);
     }
@@ -216,8 +216,7 @@ class Construction {
 
             this.createSpheresInTargetRegions(targetRegions, startRegion1, startRegions2);
             if (z == 0 && y == 0) {
-                var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-                this.listOfInvisiblePlanes.push(tPlaneName);
+                this.createTangentplaneAndHide(targetRegions);
             }
         }
     }
@@ -242,8 +241,7 @@ class Construction {
 
             this.createSpheresInTargetRegions(targetRegions, startRegion1, startRegions2);
             if (z == 0 && y == 0) {
-                var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-                this.listOfInvisiblePlanes.push(tPlaneName);
+                this.createTangentplaneAndHide(targetRegions);
             }
         }
     }
@@ -268,8 +266,7 @@ class Construction {
 
             this.createSpheresInTargetRegions(targetRegions, startRegion1, startRegions2);
             if (z == 0) {
-                var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-                this.listOfInvisiblePlanes.push(tPlaneName);
+                this.createTangentplaneAndHide(targetRegions);
             }
         }
     }
@@ -292,8 +289,7 @@ class Construction {
 
             this.createSpheresInTargetRegions(targetRegions, startRegion1, startRegions2);
             if (z == 0) {
-                var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-                this.listOfInvisiblePlanes.push(tPlaneName);
+                this.createTangentplaneAndHide(targetRegions);
             }
         }
     }
@@ -301,6 +297,7 @@ class Construction {
     private constructInZDirection(): void {
         this.constructInPositiveZDirection();
         this.constructInNegativeZDirection();
+        this.constructFourthSpheresInBothZDirections();
     }
 
     private constructInPositiveZDirection() {
@@ -323,8 +320,7 @@ class Construction {
             }
 
             this.createSpheresInTargetRegions(targetRegions, startRegion1, startRegions2);
-            var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-            this.listOfInvisiblePlanes.push(tPlaneName);
+            this.createTangentplaneAndHide(targetRegions);
         }
     }
     private constructInNegativeZDirection() {
@@ -347,8 +343,7 @@ class Construction {
             }
 
             this.createSpheresInTargetRegions(targetRegions, startRegion1, startRegions2);
-            var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
-            this.listOfInvisiblePlanes.push(tPlaneName);
+            this.createTangentplaneAndHide(targetRegions);
         }
 
     }
@@ -406,12 +401,9 @@ class Construction {
         this.t.radius(targetRegion);
         this.t.sphere(targetRegion);
     }
-    private constructIteratively(): void {
-        this.constructInZDirection();
-        this.constructFourthSpheresInZDirection();
-        
-        
-        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION-1; z += 2) {
+
+    private constructInYDirection() {
+        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1; z += 2) {
             this.constructInPositiveYDirection(z);
             this.constructInNegativeYDirection(z);
         }
@@ -420,26 +412,33 @@ class Construction {
             this.constructInPositiveYDirection(-z);
             this.constructInNegativeYDirection(-z);
         }
+    }
 
-        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION-1; z += 2) {
+    private constructInXDirection() {
+        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1; z += 2) {
 
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
-                this.constructInXDirection(y, z);
+                this.constructInBothXDirection(y, z);
             }
             for (var y: number = 0; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
-                this.constructInXDirection(-y, z);
+                this.constructInBothXDirection(-y, z);
             }
         }
 
-        for (var z: number = 0; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION-1; z += 2) {
-            for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION-1; y += 2) {
-                this.constructInXDirection(y, -z);
+        for (var z: number = 0; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1; z += 2) {
+            for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION - 1; y += 2) {
+                this.constructInBothXDirection(y, -z);
             }
             for (var y: number = 0; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
-                this.constructInXDirection(-y, -z);
+                this.constructInBothXDirection(-y, -z);
             }
         }
+    }
 
+    private constructIteratively(): void {
+        this.constructInZDirection();
+        this.constructInYDirection();
+        this.constructInXDirection();
     }
 
     private setColorOfnthOrderSphere(order: number, color: string) {
@@ -475,7 +474,7 @@ class Construction {
         this.listOfInvisiblePlanes.push(planeInNegZDirection, planeInNegYDirection);
     }
 
-    private constructFourthSpheresInZDirection(): void {
+    private constructFourthSpheresInBothZDirections(): void {
         /**
          * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
          */
@@ -498,6 +497,10 @@ class Construction {
         var sphere: string = this.t.sphere(targetRegion);
     }
 
+    private createTangentplaneAndHide(targetRegions: Array<number[]>) {
+        var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+        this.listOfInvisiblePlanes.push(tPlaneName);
+    }
     public run() {
         this.createInitialSphere();
         this.createProjectionPoints();
