@@ -1,8 +1,12 @@
 class Construction {
 
-    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 4;
+    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 0;
     private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 4;
     private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 4;
+    
+    private MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 0;
+    private MAX_REGION_IN_NEGATIVE_Y_DIRECTION: number = 10;
+    private MAX_REGION_IN_NEGATIVE_Z_DIRECTION: number = 4;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -230,22 +234,22 @@ class Construction {
         var x: number = 0;
         for (var y = 1; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
             var targetRegions: Array<number[]>;
-            var startRegions1: Array<number[]>;
+            var startRegion1: number[];
             var startRegions2: Array<number[]>;
 
             if (y % 2 == 1) {
                 targetRegions = [[x + 2, y + 1, z], [x, y + 1, z], [x, y + 1, z + 2]];
-                startRegions1 = [[x + 1, y, z + 1], [x + 1, y, z + 1], [x + 1, y, z + 1]];
+                startRegion1 = [x + 1, y, z + 1];
                 startRegions2 = [[x + 1, y, z - 1], [x + 1, y, z - 1], [x - 1, y, z + 1]];
             }
             else {
                 targetRegions = [[x + 1, y + 1, z + 1], [x + 1, y + 1, z - 1], [x - 1, y + 1, z + 1]];
-                startRegions1 = [[x, y, z], [x, y, z], [x, y, z]];
+                startRegion1 = [x, y, z];
                 startRegions2 = [[x + 2, y, z], [x + 2, y, z], [x, y, z + 2]];
             }
             for (var i = 0; i < targetRegions.length; i++) {
                 if (!ggbApplet.exists(toStr.midpoint(targetRegions[i]))) {
-                    var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
+                    var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegion1, startRegions2[i]);
                     var sphereName: string = this.t.sphere(targetRegions[i]);
                     this.listOfInvisibleObjects.push(midpointName);
                     this.listOfInvisibleLabels.push(sphereName);
@@ -261,22 +265,22 @@ class Construction {
         var toStr: TypeString = new TypeString();
         var x: number = 0;
         var targetRegions: Array<number[]>;
-        var startRegions1: Array<number[]>;
+        var startRegion1: number[];
         var startRegions2: Array<number[]>;
-        for (var y = 1; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
+        for (var y = 1; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y++) {
             if (y % 2 == 1) {
                 targetRegions = [[x + 2, -(y + 1), z], [x, -(y + 1), z], [x, -(y + 1), z + 2]];
-                startRegions1 = [[x + 1, -y, z + 1], [x + 1, -y, z + 1], [x + 1, -y, z + 1]];
+                startRegion1 = [x + 1, -y, z + 1];
                 startRegions2 = [[x + 1, -y, z - 1], [x + 1, -y, z - 1], [x - 1, -y, z + 1]];
             }
             else {
                 targetRegions = [[x + 1, -(y + 1), z + 1], [x + 1, -(y + 1), z - 1], [x - 1, -(y + 1), z + 1]];
-                startRegions1 = [[x, -y, z], [x, -y, z], [x, -y, z]];
+                startRegion1 = [x, -y, z];
                 startRegions2 = [[x + 2, -y, z], [x + 2, -y, z], [x, -y, z + 2]];
             }
             for (var i = 0; i < targetRegions.length; i++) {
                 if (!ggbApplet.exists(toStr.midpoint(targetRegions[i]))) {
-                    var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegions1[i], startRegions2[i]);
+                    var midpointName: string = this.sphereMidpointFromTwoRays(targetRegions[i], startRegion1, startRegions2[i]);
                     var sphereName: string = this.t.sphere(targetRegions[i]);
                     this.listOfInvisibleObjects.push(midpointName);
                     this.listOfInvisibleLabels.push(sphereName);
@@ -395,11 +399,13 @@ class Construction {
             this.constructInNegativeYDirection(-z);
             
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
-                this.constructInXDirection(-y, z);
-                this.constructInXDirection(-y, -z);
-
                 this.constructInXDirection(y, z);
                 this.constructInXDirection(y, -z);
+            }
+            
+            for (var y: number = 0; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
+                this.constructInXDirection(-y, z);
+                this.constructInXDirection(-y, -z);
             }
         }
     }
