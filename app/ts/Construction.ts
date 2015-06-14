@@ -414,6 +414,7 @@ class Construction {
     private constructIteratively(): void {
         this.constructInZDirection();
         this.constructFourthSpheresInZDirection();
+        
         for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
             this.constructInPositiveYDirection(z);
             this.constructInNegativeYDirection(z);
@@ -442,7 +443,7 @@ class Construction {
     private setColorOfnthOrderSphere(order: number, color: string) {
         //TODO: currently not working for e.g. order = 5
         if (order < 0) {
-            throw new Error('Illegal Argument: Order must be greater zero. Given parameter: order = ' + order);
+            throw new Error('Illegal Argument: Order must be greater or equal to zero. Given parameter: order = ' + order);
         }
         var toStr: TypeString = new TypeString();
         for (var i: number = -order; i <= order; i++) {
@@ -473,6 +474,9 @@ class Construction {
     }
 
     private constructFourthSpheresInZDirection(): void {
+        /**
+         * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
+         */
         for (var z: number = 3; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
             this.constructAFourthSphereInZDirection(z);
         }
@@ -501,8 +505,9 @@ class Construction {
         this.createMissingInitialSpheres();
         this.createEighthSphere();
         this.setHelperObjectsInvisible();
-        this.setColorOfnthOrderSphere(5, 'Green');
-        /*for(var k:number = 1; k< this.MAX_REGION_IN_POSITIVE_Z_DIRECTION /2; k++) {
+        // this.setColorOfnthOrderSphere(5, 'Green'); TODO corresponding method doesnt work
+        /* TODO
+        for(var k:number = 1; k< this.MAX_REGION_IN_POSITIVE_Z_DIRECTION /2; k++) {
            this.setColorOfnthOrderSphere(2*k, 'Navy'); 
         }*/
         this.constructSecondOrderTangentPlanesInNegZAndYDirection()
