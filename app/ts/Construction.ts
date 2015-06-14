@@ -420,10 +420,6 @@ class Construction {
             this.constructInPositiveYDirection(-z);
             this.constructInNegativeYDirection(-z);
         }
-        this.constructFourthSpheresInYDirection();
-        
-        
-        
 
         for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION-1; z += 2) {
 
@@ -501,57 +497,6 @@ class Construction {
         var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
         var sphere: string = this.t.sphere(targetRegion);
     }
-
-
-    private constructFourthSpheresInYDirection(): void {
-        /**
-         * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
-         */
-        var firstZCoordThatHasNotBeenInitialized = 3;
-        for (var y: number = firstZCoordThatHasNotBeenInitialized; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
-            this.constructAFourthSphereInYDirection(y);
-        }
-        for (var y: number = firstZCoordThatHasNotBeenInitialized; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
-            this.constructAFourthSphereInYDirection(-y);
-        }
-    }
-
-    private constructAFourthSphereInYDirection(y: number): void {
-        var toStr: TypeString = new TypeString();
-        var targetRegion: number[] = [-1, y, -1];
-        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, y - 1, 0], targetRegion);
-        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, y + 1, 0], targetRegion);
-        var midpointStr: string = toStr.midpoint(targetRegion);
-        var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
-        var sphere: string = this.t.sphere(targetRegion);
-    }
-
-    private constructAFourthSphereInYDirectionAtTopZRow(y: number = -1): void {
-        var toStr: TypeString = new TypeString();
-        var targetRegion: number[] = [-1, y, this.MAX_REGION_IN_POSITIVE_Z_DIRECTION];
-        var midpointStr: string = toStr.midpoint(targetRegion);
-        if(ggbApplet.exists(midpointStr)){
-            console.log(midpointStr + 'already existent');
-        }
-        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, y - 1, this.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1], targetRegion);
-        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, y + 1, this.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1], targetRegion);
-        var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
-        var sphere: string = this.t.sphere(targetRegion);
-    }
-    
-    private constructAFourthSphereInYDirectionAtTopZRow2(y: number = 3): void {
-        var toStr: TypeString = new TypeString();
-        var targetRegion: number[] = [-1, y, this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION];
-        var midpointStr: string = toStr.midpoint(targetRegion);
-        if(ggbApplet.exists(midpointStr)){
-            console.log(midpointStr + 'already existent');
-        }
-        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, y - 1, this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1], targetRegion);
-        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, y + 1, this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1], targetRegion);
-        var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
-        var sphere: string = this.t.sphere(targetRegion);
-    }
-
 
     public run() {
         this.createInitialSphere();
