@@ -7,12 +7,16 @@ class GGBTools {
 
     public distance(objName1: string, objName2: string, name?: string): string {
         var cmd: string = 'Distance[' + objName1 + ', ' + objName2 + ']';
+        this.throwErrorIfNotExistentInGGBApplet(objName1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(objName2, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
 
     public intersect(objName1: string, objName2: string, name?: string): string {
         var cmd: string = 'Intersect[' + objName1 + ', ' + objName2 + ']';
+        this.throwErrorIfNotExistentInGGBApplet(objName1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(objName2, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -33,18 +37,22 @@ class GGBTools {
             cmd = cmd + ',' + pathParameter;
         }
         cmd = cmd + ']';
+        this.throwErrorIfNotExistentInGGBApplet(targetObj, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
 
     public midpoint(targetName: string, name?: string): string {
         var cmd: string = 'Midpoint[' + targetName + ']';
+        this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
 
-    public segment(startPoint: string, endPoint: string, name?: string): string {
-        var cmd: string = 'Segment[' + startPoint + ', ' + endPoint + ']';
+    public segment(endpoint1: string, endpoint2: string, name?: string): string {
+        var cmd: string = 'Segment[' + endpoint1 + ', ' + endpoint2 + ']';
+        this.throwErrorIfNotExistentInGGBApplet(endpoint1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(endpoint2, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -54,10 +62,11 @@ class GGBTools {
      * @param color: string See GeoGebra page https://wiki.geogebra.org/en/Reference:Colors for reference.
      */
     public setColor(name: string, color: string): void {
-        var command: string = 'SetColor[' + name + ',' + color + ']';
-        var isSuccessful: boolean = ggbApplet.evalCommand(command);
+        var cmd: string = 'SetColor[' + name + ',' + color + ']';
+        this.throwErrorIfNotExistentInGGBApplet(name, cmd, '');
+        var isSuccessful: boolean = ggbApplet.evalCommand(cmd);
         if (!isSuccessful) {
-            throw new Error(name + ' has not been defined successfully.\nCorresponding command: \n' + command);
+            throw new Error(name + ' has not been defined successfully.\nCorresponding command: \n' + cmd);
         }
     }
     
@@ -72,6 +81,8 @@ class GGBTools {
 
     public sphere(midpoint: string, radius: string, name?: string): string {
         var cmd: string = 'Sphere[' + midpoint + ', ' + radius + ']';
+        this.throwErrorIfNotExistentInGGBApplet(midpoint, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(radius, cmd, name); 
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -89,6 +100,8 @@ class GGBTools {
      */
     public tangentPlaneToSphere(sphere: string, point: string, name?: string): string {
         var cmd: string = 'TangentialPlaneToSphere[' + sphere + ', ' + point + ']';
+        this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(point, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -99,19 +112,12 @@ class GGBTools {
      */
     public rayOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
         var cmd: string = 'RayOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
-
-        if (!ggbApplet.exists(sphere)) {
-            throw new Error(sphere + ' not existing for command:\n' + cmd);
-        }
-        if (!ggbApplet.exists(plane1)) {
-            throw new Error(plane1 + ' not existing for command:\n' + cmd);
-        }
-        if (!ggbApplet.exists(plane2)) {
-            throw new Error(plane2 + ' not existing for command:\n' + cmd);
-        }
-        if (!ggbApplet.exists(plane3)) {
-            throw new Error(plane3 + ' not existing for command:\n' + cmd);
-        }
+        
+        this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane3, cmd, name);
+        
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -122,8 +128,26 @@ class GGBTools {
     public tangentPlaneToThreeSpheresAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
         var cmd: string = 'TangentialPlaneToThreeSpheresAwayFromOrigin[' + origin +
             ',' + sphere1 + ',' + sphere2 + ',' + sphere3 + ']';
+        
+        this.throwErrorIfNotExistentInGGBApplet(origin, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
+        
         this.fullCommandAndExec(cmd, name);
         return name;
+    }
+    private throwErrorIfNotExistentInGGBApplet(objName: string, cmd: string, definiendum: string) {
+        /**
+         * Checks if the given object objName exists in the GGBApplet. If not it throws an Error naming the full command
+         * including definiendum.
+         */
+        if (!ggbApplet.exists(objName)) {
+            throw new Error(objName + ' not existing for command:\n' + this.fullCommand(cmd, definiendum));
+        }
+        else {
+            return true;
+        }
     }
     
     /**
