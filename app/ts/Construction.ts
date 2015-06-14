@@ -1,12 +1,12 @@
 class Construction {
 
-    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 4;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 1;
-    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 4;
+    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 5;
+    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 5;
+    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 5;
 
-    private MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 4;
-    private MAX_REGION_IN_NEGATIVE_Y_DIRECTION: number = 4;
-    private MAX_REGION_IN_NEGATIVE_Z_DIRECTION: number = 4;
+    private MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 5;
+    private MAX_REGION_IN_NEGATIVE_Y_DIRECTION: number = 5;
+    private MAX_REGION_IN_NEGATIVE_Z_DIRECTION: number = 5;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
@@ -409,8 +409,9 @@ class Construction {
     private constructIteratively(): void {
         this.constructInZDirection();
         this.constructFourthSpheresInZDirection();
-
-        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
+        
+        
+        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION-1; z += 2) {
             this.constructInPositiveYDirection(z);
             this.constructInNegativeYDirection(z);
         }
@@ -420,8 +421,11 @@ class Construction {
             this.constructInNegativeYDirection(-z);
         }
         this.constructFourthSpheresInYDirection();
+        
+        
+        
 
-        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION-1; z += 2) {
 
             for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
                 this.constructInXDirection(y, z);
@@ -430,9 +434,9 @@ class Construction {
                 this.constructInXDirection(-y, z);
             }
         }
-        
-        for (var z: number = 0; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
-            for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
+
+        for (var z: number = 0; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION-1; z += 2) {
+            for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION-1; y += 2) {
                 this.constructInXDirection(y, -z);
             }
             for (var y: number = 0; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
@@ -479,10 +483,11 @@ class Construction {
         /**
          * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
          */
-        for (var z: number = 3; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
+        var firstZCoordThatHasNotBeenInitialized = 3;
+        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
             this.constructAFourthSphereInZDirection(z);
         }
-        for (var z: number = 3; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
             this.constructAFourthSphereInZDirection(-z);
         }
     }
@@ -502,10 +507,11 @@ class Construction {
         /**
          * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
          */
-        for (var y: number = 3; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
+        var firstZCoordThatHasNotBeenInitialized = 3;
+        for (var y: number = firstZCoordThatHasNotBeenInitialized; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
             this.constructAFourthSphereInYDirection(y);
         }
-        for (var y: number = 3; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
+        for (var y: number = firstZCoordThatHasNotBeenInitialized; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
             this.constructAFourthSphereInYDirection(-y);
         }
     }
@@ -516,6 +522,32 @@ class Construction {
         var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, y - 1, 0], targetRegion);
         var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, y + 1, 0], targetRegion);
         var midpointStr: string = toStr.midpoint(targetRegion);
+        var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
+        var sphere: string = this.t.sphere(targetRegion);
+    }
+
+    private constructAFourthSphereInYDirectionAtTopZRow(y: number = -1): void {
+        var toStr: TypeString = new TypeString();
+        var targetRegion: number[] = [-1, y, this.MAX_REGION_IN_POSITIVE_Z_DIRECTION];
+        var midpointStr: string = toStr.midpoint(targetRegion);
+        if(ggbApplet.exists(midpointStr)){
+            console.log(midpointStr + 'already existent');
+        }
+        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, y - 1, this.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1], targetRegion);
+        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, y + 1, this.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1], targetRegion);
+        var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
+        var sphere: string = this.t.sphere(targetRegion);
+    }
+    
+    private constructAFourthSphereInYDirectionAtTopZRow2(y: number = 3): void {
+        var toStr: TypeString = new TypeString();
+        var targetRegion: number[] = [-1, y, this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION];
+        var midpointStr: string = toStr.midpoint(targetRegion);
+        if(ggbApplet.exists(midpointStr)){
+            console.log(midpointStr + 'already existent');
+        }
+        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, y - 1, this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1], targetRegion);
+        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, y + 1, this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1], targetRegion);
         var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
         var sphere: string = this.t.sphere(targetRegion);
     }
