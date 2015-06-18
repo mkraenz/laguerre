@@ -10,6 +10,15 @@ First, I assume you have git installed (note that github-for-windows does not su
   3. `$ grunt serve` (to see if everything worked fine. It should open a tab in your browser displaying some stuff.)
   
 For tests also cd into /test and run `$ bower install`.
+Yet, tests are not used yet.
+
+### Geogebra Tube
+The file loaded into the geogebra applet has been uploaded to (Geogebra Tube)[https://tube.geogebra.org/material/show/id/1222013] and is loaded and configurated there.
+It is simply an empty geogebra file with the following custom tools included:
+
+* TangentplaneToSphere[ <Sphere>, <Point> ]
+* RayOfSphereMidpoints[ <Sphere>, <Plane>, <Plane>, <Plane> ]
+* TangentialPlaneToThreeSpheresAwayFromOrigin[ <Point>, <Sphere>, <Sphere>, <Sphere> ]
 
 
 ## Naming convention
