@@ -39,7 +39,6 @@ class View {
     }
 
     private setColorOfnthOrderSphere(order: number, color: string) {
-        //TODO: currently not working for e.g. order = 5
         if (order < 0) {
             throw new Error('Illegal Argument: Order must be greater or equal to zero. Given parameter: order = ' + order);
         }
