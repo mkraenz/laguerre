@@ -13,7 +13,7 @@ class Settings {
     public static PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
 
     public static ORIGIN_SPHERE_SCALING = 0.3;
-    
+
     public static PROJECTION_POINT_X_VALUE: number = 100;
     public static PROJECTION_POINT_Y_VALUE: number = 100;
     public static PROJECTION_POINT_Z_VALUE: number = 100;
