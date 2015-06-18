@@ -22,7 +22,7 @@ class Construction {
         this.view = new View(this.ggb, this.toStr);
     }
 
-    createInitialSphere(): void {
+    private createInitialSphere(): void {
         var region: number[] = [0, 0, 0];
         this.t.sphereMidpointFree(region, 0, 0, 0);
 
@@ -32,13 +32,13 @@ class Construction {
         var sphereName: string = this.t.sphere(region);
     }
 
-    createProjectionPoints() {
+    private createProjectionPoints(): void {
         this.t.pointFree(Settings.PROJECTION_POINT_X_VALUE, 0, 0, this.PROJECTION_POINT_X);
         this.t.pointFree(0, Settings.PROJECTION_POINT_Y_VALUE, 0, this.PROJECTION_POINT_Y);
         this.t.pointFree(0, 0, Settings.PROJECTION_POINT_Z_VALUE, this.PROJECTION_POINT_Z);
     }
 
-    createInitialTangentplanes(): void {
+    private createInitialTangentplanes(): void {
         var segmentProjX: string = "segmentProjXToOrigin";
         var segmentProjY: string = "segmentProjYToOrigin";
         var segmentProjZ: string = "segmentProjZToOrigin";
@@ -122,7 +122,7 @@ class Construction {
         this.parameterMidpoint([1, 1, -1]);
     }
 
-    private createParameterSpheresAndTangentplanes() : void{
+    private createParameterSpheresAndTangentplanes(): void {
         var spheres = [[1, 1, 1], [-1, 1, 1], [1, -1, 1], [1, 1, -1]];
         for (var i = 0; i < spheres.length; i++) {
             this.t.radius(spheres[i]);
@@ -285,6 +285,7 @@ class Construction {
             this.createTangentplaneAndHide(targetRegions);
         }
     }
+    
     private constructInNegativeZDirection(): void {
         var x: number = 0;
         var y: number = 0;
@@ -406,7 +407,6 @@ class Construction {
         this.constructInYDirection();
         this.constructInXDirection();
     }
-
 
     private constructSecondOrderTangentPlanesInNegZAndYDirection(): void {
 
