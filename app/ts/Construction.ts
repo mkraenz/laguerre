@@ -440,6 +440,9 @@ class Construction {
         var midpointStr: string = this.toStr.midpoint(targetRegion);
         var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
         var sphere: string = this.t.sphere(targetRegion);
+        
+        this.view.listOfInvisibleObjects.push(ray1,ray2, midpoint);
+        this.view.listOfInvisibleLabels.push(sphere);
     }
 
     private createTangentplaneAndHide(targetRegions: Array<number[]>): void {

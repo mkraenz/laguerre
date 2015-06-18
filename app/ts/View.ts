@@ -10,11 +10,12 @@ class View {
     private toStr: TypeString;
 
     constructor(ggbTools: GGBTools, typeString: TypeString) {
+        this.ggb = ggbTools;
+        this.toStr = typeString;
+
         this.listOfInvisibleObjects = new Array<string>();
         this.listOfInvisiblePlanes = new Array<string>();
         this.listOfInvisibleLabels = new Array<string>();
-        this.ggb = ggbTools;
-        this.toStr = typeString;
     }
 
     private setHelperObjectsInvisible(): void {
@@ -26,21 +27,29 @@ class View {
         }
     }
 
-    private showLineGrid(): void {
-        for (var i: number = 0; i < this.listOfInvisiblePlanes.length; i++) {
-            for (var j: number = 0; j < this.listOfInvisiblePlanes.length; j++) {
-                if (i != j) {
-                    this.ggb.intersect(this.listOfInvisiblePlanes[i], this.listOfInvisiblePlanes[j]);
-                }
+    private showLinesInZDirection(): void {
+        for (var y: number = 1; y <= Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
+            for (var x: number = 1; x <= Settings.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
+                this.intersectXandYTPlanes(x,y);
+                this.intersectXandYTPlanes(-x,y);
+                this.intersectXandYTPlanes(x,-y);
+                this.intersectXandYTPlanes(-x,-y);
             }
         }
     }
 
+    private intersectXandYTPlanes(x: number, y: number): string {
+        var name: string = this.toStr.line([x,y,0]);
+        var xTPlane: string = this.toStr.tPlane([x, 0, 0]);
+        var yTPlane: string = this.toStr.tPlane([0, y, 0]);
+        this.listOfInvisibleLabels.push(name);
+        return this.ggb.intersect(xTPlane, yTPlane, name);
+    }
     public constumizeViewProperties(): void {
+        this.setColorOfSphere([0, 0, 0], this.ORIGIN_SPHERE_COLOR);
+        //this.showLinesInZDirection();
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();
-        this.setColorOfSphere([0, 0, 0], this.ORIGIN_SPHERE_COLOR);
-        this.showLineGrid();
     }
 
     private setLabelsInvisible(): void {

@@ -65,4 +65,8 @@ class TypeString {
         }
         return this.midpointRay(indices);
     }
+    
+    public line(index: number[]){
+        return this.typeString('line', index);
+    }
 }
