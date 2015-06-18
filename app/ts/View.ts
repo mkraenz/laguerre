@@ -25,11 +25,22 @@ class View {
             ggbApplet.setVisible(this.listOfInvisiblePlanes[i], false);
         }
     }
+    
+    private showLineGrid(){
+        for(var i: number = 0; i < this.listOfInvisiblePlanes.length; i++) {
+            for(var j: number = 0; j < this.listOfInvisiblePlanes.length; j++) {
+               if(i != j){
+                  this.ggb.intersect(this.listOfInvisiblePlanes[i], this.listOfInvisiblePlanes[j]); 
+               } 
+            }
+        }
+    }
 
     public constumizeViewProperties() {
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();
         this.setColorOfSphere([0,0,0], this.ORIGIN_SPHERE_COLOR);
+        this.showLineGrid();
     }
 
     private setLabelsInvisible(): void {

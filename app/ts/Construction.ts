@@ -1,29 +1,12 @@
 class Construction {
 
-    private MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 2;
-    private MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 2;
-    private MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 2;
-
-    private MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 2;
-    private MAX_REGION_IN_NEGATIVE_Y_DIRECTION: number = 2;
-    private MAX_REGION_IN_NEGATIVE_Z_DIRECTION: number = 2;
 
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
-    private PROJECTION_POINT_X_VALUE: number = 10;
-    private PROJECTION_POINT_Y_VALUE: number = 100;
-    private PROJECTION_POINT_Z_VALUE: number = 100;
     private ORIGIN_REGION: number[] = [0, 0, 0];
     private ORIGIN: string;
     private ORIGIN_SPHERE: string;
-    
-    // for the parametrizable spheres' slider
-    private PARAMETER_SPHERE_MIDPOINT_MIN = 0.01;
-    private PARAMETER_SPHERE_MIDPOINT_MAX = 0.99;
-    private PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
-
-    private ORIGIN_SPHERE_SCALING = 0.3;
 
     private ggb: GGBTools;
     private t: Tools;
@@ -45,14 +28,14 @@ class Construction {
 
         var radiusSliderStr: string = this.toStr.radius(region);
         this.ggb.slider(0.1, 1, radiusSliderStr);
-        ggbApplet.setValue(radiusSliderStr, this.ORIGIN_SPHERE_SCALING);
+        ggbApplet.setValue(radiusSliderStr, Settings.ORIGIN_SPHERE_SCALING);
         var sphereName: string = this.t.sphere(region);
     }
 
     createProjectionPoints() {
-        this.t.pointFree(this.PROJECTION_POINT_X_VALUE, 0, 0, this.PROJECTION_POINT_X);
-        this.t.pointFree(0, this.PROJECTION_POINT_Y_VALUE, 0, this.PROJECTION_POINT_Y);
-        this.t.pointFree(0, 0, this.PROJECTION_POINT_Z_VALUE, this.PROJECTION_POINT_Z);
+        this.t.pointFree(Settings.PROJECTION_POINT_X_VALUE, 0, 0, this.PROJECTION_POINT_X);
+        this.t.pointFree(0, Settings.PROJECTION_POINT_Y_VALUE, 0, this.PROJECTION_POINT_Y);
+        this.t.pointFree(0, 0, Settings.PROJECTION_POINT_Z_VALUE, this.PROJECTION_POINT_Z);
     }
 
     createInitialTangentplanes() {
@@ -117,8 +100,8 @@ class Construction {
         var regionIndex: string = planeIndices.toString();
 
         var sliderName = this.toStr.parameter(planeIndices);
-        this.ggb.slider(this.PARAMETER_SPHERE_MIDPOINT_MIN, this.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
-            this.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
+        this.ggb.slider(Settings.PARAMETER_SPHERE_MIDPOINT_MIN, Settings.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
+            Settings.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
         ggbApplet.setValue(sliderName, 0.5);
         var planeIndicesNegate: number[] = [];
         for (var i: number = 0; i < planeIndices.length; i++) {
@@ -177,7 +160,7 @@ class Construction {
     }
 
     private constructInPositiveXDirection(y: number, z: number): void {
-        for (var x = 1; x < this.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
+        for (var x = 1; x < Settings.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -201,7 +184,7 @@ class Construction {
     }
 
     private constructInNegativeXDirection(y: number, z: number): void {
-        for (var x = 1; x < this.MAX_REGION_IN_NEGATIVE_X_DIRECTION; x++) {
+        for (var x = 1; x < Settings.MAX_REGION_IN_NEGATIVE_X_DIRECTION; x++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -226,7 +209,7 @@ class Construction {
 
     private constructInPositiveYDirection(z: number): void {
         var x: number = 0;
-        for (var y = 1; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
+        for (var y = 1; y < Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -253,7 +236,7 @@ class Construction {
         var targetRegions: Array<number[]>;
         var startRegion1: number[];
         var startRegions2: Array<number[]>;
-        for (var y = 1; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y++) {
+        for (var y = 1; y < Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y++) {
             if (y % 2 == 1) {
                 targetRegions = [[x + 2, -(y + 1), z], [x, -(y + 1), z], [x, -(y + 1), z + 2]];
                 startRegion1 = [x + 1, -y, z + 1];
@@ -281,7 +264,7 @@ class Construction {
     private constructInPositiveZDirection() {
         var x: number = 0;
         var y: number = 0;
-        for (var z = 1; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
+        for (var z = 1; z < Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -304,7 +287,7 @@ class Construction {
     private constructInNegativeZDirection() {
         var x: number = 0;
         var y: number = 0;
-        for (var z = 1; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z++) {
+        for (var z = 1; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -384,33 +367,33 @@ class Construction {
     }
 
     private constructInYDirection() {
-        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1; z += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1; z += 2) {
             this.constructInPositiveYDirection(z);
             this.constructInNegativeYDirection(z);
         }
 
-        for (var z: number = 0; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
             this.constructInPositiveYDirection(-z);
             this.constructInNegativeYDirection(-z);
         }
     }
 
     private constructInXDirection() {
-        for (var z: number = 0; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1; z += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1; z += 2) {
 
-            for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
+            for (var y: number = 0; y < Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
                 this.constructInBothXDirection(y, z);
             }
-            for (var y: number = 0; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
+            for (var y: number = 0; y < Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
                 this.constructInBothXDirection(-y, z);
             }
         }
 
-        for (var z: number = 0; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1; z += 2) {
-            for (var y: number = 0; y < this.MAX_REGION_IN_POSITIVE_Y_DIRECTION - 1; y += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1; z += 2) {
+            for (var y: number = 0; y < Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION - 1; y += 2) {
                 this.constructInBothXDirection(y, -z);
             }
-            for (var y: number = 0; y < this.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
+            for (var y: number = 0; y < Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
                 this.constructInBothXDirection(-y, -z);
             }
         }
@@ -440,10 +423,10 @@ class Construction {
          * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
          */
         var firstZCoordThatHasNotBeenInitialized = 3;
-        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < this.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
             this.constructAFourthSphereInZDirection(z);
         }
-        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < this.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
             this.constructAFourthSphereInZDirection(-z);
         }
     }
