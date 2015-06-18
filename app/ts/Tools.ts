@@ -13,7 +13,7 @@ class Tools {
         return name;
     }
 
-    radius(region: number[]) {
+    radius(region: number[]): string {
         var tpIndex: number[];
         if (region[0] == 0) {
             tpIndex = [1, 0, 0];
