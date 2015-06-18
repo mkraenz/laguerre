@@ -74,7 +74,6 @@ class Tools {
         
         this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
             plane2, plane3, midpointRayName);
-        ggbApplet.setVisible(midpointRayName, false);
         return midpointRayName;
     }
 
@@ -171,12 +170,4 @@ class Tools {
         }
         return direction;
     }
-    
-    setColorOfSphere(targetRegion:number[], color: string){
-       this.ggb.setColor(this.toStr.sphere(targetRegion), color); 
-    }
-
-
-
-
 }
