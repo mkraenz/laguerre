@@ -126,7 +126,7 @@ class GGBTools {
      * Custom Tool
      */
     public tangentPlaneToThreeSpheresAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
-        var cmd: string = 'TangentialPlaneToThreeSpheresAwayFromOrigin[' + origin +
+        var cmd: string = 'TangentPlaneToThreeSpheresAwayFromOrigin[' + origin +
             ',' + sphere1 + ',' + sphere2 + ',' + sphere3 + ']';
         
         this.throwErrorIfNotExistentInGGBApplet(origin, cmd, name);
