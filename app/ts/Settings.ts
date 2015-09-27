@@ -11,6 +11,7 @@ class Settings {
     public static PARAMETER_SPHERE_MIDPOINT_MIN = 0.51;
     public static PARAMETER_SPHERE_MIDPOINT_MAX = 0.99;
     public static PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP = 0.01;
+    public static PARAMETER_SPHERE_INITIAL_VALUE = 0.65;
 
     public static ORIGIN_SPHERE_SCALING = 0.3;
 

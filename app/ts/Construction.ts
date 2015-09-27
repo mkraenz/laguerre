@@ -102,7 +102,7 @@ class Construction {
         var sliderName = this.toStr.parameter(planeIndices);
         this.ggb.slider(Settings.PARAMETER_SPHERE_MIDPOINT_MIN, Settings.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
             Settings.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
-        ggbApplet.setValue(sliderName, 0.5);
+        ggbApplet.setValue(sliderName, Settings.PARAMETER_SPHERE_INITIAL_VALUE);
         var planeIndicesNegate: number[] = [];
         for (var i: number = 0; i < planeIndices.length; i++) {
             planeIndicesNegate[i] = -planeIndices[i];
