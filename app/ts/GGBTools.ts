@@ -59,13 +59,15 @@ class GGBTools {
         return name;
     }
 
-    public reflect(targetName: string, planeName: string, name?: string): string {
-        var cmd: string = 'Reflect[ ' + targetName + ', ' + planeName + ' ]';
+    /**
+     * Mirror[], also known as Reflect[]
+     */
+    public mirror(targetName: string, mirrorName: string, name?: string): string {
+        var cmd: string = 'Mirror[' + targetName + ',' + mirrorName + ']';
         this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(planeName, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(mirrorName, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
-
     }
 
     public radius(targetName: string, name?: string): string {
