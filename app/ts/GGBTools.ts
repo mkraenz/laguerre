@@ -21,6 +21,16 @@ class GGBTools {
         return name;
     }
 
+    public plane(pointName1: string, pointName2: string, pointName3: string, name?: string): string {
+        var cmd: string = 'Plane[' + pointName1 + ', ' + pointName2 + ', ' + pointName3 + ']';
+        this.throwErrorIfNotExistentInGGBApplet(pointName1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(pointName2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(pointName3, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+
+    }
+
     public pointFree(x: string, y: string, z?: string, name?: string): string {
         var cmd: string = '(' + x + ',' + y;
         if (z) {
@@ -48,7 +58,16 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
-    
+
+    public reflect(targetName: string, planeName: string, name?: string): string {
+        var cmd: string = 'Reflect[ ' + targetName + ', ' + planeName + ' ]';
+        this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(planeName, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+
+    }
+
     public radius(targetName: string, name?: string): string {
         var cmd: string = 'Radius[' + targetName + ']';
         this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
@@ -89,7 +108,7 @@ class GGBTools {
     public sphere(midpoint: string, radius: string, name?: string): string {
         var cmd: string = 'Sphere[' + midpoint + ', ' + radius + ']';
         this.throwErrorIfNotExistentInGGBApplet(midpoint, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(radius, cmd, name); 
+        this.throwErrorIfNotExistentInGGBApplet(radius, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -119,12 +138,12 @@ class GGBTools {
      */
     public rayOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
         var cmd: string = 'RayOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
-        
+
         this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(plane1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(plane2, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(plane3, cmd, name);
-        
+
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -135,12 +154,12 @@ class GGBTools {
     public tangentPlaneToThreeSpheresAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
         var cmd: string = 'TangentPlaneToThreeSpheresAwayFromOrigin[' + origin +
             ',' + sphere1 + ',' + sphere2 + ',' + sphere3 + ']';
-        
+
         this.throwErrorIfNotExistentInGGBApplet(origin, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
-        
+
         this.fullCommandAndExec(cmd, name);
         return name;
     }
