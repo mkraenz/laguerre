@@ -48,6 +48,13 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
+    
+    public radius(targetName: string, name?: string): string {
+        var cmd: string = 'Radius[' + targetName + ']';
+        this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
 
     public segment(endpoint1: string, endpoint2: string, name?: string): string {
         var cmd: string = 'Segment[' + endpoint1 + ', ' + endpoint2 + ']';
