@@ -1,7 +1,7 @@
 class Settings {
     public static MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 3;
     public static MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 2;
-    public static MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 3;
+    public static MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 10;
 
     public static MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 1;
     public static MAX_REGION_IN_NEGATIVE_Y_DIRECTION: number = 1;
