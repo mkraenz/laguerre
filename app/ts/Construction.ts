@@ -128,9 +128,9 @@ class Construction {
             this.t.radius(spheres[i]);
             this.t.sphere(spheres[i]);
         }
-        var plane1Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[2]);
-        var plane2Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[3]);
-        var plane3Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[2], spheres[3]);
+        var plane1Name: string = this.t.reflectIn3Spheres(spheres[0], spheres[1], spheres[2]);
+        var plane2Name: string = this.t.reflectIn3Spheres(spheres[0], spheres[1], spheres[3]);
+        var plane3Name: string = this.t.reflectIn3Spheres(spheres[0], spheres[2], spheres[3]);
         this.view.listOfInvisiblePlanes.push(plane1Name, plane2Name, plane3Name);
     }
 
@@ -343,7 +343,7 @@ class Construction {
     }
 
     private createEighthSphere(): void {
-        var tpName: string = this.t.tangentPlaneToThreeSpheres([-1, 1, 1], [-1, -1, 1], [-1, 1, -1]);
+        var tpName: string = this.t.reflectIn3Spheres([-1, 1, 1], [-1, -1, 1], [-1, 1, -1]);
         var targetRegion: number[] = [-1, -1, -1];
         var helpRegion: number[] = [-2, 0, 0];
         var startRegion1: number[] = [-1, -1, 1];
@@ -416,8 +416,8 @@ class Construction {
         var sphereRegion3: number[] = [1, 1, -1];
         var sphereRegion4: number[] = [-1, -1, 1];
 
-        var planeInNegZDirection: string = this.t.tangentPlaneToThreeSpheres(sphereRegion1, sphereRegion2, sphereRegion3);
-        var planeInNegYDirection: string = this.t.tangentPlaneToThreeSpheres(sphereRegion1, sphereRegion2, sphereRegion4);
+        var planeInNegZDirection: string = this.t.reflectIn3Spheres(sphereRegion1, sphereRegion2, sphereRegion3);
+        var planeInNegYDirection: string = this.t.reflectIn3Spheres(sphereRegion1, sphereRegion2, sphereRegion4);
         this.view.listOfInvisiblePlanes.push(planeInNegZDirection, planeInNegYDirection);
     }
 
@@ -484,7 +484,7 @@ class Construction {
 
 
     private createTangentplaneAndHide(targetRegions: Array<number[]>): void {
-        var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+        var tPlaneName: string = this.t.reflectIn3Spheres(targetRegions[0], targetRegions[1], targetRegions[2]);
         this.view.listOfInvisiblePlanes.push(tPlaneName);
     }
 
