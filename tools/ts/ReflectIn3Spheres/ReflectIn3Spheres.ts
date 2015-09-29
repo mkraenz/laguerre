@@ -42,6 +42,6 @@ class ReflectIn3Spheres {
         this.t.pointFree(1, 0, 0, POINT_2);
         this.t.pointFree(2, 2, 2, POINT_3);
         this.ggb.plane(POINT_1, POINT_2, POINT_3, GENERIC_PLANE);
-        this.ggb.mirror(GENERIC_PLANE, REFLECTION_PLANE, 'mirrorImage');
+        this.ggb.reflect(GENERIC_PLANE, REFLECTION_PLANE, 'mirrorImage');
     }
 }

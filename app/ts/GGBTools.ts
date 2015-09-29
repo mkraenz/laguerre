@@ -60,9 +60,9 @@ class GGBTools {
     }
 
     /**
-     * Mirror[], also known as Reflect[]
+     *  Reflect[], also known as Mirror[]
      */
-    public mirror(targetName: string, mirrorName: string, name?: string): string {
+    public reflect(targetName: string, mirrorName: string, name?: string): string {
         var cmd: string = 'Mirror[' + targetName + ',' + mirrorName + ']';
         this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(mirrorName, cmd, name);
