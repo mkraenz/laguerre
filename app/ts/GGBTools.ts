@@ -70,8 +70,10 @@ class GGBTools {
         return name;
     }
 
-    public reflectIn3Spheres(sphere1: string, sphere2: string, sphere3: string, name?: string): string {
-        var cmd: string = 'ReflectIn3Spheres[' + sphere1 + ' , ' + sphere2 + ' , ' + sphere3 + ']';
+    public reflectIn3Spheres(sphere1: string, sphere2: string, sphere3: string,
+        planeToBeMirrored: string, name?: string): string {
+        var cmd: string = 'ReflectIn3Spheres[' + sphere1 + ' , ' + sphere2 + ' , ' + sphere3 +
+            ' , ' + planeToBeMirrored + ']';
         this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
