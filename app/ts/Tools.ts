@@ -98,7 +98,7 @@ class Tools {
         var prevTangentPlaneIndex: number[] = this.prevTangentPlaneIndex(sphere1, sphere2, sphere3);
         var name: string = this.toStr.tPlane(this.followingTangentPlaneIndex(prevTangentPlaneIndex));
         this.ggb.reflectIn3Spheres(this.toStr.sphere(sphere1), this.toStr.sphere(sphere2),
-            this.toStr.sphere(sphere3), name)
+            this.toStr.sphere(sphere3), this.toStr.tPlane(prevTangentPlaneIndex), name)
         return name;
     }
 
@@ -167,7 +167,6 @@ class Tools {
     private prevTangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
         var commonIndex: number = null;
         for (var i = 0; i < index1.length; i++) {
-            // here one might have to use parseInt(indexArray[i]
             if (index1[i] == index2[i]
                 && index1[i] == index3[i]) {
                 commonIndex = i;
@@ -175,18 +174,10 @@ class Tools {
             }
         }
         var prevPlaneIndex: number[] = new Array<number>(index1.length);
-        for (var i = 0; i < index1.length; i++) {
-            if (i == commonIndex) {
-                if (index1[commonIndex] > 0) {
-                    prevPlaneIndex[i] = index1[i] - 1;
-                }
-                else {
-                    prevPlaneIndex[i] = index1[i] + 1;
-                }
-            } else {
-                prevPlaneIndex[i] = 0;
-            }
+        for (var i = 0; i < prevPlaneIndex.length; i++) {
+            prevPlaneIndex[i] = 0;
         }
+        prevPlaneIndex[commonIndex] = index1[commonIndex];
         return prevPlaneIndex;
     }
     
