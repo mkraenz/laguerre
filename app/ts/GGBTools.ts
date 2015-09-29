@@ -70,6 +70,15 @@ class GGBTools {
         return name;
     }
 
+    public reflectIn3Spheres(sphere1: string, sphere2: string, sphere3: string, name?: string): string {
+        var cmd: string = 'ReflectIn3Spheres[' + sphere1 + ' , ' + sphere2 + ' , ' + sphere3 + ']';
+        this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
+
     public radius(targetName: string, name?: string): string {
         var cmd: string = 'Radius[' + targetName + ']';
         this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
