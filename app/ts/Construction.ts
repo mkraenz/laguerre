@@ -102,7 +102,7 @@ class Construction {
         var sliderName = this.toStr.parameter(planeIndices);
         this.ggb.slider(Settings.PARAMETER_SPHERE_MIDPOINT_MIN, Settings.PARAMETER_SPHERE_MIDPOINT_MAX, sliderName,
             Settings.PARAMETER_SPHERE_MIDPOINT_INCREMENT_STEP);
-        ggbApplet.setValue(sliderName, Settings.PARAMETER_SPHERE_INITIAL_VALUE);
+        ggbApplet.setValue(sliderName, 0.5);
         var planeIndicesNegate: number[] = [];
         for (var i: number = 0; i < planeIndices.length; i++) {
             planeIndicesNegate[i] = -planeIndices[i];
@@ -128,9 +128,9 @@ class Construction {
             this.t.radius(spheres[i]);
             this.t.sphere(spheres[i]);
         }
-        var plane1Name: string = this.t.reflectIn3Spheres(spheres[0], spheres[1], spheres[2]);
-        var plane2Name: string = this.t.reflectIn3Spheres(spheres[0], spheres[1], spheres[3]);
-        var plane3Name: string = this.t.reflectIn3Spheres(spheres[0], spheres[2], spheres[3]);
+        var plane1Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[2]);
+        var plane2Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[3]);
+        var plane3Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[2], spheres[3]);
         this.view.listOfInvisiblePlanes.push(plane1Name, plane2Name, plane3Name);
     }
 
@@ -285,11 +285,11 @@ class Construction {
             this.createTangentplaneAndHide(targetRegions);
         }
     }
-
+    
     private constructInNegativeZDirection(): void {
         var x: number = 0;
         var y: number = 0;
-        for (var z = 1; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION + 1; z++) {
+        for (var z = 1; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -343,7 +343,7 @@ class Construction {
     }
 
     private createEighthSphere(): void {
-        var tpName: string = this.t.reflectIn3Spheres([-1, 1, 1], [-1, -1, 1], [-1, 1, -1]);
+        var tpName: string = this.t.tangentPlaneToThreeSpheres([-1, 1, 1], [-1, -1, 1], [-1, 1, -1]);
         var targetRegion: number[] = [-1, -1, -1];
         var helpRegion: number[] = [-2, 0, 0];
         var startRegion1: number[] = [-1, -1, 1];
@@ -392,7 +392,7 @@ class Construction {
             }
         }
 
-        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1; z += 2) {
             for (var y: number = 0; y < Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION - 1; y += 2) {
                 this.constructInBothXDirection(y, -z);
             }
@@ -405,7 +405,6 @@ class Construction {
     private constructIteratively(): void {
         this.constructInZDirection();
         this.constructInYDirection();
-        this.constructFourthSpheresInBothYDirections();
         this.constructInXDirection();
     }
 
@@ -416,8 +415,8 @@ class Construction {
         var sphereRegion3: number[] = [1, 1, -1];
         var sphereRegion4: number[] = [-1, -1, 1];
 
-        var planeInNegZDirection: string = this.t.reflectIn3Spheres(sphereRegion1, sphereRegion2, sphereRegion3);
-        var planeInNegYDirection: string = this.t.reflectIn3Spheres(sphereRegion1, sphereRegion2, sphereRegion4);
+        var planeInNegZDirection: string = this.t.tangentPlaneToThreeSpheres(sphereRegion1, sphereRegion2, sphereRegion3);
+        var planeInNegYDirection: string = this.t.tangentPlaneToThreeSpheres(sphereRegion1, sphereRegion2, sphereRegion4);
         this.view.listOfInvisiblePlanes.push(planeInNegZDirection, planeInNegYDirection);
     }
 
@@ -441,50 +440,10 @@ class Construction {
         var midpointStr: string = this.toStr.midpoint(targetRegion);
         var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
         var sphere: string = this.t.sphere(targetRegion);
-
-        this.view.listOfInvisibleObjects.push(ray1, ray2, midpoint);
-        this.view.listOfInvisibleLabels.push(sphere);
     }
-
-    private constructFourthSpheresInBothYDirections(): void {
-        /**
-         * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
-         */
-        var firstYCoordThatHasNotBeenInitialized = 3;
-        for (var y: number = firstYCoordThatHasNotBeenInitialized; y < Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
-            if (Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION % 2 == 1) {
-                this.constructAFourthSphereInYDirection(y, - Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION + 2);
-                this.constructAFourthSphereInYDirection(y, - Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION);
-            }
-        }
-        for (var y: number = firstYCoordThatHasNotBeenInitialized; y < Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
-            if (Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION % 2 == 1) {
-                this.constructAFourthSphereInYDirection(-y, - Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION + 2);
-                this.constructAFourthSphereInYDirection(-y, - Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION);
-            }
-        }
-    }
-
-    private constructAFourthSphereInYDirection(y: number, z: number): void {
-        var targetRegion: number[] = [-1, y, z];
-        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, y - 1, z + 1], targetRegion);
-        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, y + 1, z + 1], targetRegion);
-        var midpointStr: string = this.toStr.midpoint(targetRegion);
-        if (!ggbApplet.exists(midpointStr)) {
-            var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
-            var sphere: string = this.t.sphere(targetRegion);
-        }
-        else {
-            console.log(midpointStr + ' already exists.\nCalled in constructAFourthSphereInYDirection(' + y + ',' + z + ')');
-        }
-
-        this.view.listOfInvisibleObjects.push(ray1, ray2, midpoint);
-        this.view.listOfInvisibleLabels.push(sphere);
-    }
-
 
     private createTangentplaneAndHide(targetRegions: Array<number[]>): void {
-        var tPlaneName: string = this.t.reflectIn3Spheres(targetRegions[0], targetRegions[1], targetRegions[2]);
+        var tPlaneName: string = this.t.tangentPlaneToThreeSpheres(targetRegions[0], targetRegions[1], targetRegions[2]);
         this.view.listOfInvisiblePlanes.push(tPlaneName);
     }
 
