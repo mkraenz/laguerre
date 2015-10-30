@@ -1,8 +1,8 @@
 class Tools {
 
-    constructor(private toStr: TypeString, private ggb: GGBTools, private ORIGIN: string) {
+    constructor(private toStr: TypeString, private ggb: GGBTools, private ORIGIN: string, private view?: View) {
     }
-
+    
     private indexToString(x: number, y: number, z: number): string {
         var str: string = x + ',' + y + ',' + z;
         return str;
@@ -94,12 +94,40 @@ class Tools {
         return this.rayOfSphereMidpoints(startRegion, planeIndices);
     }
 
+    /**
+     * Reflects in the 3 given spheres and also defines the next tangent plane depending on its distance to the Origin.
+     * The latter is to assure the correct tp is taken when we reach the projection point. Mirco, don't forget to write
+     * this issue down properly!
+     */
     reflectIn3Spheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
         var prevTangentPlaneIndex: number[] = this.prevTangentPlaneIndex(sphere1, sphere2, sphere3);
-        var name: string = this.toStr.tPlane(this.followingTangentPlaneIndex(prevTangentPlaneIndex));
+        var nextTangentPlaneIndex: number[] = this.followingTangentPlaneIndex(prevTangentPlaneIndex);
+        var nextTempTpName: string = 'temp' + this.toStr.tPlane(nextTangentPlaneIndex);
         this.ggb.reflectIn3Spheres(this.toStr.sphere(sphere1), this.toStr.sphere(sphere2),
-            this.toStr.sphere(sphere3), this.toStr.tPlane(prevTangentPlaneIndex), name)
-        return name;
+            this.toStr.sphere(sphere3), this.toStr.tPlane(prevTangentPlaneIndex), nextTempTpName)
+        this.view.listOfInvisiblePlanes.push(nextTempTpName);
+        
+        var nextTpName = this.redefineIfNextTpNearerToOriginThanPrevTp(nextTempTpName,
+            nextTangentPlaneIndex, prevTangentPlaneIndex);
+        return nextTpName;
+    }
+
+    /**
+     * Define nextTp to be either prevTp or tempNextTp, depending which of these two is farther away from Origin.
+     */
+    private redefineIfNextTpNearerToOriginThanPrevTp(nextTempTpName: string, nextTangentPlaneIndex: number[],
+        prevTangentPlaneIndex: number[]): string {
+
+        var distNextTempTpName: string = this.toStr.distanceOfTempTangentPlane(nextTangentPlaneIndex);
+        this.ggb.distanceTpToOrigin(nextTempTpName, this.ORIGIN, distNextTempTpName);
+
+        var prevTpName: string = this.toStr.tPlane(prevTangentPlaneIndex);
+        var distPrevTpName: string = this.toStr.distanceOfTangentPlane(prevTangentPlaneIndex);
+        this.ggb.distanceTpToOrigin(prevTpName, this.ORIGIN, distPrevTpName);
+
+        var nextTpName: string = this.toStr.tPlane(nextTangentPlaneIndex);
+        this.ggb.redefineIfNearerToOrigin(distNextTempTpName, distPrevTpName, nextTempTpName, prevTpName, nextTpName);
+        return nextTpName;
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {

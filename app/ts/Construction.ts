@@ -18,8 +18,8 @@ class Construction {
         this.ORIGIN = this.toStr.midpoint(this.ORIGIN_REGION);
         this.ORIGIN_SPHERE = this.toStr.sphere(this.ORIGIN_REGION);
         this.ggb = new GGBTools();
-        this.t = new Tools(this.toStr, this.ggb, this.ORIGIN);
         this.view = new View(this.ggb, this.toStr);
+        this.t = new Tools(this.toStr, this.ggb, this.ORIGIN, this.view);
     }
 
     private createInitialSphere(): void {

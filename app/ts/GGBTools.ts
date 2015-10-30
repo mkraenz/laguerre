@@ -13,6 +13,10 @@ class GGBTools {
         return name;
     }
 
+    public distanceTpToOrigin(tangentPlaneName: string, origin: string, name?: string): string {
+        return this.distance(tangentPlaneName, origin, name);
+    }
+
     public intersect(objName1: string, objName2: string, name?: string): string {
         var cmd: string = 'Intersect[' + objName1 + ', ' + objName2 + ']';
         this.throwErrorIfNotExistentInGGBApplet(objName1, cmd, name);
@@ -28,7 +32,6 @@ class GGBTools {
         this.throwErrorIfNotExistentInGGBApplet(pointName3, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
-
     }
 
     public pointFree(x: string, y: string, z?: string, name?: string): string {
@@ -55,6 +58,19 @@ class GGBTools {
     public midpoint(targetName: string, name?: string): string {
         var cmd: string = 'Midpoint[' + targetName + ']';
         this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
+
+    /**
+     * IF dist1 > dist2 THEN name := object1 ELSE name := object2.
+     */
+    public redefineIfNearerToOrigin(dist1: string, dist2: string, object1: string, object2: string, name?: string) {
+        var cmd: string = 'If[ ' + dist1 + ' > ' + dist2 + ' , ' + object1 + ' , ' +  object2 + ' ]';
+        this.throwErrorIfNotExistentInGGBApplet(dist1, cmd);
+        this.throwErrorIfNotExistentInGGBApplet(dist2, cmd);
+        this.throwErrorIfNotExistentInGGBApplet(object1, cmd);
+        this.throwErrorIfNotExistentInGGBApplet(object2, cmd);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -176,7 +192,8 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
-    private throwErrorIfNotExistentInGGBApplet(objName: string, cmd: string, definiendum: string) {
+
+    private throwErrorIfNotExistentInGGBApplet(objName: string, cmd: string, definiendum?: string) {
         /**
          * Checks if the given object objName exists in the GGBApplet. If not it throws an Error naming the full command
          * including definiendum.

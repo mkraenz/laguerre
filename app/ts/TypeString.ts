@@ -69,4 +69,12 @@ class TypeString {
     public line(index: number[]){
         return this.typeString('line', index);
     }
+    
+    public distanceOfTempTangentPlane(index: number[]){
+       return this.typeString('distanceToTempTp', index); 
+    }
+    
+    public distanceOfTangentPlane(index: number[]){
+       return this.typeString('distanceToTp', index); 
+    }
 }
