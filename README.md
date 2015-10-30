@@ -68,7 +68,7 @@ We imagine these rays as pointing into a region from one of eight particular dir
 The rays are named like the following example:
 m_{0,1,4,+,-,-}
 
-Here the first three numbers represent the region, i.e. 0,1,4.
+Here the first three numbers represent the region which Midpoint is defined by the ray, i.e. M_{0,1,4}.
 The next three entries are either + or - and represent the direction the ray, i.e. 'where it comes from'.
 +,+,+ = x,y,z would represent that it comes from the region 1,2,5 in this example., +,-,- is 1,0,3.
 In general we can simply add (resp. substract) 1 from the corresponding index if we have a + (resp. -) at the corresponding position.
