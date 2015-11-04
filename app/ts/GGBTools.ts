@@ -20,7 +20,7 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
-    
+
     public plane(pointName1: string, pointName2: string, pointName3: string, name?: string): string {
         var cmd: string = 'Plane[' + pointName1 + ', ' + pointName2 + ', ' + pointName3 + ']';
         this.throwErrorIfNotExistentInGGBApplet(pointName1, cmd, name);
@@ -58,13 +58,24 @@ class GGBTools {
         return name;
     }
     
-        /**
+    /**
      *  Reflect[], also known as Mirror[]
      */
     public reflect(targetName: string, mirrorName: string, name?: string): string {
         var cmd: string = 'Mirror[' + targetName + ',' + mirrorName + ']';
         this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(mirrorName, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
+
+    public reflectIn3Spheres(sphere1: string, sphere2: string, sphere3: string,
+        planeToBeMirrored: string, name?: string): string {
+        var cmd: string = 'ReflectIn3Spheres[' + sphere1 + ' , ' + sphere2 + ' , ' + sphere3 +
+            ' , ' + planeToBeMirrored + ']';
+        this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
