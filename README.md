@@ -34,9 +34,7 @@ We name everything as if we had the standard (euclidean) cube.
 
 
 ### Long version:
-Sphere s_o markes the section 0,0,0 = x,y,z. (This is an ‚Äúoh‚Äù  for origin not a zero)
-Now we simply in-/decrease the corrresponding
-index each time we have could inscribe a sphere in there.
+Sphere s_o markes the section 0,0,0 = x,y,z. (This is an ÅgohÅh for origin not a zero) Now we simply in-/decrease the corrresponding index each time we have could inscribe a sphere in there.
 
 **Example** The sections where the four choosable points lie are
 1,1,1 with sphere s_{1,1,1} and corresponding radius r_{1,1,1}
@@ -86,3 +84,8 @@ Maybe.....For tests also cd into /test and run `$ bower install`.
 ### npm install errors
 After mocha was globally installed, a new setup from scratch might end up in the error message as in the comments attached screenshot. To safely setup the project try deleting the grunt-mocha and the generator-mocha from %appdata%/npm/node_modules. Then run `npm install -g grunt-mocha` and try the whole installation again.
 
+## ggt Tools Programming
+To start the ts files do the following
+1. add another button in index.html calling the public run...() function from the .ts file you want to run.
+2. copy the .ts file to app/ts
+3. Maybe trigger compile process
