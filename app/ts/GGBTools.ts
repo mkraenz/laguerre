@@ -20,6 +20,15 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
+    
+    public plane(pointName1: string, pointName2: string, pointName3: string, name?: string): string {
+        var cmd: string = 'Plane[' + pointName1 + ', ' + pointName2 + ', ' + pointName3 + ']';
+        this.throwErrorIfNotExistentInGGBApplet(pointName1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(pointName2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(pointName3, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
 
     public pointFree(x: string, y: string, z?: string, name?: string): string {
         var cmd: string = '(' + x + ',' + y;
