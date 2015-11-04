@@ -1,4 +1,0 @@
-To start the ts files do the following
-1. add another button in index.html calling the public run...() function from the .ts file you want to run.
-2. copy the .ts file to app/ts
-3. Maybe trigger compile process
