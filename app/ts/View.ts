@@ -1,7 +1,7 @@
 class View {
 
     private ORIGIN_SPHERE_COLOR: string = "Gold";
-    
+
     public listOfInvisibleObjects: Array<string>;
     public listOfInvisiblePlanes: Array<string>;
     public listOfInvisibleLabels: Array<string>;
@@ -17,7 +17,7 @@ class View {
         this.toStr = typeString;
     }
 
-    private setHelperObjectsInvisible() {
+    private setHelperObjectsInvisible(): void {
         for (var i: number = 0; i < this.listOfInvisibleObjects.length; i++) {
             ggbApplet.setVisible(this.listOfInvisibleObjects[i], false);
         }
@@ -26,10 +26,21 @@ class View {
         }
     }
 
-    public constumizeViewProperties() {
+    private showLineGrid(): void {
+        for (var i: number = 0; i < this.listOfInvisiblePlanes.length; i++) {
+            for (var j: number = 0; j < this.listOfInvisiblePlanes.length; j++) {
+                if (i != j) {
+                    this.ggb.intersect(this.listOfInvisiblePlanes[i], this.listOfInvisiblePlanes[j]);
+                }
+            }
+        }
+    }
+
+    public constumizeViewProperties(): void {
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();
-        this.setColorOfSphere([0,0,0], this.ORIGIN_SPHERE_COLOR);
+        this.setColorOfSphere([0, 0, 0], this.ORIGIN_SPHERE_COLOR);
+        //this.showLineGrid();
     }
 
     private setLabelsInvisible(): void {
@@ -38,7 +49,7 @@ class View {
         }
     }
 
-    private setColorOfnthOrderSphere(order: number, color: string) {
+    private setColorOfnthOrderSphere(order: number, color: string): void {
         if (order < 0) {
             throw new Error('Illegal Argument: Order must be greater or equal to zero. Given parameter: order = ' + order);
         }
@@ -58,7 +69,7 @@ class View {
         }
     }
 
-    private setColorOfSphere(targetRegion: number[], color: string) {
+    private setColorOfSphere(targetRegion: number[], color: string): void {
         this.ggb.setColor(this.toStr.sphere(targetRegion), color);
     }
 }
