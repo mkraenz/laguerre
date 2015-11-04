@@ -48,6 +48,17 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
+    
+        /**
+     *  Reflect[], also known as Mirror[]
+     */
+    public reflect(targetName: string, mirrorName: string, name?: string): string {
+        var cmd: string = 'Mirror[' + targetName + ',' + mirrorName + ']';
+        this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(mirrorName, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
 
     public segment(endpoint1: string, endpoint2: string, name?: string): string {
         var cmd: string = 'Segment[' + endpoint1 + ', ' + endpoint2 + ']';
