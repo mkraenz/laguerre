@@ -97,8 +97,8 @@ class Tools {
      */
     private getFirstCommonIndex(a: number[], b: number[], c: number[]) {
         if (a.length != b.length || a.length != c.length) {
-            throw new Error("Tools.getFirstCommonIndex(): Lengthes of given arrays are not all equal.  The arrays are: \n a = " + a.toString() + "\n b = "
-                + b.toString() + "\n c = " + c.toString())
+            throw new Error("Tools.getFirstCommonIndex(): Lengthes of given arrays are not all equal.  The arrays are: \n a = " +
+                a.toString() + "\n b = " + b.toString() + "\n c = " + c.toString())
         }
         for (var i = 0; i < a.length; i++) {
             if (a[i] == b[i] && a[i] == c[i]) {
@@ -106,7 +106,7 @@ class Tools {
             }
         }
         throw new Error("Tools.getFirstCommonIndex(): no common index. The arrays are: \n a = " + a.toString() + "\n b = "
-                + b.toString() + "\n c = " + c.toString())
+            + b.toString() + "\n c = " + c.toString())
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
