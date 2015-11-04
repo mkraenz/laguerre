@@ -110,6 +110,32 @@ class Tools {
             + b.toString() + "\n c = " + c.toString())
     }
     
+    /**
+     * Returns an index array of the form [number, 0, 0].
+     * Example a = [1,5,5], b = [1,4,6], c = [1,5,6] will return [1,0,0]
+     * Section is in the sense of a cut through space splitting the spheres with the common index.
+     */
+    private getSectionIndexArray(a: number[], b: number[], c: number[]): number[] {
+        var commonIndex: number = this.getFirstCommonIndexPosition(a, b, c);
+        if (commonIndex == 0) {
+            return [a[commonIndex], 0, 0];
+        }
+        else {
+            if (commonIndex == 1) {
+                return [0, a[commonIndex], 0];
+            }
+            else {
+                if (commonIndex == 2) {
+                    return [0, 0, a[commonIndex]];
+                }
+                else {
+                    throw new Error("This should not have happened.");
+                }
+            }
+
+        }
+    }
+
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
         var nextPlaneIndex: number[] = this.tangentPlaneIndex(sphere1, sphere2, sphere3);
         var name: string = this.toStr.tPlane(nextPlaneIndex);
