@@ -92,12 +92,13 @@ class Tools {
     }
 
     /**
-     * Returns first found common index of the three arrays, any common index coming after the first one will not be reported.
+     * Returns first found common index position of the three arrays, any common index coming after the first one will not be reported.
+     * Output will be a number from 0 to a.length.
      * Contract: a,b,c have equal length.
      */
-    private getFirstCommonIndex(a: number[], b: number[], c: number[]) {
+    private getFirstCommonIndexPosition(a: number[], b: number[], c: number[]): number {
         if (a.length != b.length || a.length != c.length) {
-            throw new Error("Tools.getFirstCommonIndex(): Lengthes of given arrays are not all equal.  The arrays are: \n a = " +
+            throw new Error("Tools.getFirstCommonIndexPosition(): Lengthes of given arrays are not all equal.  The arrays are: \n a = " +
                 a.toString() + "\n b = " + b.toString() + "\n c = " + c.toString())
         }
         for (var i = 0; i < a.length; i++) {
@@ -105,10 +106,10 @@ class Tools {
                 return i;
             }
         }
-        throw new Error("Tools.getFirstCommonIndex(): no common index. The arrays are: \n a = " + a.toString() + "\n b = "
+        throw new Error("Tools.getFirstCommonIndexPosition(): no common index. The arrays are: \n a = " + a.toString() + "\n b = "
             + b.toString() + "\n c = " + c.toString())
     }
-
+    
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
         var nextPlaneIndex: number[] = this.tangentPlaneIndex(sphere1, sphere2, sphere3);
         var name: string = this.toStr.tPlane(nextPlaneIndex);
