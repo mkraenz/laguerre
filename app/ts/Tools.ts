@@ -1,6 +1,6 @@
 class Tools {
 
-    constructor(private toStr: TypeString, private ggb: GGBTools, private ORIGIN: string) {
+    constructor(private toStr: TypeString, private ggb: GGBTools, private ORIGIN: string, private view?: View) {
     }
 
     private indexToString(x: number, y: number, z: number): string {
@@ -50,9 +50,6 @@ class Tools {
         }
         return this.ggb.sphere(midpoint, radius, sphereName);
     }
-    
-    
-    
 
     /**
      * @return the newName input
@@ -69,9 +66,9 @@ class Tools {
         var midpointRayIndex: number[] = targetRegion.concat(direction);
         var midpointRayName: string = this.toStr.midpointRay(midpointRayIndex);
         var plane1: string = this.toStr.tPlane([planeIndices[0], 0, 0]);
-        var plane2: string = this.toStr.tPlane([0,planeIndices[1], 0]);
+        var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
         var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
-        
+
         this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
             plane2, plane3, midpointRayName);
         return midpointRayName;
@@ -82,7 +79,7 @@ class Tools {
         for (var i: number = 0; i < targetRegion.length; i++) {
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
                 throw new Error('Your midpointRay goes to a face instead of a corner. This is not possible by construction. See Tools.ts/rayOfSphereMidpointsFromRegion().'
-                + ' Parameters:\nstartRegion = ' + startRegion.toString() + '\ntargetRegion = ' + targetRegion.toString());
+                    + ' Parameters:\nstartRegion = ' + startRegion.toString() + '\ntargetRegion = ' + targetRegion.toString());
             }
             if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
                 planeIndices[i] = targetRegion[i];
@@ -116,10 +113,10 @@ class Tools {
         var nextPlane: number[] = new Array<number>(3);
         for (var i = 0; i < index1.length; i++) {
             if (i == commonIndex) {
-                if(index1[commonIndex] > 0) {
+                if (index1[commonIndex] > 0) {
                     nextPlane[i] = 1 + index1[i];
                 }
-                else{
+                else {
                     nextPlane[i] = index1[i] - 1;
                 }
             } else {
