@@ -99,7 +99,7 @@ class GGBTools {
      * Custom Tool
      */
     public tangentPlaneToSphere(sphere: string, point: string, name?: string): string {
-        var cmd: string = 'TangentialPlaneToSphere[' + sphere + ', ' + point + ']';
+        var cmd: string = 'TangentPlaneToSphere[' + sphere + ', ' + point + ']';
         this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(point, cmd, name);
         this.fullCommandAndExec(cmd, name);
