@@ -134,22 +134,25 @@ class Tools {
             }
         }
     }
-    
-    private getNextTangentPlaneIndex(sphere1: number[], sphere2: number[], sphere3: number[]){
+
+    private getNextTangentPlaneIndex(sphere1: number[], sphere2: number[], sphere3: number[]) {
         var section: number[] = this.getSectionIndexArray(sphere1, sphere2, sphere3);
-        for(var i = 0; i<section.length; i++){
-           section[i] = section[i] + this.sign(section[i]); // +-1 if section[i] != 0
+        for (var i = 0; i < section.length; i++) {
+            section[i] = section[i] + this.sign(section[i]); // +-1 if section[i] != 0
         }
         return section;
     }
 
+    /**
+     * Mathematical sign function with 0 returned for input "0".
+     */
     private sign(a: number) {
         if (a > 0) {
             return 1;
         }
         else {
-            if(a < 0){
-               return -1; 
+            if (a < 0) {
+                return -1;
             }
             return 0;
         }
@@ -164,24 +167,6 @@ class Tools {
         return name;
     }
 
-    private tangentPlaneIndex(index1: number[], index2: number[], index3: number[]): number[] {
-        var commonIndex: number = this.getFirstCommonIndexPosition(index1, index2, index3);
-        var nextPlane: number[] = new Array<number>(3);
-        for (var i = 0; i < index1.length; i++) {
-            if (i == commonIndex) {
-                if (index1[commonIndex] > 0) {
-                    nextPlane[i] = 1 + index1[i];
-                }
-                else {
-                    nextPlane[i] = index1[i] - 1;
-                }
-            } else {
-                nextPlane[i] = 0;
-            }
-        }
-        return nextPlane;
-    }
-    
     /**
      * Get the index of the next region outlined by the three given tangent planes that is different from the start region.
      * For example tp_{1,0,0}, tp_{0,1,0}, tp_{0,0,1} define region {1,1,1}. The
@@ -196,12 +181,7 @@ class Tools {
                 targetRegion[i] = tpIndices[i];
             }
             else {
-                if (startRegion[i] > 0) {
-                    targetRegion[i] = startRegion[i] - 1;
-                }
-                else {
-                    targetRegion[i] = startRegion[i] + 1;
-                }
+                targetRegion[i] = startRegion[i] - this.sign(startRegion[i]);
             }
         }
         return targetRegion;
