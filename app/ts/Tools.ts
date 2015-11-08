@@ -117,22 +117,16 @@ class Tools {
      */
     private getSectionIndexArray(a: number[], b: number[], c: number[]): number[] {
         var commonIndex: number = this.getFirstCommonIndexPosition(a, b, c);
-        if (commonIndex == 0) {
-            return [a[commonIndex], 0, 0];
-        }
-        else {
-            if (commonIndex == 1) {
-                return [0, a[commonIndex], 0];
+        var sectionArray: number[] = [];
+        for (var i = 0; i < a.length; i++) {
+            if (i == commonIndex) {
+                sectionArray.push(a[commonIndex]);
             }
             else {
-                if (commonIndex == 2) {
-                    return [0, 0, a[commonIndex]];
-                }
-                else {
-                    throw new Error("This should not have happened.");
-                }
+                sectionArray.push(0);
             }
         }
+        return sectionArray;
     }
 
     private getNextTangentPlaneIndex(sphere1: number[], sphere2: number[], sphere3: number[]) {
