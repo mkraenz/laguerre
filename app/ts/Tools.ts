@@ -3,11 +3,6 @@ class Tools {
     constructor(private toStr: TypeString, private ggb: GGBTools, private ORIGIN: string, private view?: View) {
     }
 
-    private indexToString(x: number, y: number, z: number): string {
-        var str: string = x + ',' + y + ',' + z;
-        return str;
-    }
-
     pointFree(x: number, y: number, z: number, name?: string): string {
         this.ggb.pointFree(x.toString(), y.toString(), z.toString(), name);
         return name;
