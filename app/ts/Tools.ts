@@ -54,7 +54,7 @@ class Tools {
         return newName;
     }
 
-    rayOfSphereMidpoints(startRegion: number[], planeIndices: number[]): string {
+    rayOfSphereMidpoints(startRegion: number[], planeIndices: number[], isParameterSphere: boolean = false): string {
         var tpIndices: number[] = [planeIndices[0], planeIndices[1], planeIndices[2]];
         var targetRegion: number[] = this.regionIndex(startRegion, tpIndices);
         var direction: number[] = this.midpointRayEmitterDirection(targetRegion, startRegion);
@@ -64,12 +64,18 @@ class Tools {
         var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
         var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
 
-        this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
-            plane2, plane3, midpointRayName);
+        if (isParameterSphere) {
+            this.ggb.rayOfParameterMidpoints(this.toStr.sphere(startRegion), plane1,
+                plane2, plane3, midpointRayName);
+
+        } else {
+            this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
+                plane2, plane3, midpointRayName);
+        }
         return midpointRayName;
     }
 
-    rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
+    rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[], isParameterSphere: boolean = false): string {
         var planeIndices: number[] = [];
         for (var i: number = 0; i < targetRegion.length; i++) {
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
@@ -83,11 +89,12 @@ class Tools {
                 planeIndices[i] = startRegion[i];
             }
         }
-        return this.rayOfSphereMidpoints(startRegion, planeIndices);
+        return this.rayOfSphereMidpoints(startRegion, planeIndices, isParameterSphere);
     }
 
     /**
-     * Returns first found common index position of the three arrays, any common index coming after the first one will not be reported.
+     * Returns first found common index position of the three arrays, any common index coming after 
+     * the first one will not be reported.
      * Output will be a number from 0 to a.length.
      * Contract: a,b,c have equal length.
      */
@@ -101,8 +108,8 @@ class Tools {
                 return i;
             }
         }
-        throw new Error("Tools.getFirstCommonIndexPosition(): no common index. The arrays are: \n a = " + a.toString() + "\n b = "
-            + b.toString() + "\n c = " + c.toString())
+        throw new Error("Tools.getFirstCommonIndexPosition(): no common index. The arrays are: \n a = " +
+            a.toString() + "\n b = " + b.toString() + "\n c = " + c.toString())
     }
     
     /**
@@ -160,7 +167,8 @@ class Tools {
         var previousTangentPlane: number[] = this.getPrevTangentPlaneIndex(nextPlaneIndex);
         var prevTp: string = this.toStr.tPlane(previousTangentPlane);
         var nextTp: string = this.toStr.tPlane(nextPlaneIndex);
-        this.ggb.reflectIn3Spheres(this.toStr.sphere(sphere1), this.toStr.sphere(sphere2), this.toStr.sphere(sphere3), prevTp, nextTp)
+        this.ggb.reflectIn3Spheres(this.toStr.sphere(sphere1), this.toStr.sphere(sphere2),
+            this.toStr.sphere(sphere3), prevTp, nextTp)
         return nextTp;
     }
 
