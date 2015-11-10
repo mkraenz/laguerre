@@ -131,7 +131,7 @@ class Tools {
         }
         return section;
     }
-
+    
     /**
      * Mathematical sign function with 0 returned for input "0".
      */
@@ -147,13 +147,21 @@ class Tools {
         }
     }
 
-    tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
+    private getPrevTangentPlaneIndex(followingTangentPlaneIndex: number[]): number[] {
+        var prevTp: number[] = [];
+        for (var i = 0; i < followingTangentPlaneIndex.length; i++) {
+            prevTp.push(followingTangentPlaneIndex[i] - this.sign(followingTangentPlaneIndex[i]));
+        }
+        return prevTp;
+    }
+
+    reflectPlaneInThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
         var nextPlaneIndex: number[] = this.getNextTangentPlaneIndex(sphere1, sphere2, sphere3);
-        var name: string = this.toStr.tPlane(nextPlaneIndex);
-        this.ggb.tangentPlaneToThreeSpheresAwayFromOrigin(this.ORIGIN,
-            this.toStr.sphere(sphere1), this.toStr.sphere(sphere2), this.toStr.sphere(sphere3),
-            name);
-        return name;
+        var previousTangentPlane: number[] = this.getPrevTangentPlaneIndex(nextPlaneIndex);
+        var prevTp: string = this.toStr.tPlane(previousTangentPlane);
+        var nextTp: string = this.toStr.tPlane(nextPlaneIndex);
+        this.ggb.reflectIn3Spheres(this.toStr.sphere(sphere1), this.toStr.sphere(sphere2), this.toStr.sphere(sphere3), prevTp, nextTp)
+        return nextTp;
     }
 
     /**

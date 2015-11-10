@@ -153,21 +153,6 @@ class GGBTools {
         return name;
     }
     
-    /**
-     * Custom Tool
-     */
-    public tangentPlaneToThreeSpheresAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
-        var cmd: string = 'TangentialPlaneToThreeSpheresAwayFromOrigin[' + origin +
-            ',' + sphere1 + ',' + sphere2 + ',' + sphere3 + ']';
-        
-        this.throwErrorIfNotExistentInGGBApplet(origin, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
-        
-        this.fullCommandAndExec(cmd, name);
-        return name;
-    }
     private throwErrorIfNotExistentInGGBApplet(objName: string, cmd: string, definiendum: string) {
         /**
          * Checks if the given object objName exists in the GGBApplet. If not it throws an Error naming the full command
