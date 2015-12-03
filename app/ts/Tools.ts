@@ -54,7 +54,7 @@ class Tools {
         return newName;
     }
 
-    rayOfSphereMidpoints(startRegion: number[], planeIndices: number[], isParameterSphere: boolean = false): string {
+    rayOfSphereMidpoints(startRegion: number[], planeIndices: number[]): string {
         var tpIndices: number[] = [planeIndices[0], planeIndices[1], planeIndices[2]];
         var targetRegion: number[] = this.regionIndex(startRegion, tpIndices);
         var direction: number[] = this.midpointRayEmitterDirection(targetRegion, startRegion);
@@ -64,18 +64,12 @@ class Tools {
         var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
         var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
 
-        if (isParameterSphere) {
-            this.ggb.rayOfParameterMidpoints(this.toStr.sphere(startRegion), plane1,
-                plane2, plane3, midpointRayName);
-
-        } else {
-            this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
-                plane2, plane3, midpointRayName);
-        }
+        this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
+            plane2, plane3, midpointRayName);
         return midpointRayName;
     }
 
-    rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[], isParameterSphere: boolean = false): string {
+    rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
         var planeIndices: number[] = [];
         for (var i: number = 0; i < targetRegion.length; i++) {
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
@@ -89,12 +83,11 @@ class Tools {
                 planeIndices[i] = startRegion[i];
             }
         }
-        return this.rayOfSphereMidpoints(startRegion, planeIndices, isParameterSphere);
+        return this.rayOfSphereMidpoints(startRegion, planeIndices);
     }
 
     /**
-     * Returns first found common index position of the three arrays, any common index coming after 
-     * the first one will not be reported.
+     * Returns first found common index position of the three arrays, any common index coming after the first one will not be reported.
      * Output will be a number from 0 to a.length.
      * Contract: a,b,c have equal length.
      */
@@ -108,8 +101,8 @@ class Tools {
                 return i;
             }
         }
-        throw new Error("Tools.getFirstCommonIndexPosition(): no common index. The arrays are: \n a = " +
-            a.toString() + "\n b = " + b.toString() + "\n c = " + c.toString())
+        throw new Error("Tools.getFirstCommonIndexPosition(): no common index. The arrays are: \n a = " + a.toString() + "\n b = "
+            + b.toString() + "\n c = " + c.toString())
     }
     
     /**
@@ -138,7 +131,7 @@ class Tools {
         }
         return section;
     }
-    
+
     /**
      * Mathematical sign function with 0 returned for input "0".
      */
@@ -154,22 +147,13 @@ class Tools {
         }
     }
 
-    private getPrevTangentPlaneIndex(followingTangentPlaneIndex: number[]): number[] {
-        var prevTp: number[] = [];
-        for (var i = 0; i < followingTangentPlaneIndex.length; i++) {
-            prevTp.push(followingTangentPlaneIndex[i] - this.sign(followingTangentPlaneIndex[i]));
-        }
-        return prevTp;
-    }
-
-    reflectPlaneInThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
+    tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
         var nextPlaneIndex: number[] = this.getNextTangentPlaneIndex(sphere1, sphere2, sphere3);
-        var previousTangentPlane: number[] = this.getPrevTangentPlaneIndex(nextPlaneIndex);
-        var prevTp: string = this.toStr.tPlane(previousTangentPlane);
-        var nextTp: string = this.toStr.tPlane(nextPlaneIndex);
-        this.ggb.reflectIn3Spheres(this.toStr.sphere(sphere1), this.toStr.sphere(sphere2),
-            this.toStr.sphere(sphere3), prevTp, nextTp)
-        return nextTp;
+        var name: string = this.toStr.tPlane(nextPlaneIndex);
+        this.ggb.tangentPlaneToThreeSpheresAwayFromOrigin(this.ORIGIN,
+            this.toStr.sphere(sphere1), this.toStr.sphere(sphere2), this.toStr.sphere(sphere3),
+            name);
+        return name;
     }
 
     /**
