@@ -10,4 +10,10 @@ declare module ggbApplet {
     function setLabelVisible(objName: string, visible: boolean): void;
     
     function exists(objName: string): boolean;
+    
+    function getXcoord(objName: string): number;
+    function getYcoord(objName: string): number;
+    function getZcoord(objName: string): number;
+    
+    function getXML(objName?: String): String;
 }
