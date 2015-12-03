@@ -20,30 +20,29 @@ function writeTextFile(text: any) {
 class Exporter {
     private toStr: TypeString;
 
-    public run() {
+    public run(): void {
         var extractedDataStr: string = this.extractDataFromGGBApplet();
         var link: any = document.getElementById('downloadlink');
         link.href = writeTextFile(extractedDataStr);
         link.style.display = 'block';
     }
 
-    private extractDataFromGGBApplet() {
+    private extractDataFromGGBApplet(): string {
         this.toStr = new TypeString();
-        var outputStr: string = this.toVertexLineInOBJ(this.toStr.midpoint([0, 0, 2]));
-        outputStr += this.toLineXYZRadius([0, 0, 2])
+        var outputStr: string = this.extractAllSpheres();
         console.log(outputStr);
         return outputStr;
     }
     
     /** Extracts coords of Sphere midpoint and radius in the form "x y z r" */
-    private toLineXYZRadius(sphereIndex: number[]) {
+    private toLineXYZRadius(sphereIndex: number[]): string {
         var midpoint: string = this.toStr.midpoint(sphereIndex);
         var radiusName: string = this.toStr.radius(sphereIndex);
         return this.toLineOfCoords(midpoint) + ' ' + ggbApplet.getValue(radiusName) + '\n';
     }
 
     /** for export to wavefront OBJ format */
-    private toVertexLineInOBJ(pointName: string) {
+    private toVertexLineInOBJ(pointName: string): string {
         return 'v ' + this.toLineOfCoords(pointName) + '\n';
     }
     
@@ -53,5 +52,23 @@ class Exporter {
         var yCoord = ggbApplet.getYcoord(pointName);
         var zCoord = ggbApplet.getZcoord(pointName);
         return xCoord + ' ' + yCoord + ' ' + zCoord;
+    }
+    
+    /**
+    * extracts all spheres in form "x y z r" (one line per sphere),
+    * where all means all existing spheres specified via Settings MAX_REGION_etc
+    */
+    private extractAllSpheres(): string {
+        var outputStr: string = '';
+        for (var x = -Settings.MAX_REGION_IN_NEGATIVE_X_DIRECTION; x <= Settings.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
+            for (var y = -Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y <= Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
+                for (var z = -Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z <= Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
+                    if (ggbApplet.exists(this.toStr.sphere([x, y, z]))) {
+                        outputStr += this.toLineXYZRadius([x, y, z]);
+                    }
+                }
+            }
+        }
+        return outputStr;
     }
 }
