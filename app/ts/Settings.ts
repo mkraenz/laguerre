@@ -1,11 +1,11 @@
 class Settings {
-    public static MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 5;
-    public static MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 5;
-    public static MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 10;
+    public static MAX_REGION_IN_POSITIVE_X_DIRECTION: number = 0;
+    public static MAX_REGION_IN_POSITIVE_Y_DIRECTION: number = 10;
+    public static MAX_REGION_IN_POSITIVE_Z_DIRECTION: number = 2;
 
-    public static MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 5;
-    public static MAX_REGION_IN_NEGATIVE_Y_DIRECTION: number = 5;
-    public static MAX_REGION_IN_NEGATIVE_Z_DIRECTION: number = 5;
+    public static MAX_REGION_IN_NEGATIVE_X_DIRECTION: number = 0;
+    public static MAX_REGION_IN_NEGATIVE_Y_DIRECTION: number = 0;
+    public static MAX_REGION_IN_NEGATIVE_Z_DIRECTION: number = 0;
 
     // for the parametrizable spheres' slider
     public static PARAMETER_SPHERE_MIDPOINT_MIN = 0.01;
