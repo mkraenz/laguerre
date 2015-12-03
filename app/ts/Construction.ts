@@ -161,7 +161,7 @@ class Construction {
     }
 
     private constructInPositiveXDirection(y: number, z: number): void {
-        for (var x = 1; x < Settings.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
+        for (var x = 1; x < Settings.MAX_REGION_IN_POS_X_DIR; x++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -185,7 +185,7 @@ class Construction {
     }
 
     private constructInNegativeXDirection(y: number, z: number): void {
-        for (var x = 1; x < Settings.MAX_REGION_IN_NEGATIVE_X_DIRECTION; x++) {
+        for (var x = 1; x < Settings.MAX_REGION_IN_NEG_X_DIR; x++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -210,7 +210,7 @@ class Construction {
 
     private constructInPositiveYDirection(z: number): void {
         var x: number = 0;
-        for (var y = 1; y < Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
+        for (var y = 1; y < Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -237,7 +237,7 @@ class Construction {
         var targetRegions: Array<number[]>;
         var startRegion1: number[];
         var startRegions2: Array<number[]>;
-        for (var y = 1; y < Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y++) {
+        for (var y = 1; y < Settings.MAX_REGION_IN_NEG_Y_DIR; y++) {
             if (y % 2 == 1) {
                 targetRegions = [[x + 2, -(y + 1), z], [x, -(y + 1), z], [x, -(y + 1), z + 2]];
                 startRegion1 = [x + 1, -y, z + 1];
@@ -265,7 +265,7 @@ class Construction {
     private constructInPositiveZDirection(): void {
         var x: number = 0;
         var y: number = 0;
-        for (var z = 1; z < Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
+        for (var z = 1; z < Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -289,7 +289,7 @@ class Construction {
     private constructInNegativeZDirection(): void {
         var x: number = 0;
         var y: number = 0;
-        for (var z = 1; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z++) {
+        for (var z = 1; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z++) {
             var targetRegions: Array<number[]>;
             var startRegion1: number[];
             var startRegions2: Array<number[]>;
@@ -370,33 +370,33 @@ class Construction {
     }
 
     private constructInYDirection(): void {
-        for (var z: number = 0; z < Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1; z += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_POS_Z_DIR - 1; z += 2) {
             this.constructInPositiveYDirection(z);
             this.constructInNegativeYDirection(z);
         }
 
-        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z += 2) {
             this.constructInPositiveYDirection(-z);
             this.constructInNegativeYDirection(-z);
         }
     }
 
     private constructInXDirection(): void {
-        for (var z: number = 0; z < Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION - 1; z += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_POS_Z_DIR - 1; z += 2) {
 
-            for (var y: number = 0; y < Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y += 2) {
+            for (var y: number = 0; y < Settings.MAX_REGION_IN_POS_Y_DIR; y += 2) {
                 this.constructInBothXDirection(y, z);
             }
-            for (var y: number = 0; y < Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
+            for (var y: number = 0; y < Settings.MAX_REGION_IN_NEG_Y_DIR; y += 2) {
                 this.constructInBothXDirection(-y, z);
             }
         }
 
-        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION - 1; z += 2) {
-            for (var y: number = 0; y < Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION - 1; y += 2) {
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEG_Z_DIR - 1; z += 2) {
+            for (var y: number = 0; y < Settings.MAX_REGION_IN_POS_Y_DIR - 1; y += 2) {
                 this.constructInBothXDirection(y, -z);
             }
-            for (var y: number = 0; y < Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y += 2) {
+            for (var y: number = 0; y < Settings.MAX_REGION_IN_NEG_Y_DIR; y += 2) {
                 this.constructInBothXDirection(-y, -z);
             }
         }
@@ -425,10 +425,10 @@ class Construction {
          * Construct the spheres s_{-1,-1,z} for z in its parameter domain.
          */
         var firstZCoordThatHasNotBeenInitialized = 3;
-        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < Settings.MAX_REGION_IN_POS_Z_DIR; z += 2) {
             this.constructAFourthSphereInZDirection(z);
         }
-        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z += 2) {
+        for (var z: number = firstZCoordThatHasNotBeenInitialized; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z += 2) {
             this.constructAFourthSphereInZDirection(-z);
         }
     }

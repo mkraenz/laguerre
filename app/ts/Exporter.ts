@@ -60,9 +60,9 @@ class Exporter {
     */
     private extractAllSpheres(): string {
         var outputStr: string = '';
-        for (var x = -Settings.MAX_REGION_IN_NEGATIVE_X_DIRECTION; x <= Settings.MAX_REGION_IN_POSITIVE_X_DIRECTION; x++) {
-            for (var y = -Settings.MAX_REGION_IN_NEGATIVE_Y_DIRECTION; y <= Settings.MAX_REGION_IN_POSITIVE_Y_DIRECTION; y++) {
-                for (var z = -Settings.MAX_REGION_IN_NEGATIVE_Z_DIRECTION; z <= Settings.MAX_REGION_IN_POSITIVE_Z_DIRECTION; z++) {
+        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR; x <= Settings.MAX_REGION_IN_POS_X_DIR; x++) {
+            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
+                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
                     if (ggbApplet.exists(this.toStr.sphere([x, y, z]))) {
                         outputStr += this.toLineXYZRadius([x, y, z]);
                     }
