@@ -30,10 +30,17 @@ class Exporter {
     private extractDataFromGGBApplet() {
         this.toStr = new TypeString();
         var outputStr: string = this.toVertexLineInOBJ(this.toStr.midpoint([0, 0, 2]));
+        outputStr += this.toLineXYZRadius([0, 0, 2])
         console.log(outputStr);
         return outputStr;
     }
-
+    
+    /** Extracts coords of Sphere midpoint and radius in the form "x y z r" */
+    private toLineXYZRadius(sphereIndex: number[]) {
+        var midpoint: string = this.toStr.midpoint(sphereIndex);
+        var radiusName: string = this.toStr.radius(sphereIndex);
+        return this.toLineOfCoords(midpoint) + ' ' + ggbApplet.getValue(radiusName) + '\n';
+    }
 
     /** for export to wavefront OBJ format */
     private toVertexLineInOBJ(pointName: string) {
