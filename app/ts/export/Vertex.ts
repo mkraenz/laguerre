@@ -7,6 +7,7 @@ class Vertex {
 
     constructor(private id: number, private index: number[], toStr: TypeString) {
         this.name = toStr.planeIntersectionPoint(index);
+        this.update();
     }
         
     /** vertex communicates with its corresponding point in ggb and sets datafields */
