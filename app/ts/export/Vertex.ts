@@ -17,17 +17,9 @@ class Vertex {
         this.zCoord = ggbApplet.getZcoord(this.name);
     }
     
-    /** Extracts coordinates of given point to a string of the form "x y z". */
-    private toLineOfCoords(pointName: string): string {
-        var xCoord = ggbApplet.getXcoord(pointName);
-        var yCoord = ggbApplet.getYcoord(pointName);
-        var zCoord = ggbApplet.getZcoord(pointName);
-        return xCoord + ' ' + yCoord + ' ' + zCoord;
-    }
-    
     /** for export to wavefront OBJ format */
-    public toVertexLineInOBJ(pointName: string): string {
-        return 'v ' + this.toLineOfCoords(pointName) + '\n';
+    public toVertexLineInOBJ(): string {
+        return 'v ' + this.xCoord + ' ' + this.yCoord + ' ' + this.zCoord; + '\n';
     }
 
     public getId(): number {
