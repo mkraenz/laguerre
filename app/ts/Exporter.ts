@@ -1,31 +1,49 @@
 // http://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript
 // http://jsfiddle.net/UselessCode/qm5AG/
-var textFile: any = null;
-function writeTextFile(text: any) {
+var textFileSpheres: any = null;
+var objFile: any = null;
+
+/** mode = true then write to OBJ file, else to textFileSpheres */
+function writeTextFile(text: any, mode: boolean) {
+    var file = mode ? textFileSpheres : objFile;
+    
     var data = new Blob([text], {
         type: 'text/plain'
     });
 
     // If we are replacing a previously generated file we need to
     // manually revoke the object URL to avoid memory leaks.
-    if (textFile !== null) {
-        window.URL.revokeObjectURL(textFile);
+    if (file !== null) {
+        window.URL.revokeObjectURL(file);
     }
 
-    textFile = window.URL.createObjectURL(data);
+    file = window.URL.createObjectURL(data);
 
-    return textFile;
+    return file;
 };
 
 class Exporter {
+    public runExportToOBJ(): void {
+        var extractedDataStr: string = this.extractOBJDataFromGGBApplet();
+        var link: any = document.getElementById('downloadOBJlink');
+        link.href = writeTextFile(extractedDataStr, true);
+        link.style.display = 'block';
+    }
+    
     public runExportOfSpheres(): void {
-        var extractedDataStr: string = this.extractDataFromGGBApplet();
+        var extractedDataStr: string = this.extractSphereDataFromGGBApplet();
         var link: any = document.getElementById('downloadlink');
-        link.href = writeTextFile(extractedDataStr);
+        link.href = writeTextFile(extractedDataStr, false);
         link.style.display = 'block';
     }
 
-    private extractDataFromGGBApplet(): string {
+    private extractOBJDataFromGGBApplet(): string {
+        var objExporter = new OBJExporter();
+        var outputStr: string = objExporter.extractData();
+        console.log(outputStr);
+        return outputStr;
+    }
+    private extractSphereDataFromGGBApplet(): string {
         var sphereExporter: SphereExporter = new SphereExporter();
         var outputStr: string = sphereExporter.extractAllSpheres();
         console.log(outputStr);
