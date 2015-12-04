@@ -40,11 +40,6 @@ class Exporter {
         var radiusName: string = this.toStr.radius(sphereIndex);
         return this.toLineOfCoords(midpoint) + ' ' + ggbApplet.getValue(radiusName) + '\n';
     }
-
-    /** for export to wavefront OBJ format */
-    private toVertexLineInOBJ(pointName: string): string {
-        return 'v ' + this.toLineOfCoords(pointName) + '\n';
-    }
     
     /** Extracts coordinates of given point to a string of the form "x y z". */
     private toLineOfCoords(pointName: string): string {
