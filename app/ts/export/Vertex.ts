@@ -32,4 +32,17 @@ class Vertex {
     public getId(): number {
         return this.id;
     }
+
+    /** compares the index of this vertex with the given one and returns true if they are equal */
+    public isIndexEqual(compareIndex: number[]): boolean {
+        if (compareIndex.length != 3) {
+            throw new Error('Assertion failed: given index does not have correct length');
+        }
+        if (this.index[0] == compareIndex[0] && this.index[1] == compareIndex[1] && this.index[2] == compareIndex[2]) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
