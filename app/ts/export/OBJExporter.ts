@@ -19,5 +19,8 @@ class OBJExporter {
                 }
             }
         }
+        if(Settings.debug > 0){
+            console.log('Create Vertices finished. ' + vertexList.length + ' many vertices where added');
+        }
     }
 }
