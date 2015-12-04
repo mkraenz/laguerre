@@ -5,5 +5,5 @@ function runLaguerreConstruction() {
 
 function runExporter() {
     var exporter = new Exporter();
-    exporter.run()
+    exporter.runExportOfSpheres()
 }
