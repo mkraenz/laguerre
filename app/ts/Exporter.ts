@@ -1,74 +1,52 @@
 // http://stackoverflow.com/questions/21012580/is-it-possible-to-write-data-to-file-using-only-javascript
 // http://jsfiddle.net/UselessCode/qm5AG/
-var textFile: any = null;
-function writeTextFile(text: any) {
+var textFileSpheres: any = null;
+var objFile: any = null;
+
+/** mode = true then write to OBJ file, else to textFileSpheres */
+function writeTextFile(text: any, mode: boolean) {
+    var file = mode ? textFileSpheres : objFile;
+    
     var data = new Blob([text], {
         type: 'text/plain'
     });
 
     // If we are replacing a previously generated file we need to
     // manually revoke the object URL to avoid memory leaks.
-    if (textFile !== null) {
-        window.URL.revokeObjectURL(textFile);
+    if (file !== null) {
+        window.URL.revokeObjectURL(file);
     }
 
-    textFile = window.URL.createObjectURL(data);
+    file = window.URL.createObjectURL(data);
 
-    return textFile;
+    return file;
 };
 
 class Exporter {
-    private toStr: TypeString;
-
-    public run(): void {
-        var extractedDataStr: string = this.extractDataFromGGBApplet();
+    public runExportToOBJ(): void {
+        var extractedDataStr: string = this.extractOBJDataFromGGBApplet();
+        var link: any = document.getElementById('downloadOBJlink');
+        link.href = writeTextFile(extractedDataStr, true);
+        link.style.display = 'block';
+    }
+    
+    public runExportOfSpheres(): void {
+        var extractedDataStr: string = this.extractSphereDataFromGGBApplet();
         var link: any = document.getElementById('downloadlink');
-        link.href = writeTextFile(extractedDataStr);
+        link.href = writeTextFile(extractedDataStr, false);
         link.style.display = 'block';
     }
 
-    private extractDataFromGGBApplet(): string {
-        this.toStr = new TypeString();
-        var outputStr: string = this.extractAllSpheres();
+    private extractOBJDataFromGGBApplet(): string {
+        var objExporter = new OBJExporter();
+        var outputStr: string = objExporter.extractData();
         console.log(outputStr);
         return outputStr;
     }
-    
-    /** Extracts coords of Sphere midpoint and radius in the form "x y z r" */
-    private toLineXYZRadius(sphereIndex: number[]): string {
-        var midpoint: string = this.toStr.midpoint(sphereIndex);
-        var radiusName: string = this.toStr.radius(sphereIndex);
-        return this.toLineOfCoords(midpoint) + ' ' + ggbApplet.getValue(radiusName) + '\n';
-    }
-
-    /** for export to wavefront OBJ format */
-    private toVertexLineInOBJ(pointName: string): string {
-        return 'v ' + this.toLineOfCoords(pointName) + '\n';
-    }
-    
-    /** Extracts coordinates of given point to a string of the form "x y z". */
-    private toLineOfCoords(pointName: string): string {
-        var xCoord = ggbApplet.getXcoord(pointName);
-        var yCoord = ggbApplet.getYcoord(pointName);
-        var zCoord = ggbApplet.getZcoord(pointName);
-        return xCoord + ' ' + yCoord + ' ' + zCoord;
-    }
-    
-    /**
-    * extracts all spheres in form "x y z r" (one line per sphere),
-    * where all means all existing spheres specified via Settings MAX_REGION_etc
-    */
-    private extractAllSpheres(): string {
-        var outputStr: string = '';
-        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR; x <= Settings.MAX_REGION_IN_POS_X_DIR; x++) {
-            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
-                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
-                    if (ggbApplet.exists(this.toStr.sphere([x, y, z]))) {
-                        outputStr += this.toLineXYZRadius([x, y, z]);
-                    }
-                }
-            }
-        }
+    private extractSphereDataFromGGBApplet(): string {
+        var sphereExporter: SphereExporter = new SphereExporter();
+        var outputStr: string = sphereExporter.extractAllSpheres();
+        console.log(outputStr);
         return outputStr;
     }
 }

@@ -3,7 +3,12 @@ function runLaguerreConstruction() {
     construction.run();
 }
 
-function runExporter() {
+function runSphereExporter() {
     var exporter = new Exporter();
-    exporter.run()
+    exporter.runExportOfSpheres()
+}
+
+function runExporterToOBJ() {
+    var exporter = new Exporter();
+    exporter.runExportToOBJ();
 }

@@ -26,15 +26,16 @@ class TypeString {
         return this.typeString('parameter', index);
     }
     
-    /**
-     * tangent point
-     */
+    /** tangent point */
     public tPoint(index: number[]): string {
         return this.typeString('TPoint', index);
     }
+
+    public planeIntersectionPoint(index: number[]): string {
+        return this.typeString('I', index);
+    }
     
     /**
-    * 
     * @param index
     *            {number-Array} the index as an array in the form [0,1,54,1,-1,1]
     *            where the last three entries are either 1 or -1
@@ -54,14 +55,14 @@ class TypeString {
         }
         return 'midpointRay_{' + indicesStringArray.toString() + '}';
     }
-    
-    public midpointRayFromOrigin(targetRegion: number[]){
+
+    public midpointRayFromOrigin(targetRegion: number[]) {
         var indices: number[] = [];
-        for(var i: number = 0; i < targetRegion.length; i++){
-           indices[i] = targetRegion[i]; 
+        for (var i: number = 0; i < targetRegion.length; i++) {
+            indices[i] = targetRegion[i];
         }
-        for( var i: number = 0; i< targetRegion.length; i++){
-           indices[i +targetRegion.length] = -targetRegion[i];
+        for (var i: number = 0; i < targetRegion.length; i++) {
+            indices[i + targetRegion.length] = -targetRegion[i];
         }
         return this.midpointRay(indices);
     }
