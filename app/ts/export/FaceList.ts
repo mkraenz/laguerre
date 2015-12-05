@@ -1,6 +1,6 @@
 class FaceList extends Array<Face> {
 
-    constructor(private toStr: TypeString = new TypeString()) {
+    constructor(private toStr: TypeString = new TypeString(), private vertexList: VertexList) {
         super();
     }
 
@@ -13,6 +13,18 @@ class FaceList extends Array<Face> {
         return outputStr;
     }
 
-    public addUpTo3Faces(x: number, y: number, z: number, vertexList: VertexList): void {
+    /** adds UP TO 3 faces to this list, a face is added if it is a proper quadrilateral */
+    public addUpTo3Faces(x: number, y: number, z: number): void {
+        if (this.vertexList.isVertexExistent(x, y, z)) {
+            this.addFaceInXYPlane(x, y, z);
+            this.addFaceInXZPlane(x, y, z);
+            this.addFaceInYZPlane(x, y, z);
+        }
+    }
+    
+    /** adds face [x,y,z], [x+1,y,z], [x+1,y+1,z]. [x,y+1,z] to the list if the face exists, i.e. all
+    *   corresponding vertices exist. */
+    private addFaceInXYPlane(x: number, y: number, z: number): void {
+        
     }
 }
