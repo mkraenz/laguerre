@@ -7,7 +7,7 @@ class OBJExporter {
         return 'TODO implement me';
     }
 
-    private createVertices() {
+    private createVertexList(): VertexList {
         var vertexList = new VertexList();
         for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR; x <= Settings.MAX_REGION_IN_POS_X_DIR; x++) {
             for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
@@ -19,8 +19,24 @@ class OBJExporter {
                 }
             }
         }
-        if(Settings.debug > 0){
-            console.log('Create Vertices finished. ' + vertexList.length + ' many vertices where added');
+        if (Settings.debug > 0) {
+            console.log('createVertexList() finished. ' + vertexList.length + ' many vertices where added');
         }
+        return vertexList;
+    }
+
+    private createFaceList(vertexList: VertexList): FaceList {
+        var faceList: FaceList = new FaceList(this.toStr);
+        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR; x <= Settings.MAX_REGION_IN_POS_X_DIR; x++) {
+            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
+                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
+                    faceList.addUpTo3Faces(x, y, z, vertexList);
+                }
+            }
+        }
+        if (Settings.debug > 0) {
+            console.log('createFaceList() finished. ' + faceList.length + ' many faces where added');
+        }
+        return null;
     }
 }
