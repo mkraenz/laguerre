@@ -10,7 +10,7 @@ class VertexList extends Array<Vertex> {
     }
 
     /** returns Vertex with given index, or null if there is no such Vertex. */
-    public getVertexByIndex(index: number[]): Vertex {
+    private getVertexByIndex(index: number[]): Vertex {
         for (var i = 0; i < this.length; i++) {
             if (this[i].isIndexEqual(index)) {
                 return this[i];
@@ -26,5 +26,9 @@ class VertexList extends Array<Vertex> {
         else {
             return false;
         }
+    }
+
+    public getByIndex(x: number, y: number, z: number) {
+        return this.getVertexByIndex([x, y, z]);
     }
 }
