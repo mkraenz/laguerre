@@ -19,7 +19,7 @@ class Vertex {
     
     /** for export to wavefront OBJ format */
     public toVertexLineInOBJ(): string {
-        return 'v ' + this.xCoord + ' ' + this.yCoord + ' ' + this.zCoord; + '\n';
+        return 'v ' + this.xCoord + ' ' + this.yCoord + ' ' + this.zCoord + '\n';
     }
 
     public getId(): number {
