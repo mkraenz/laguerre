@@ -18,4 +18,13 @@ class VertexList extends Array<Vertex> {
         }
         return null;
     }
+
+    public isVertexExistent(x: number, y: number, z: number) {
+        if (this.getVertexByIndex([x, y, z])) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
