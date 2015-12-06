@@ -24,6 +24,8 @@ function writeTextFile(text: any, mode: boolean) {
 
 class Exporter {
     public runExportToOBJ(): void {
+        var intersector = new TPlaneIntersectionPointConstruction(new TypeString(), new GGBTools());
+        intersector.createTPlaneIntersectionPoints();
         var extractedDataStr: string = this.extractOBJDataFromGGBApplet();
         var link: any = document.getElementById('downloadOBJlink');
         link.href = writeTextFile(extractedDataStr, true);
