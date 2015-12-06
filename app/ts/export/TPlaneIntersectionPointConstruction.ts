@@ -4,14 +4,17 @@
  */
 class TPlaneIntersectionPointConstruction {
 
-    constructor(private toStr: TypeString = new TypeString(), private ggb: GGBTools = new GGBTools()) { }
+    constructor(private toStr: TypeString, private ggb: GGBTools) { }
 
     /** intersects the planes tp_{x,0,0}, {0,y,0}, {0,0,z} if they are all well-defined */
     private intersect3Planes(x: number, y: number, z: number): string {
-        var planeNameX: string = this.toStr.tPlane([x, 0, 0]);
-        var planeNameY: string = this.toStr.tPlane([0, y, 0]);
-        var planeNameZ: string = this.toStr.tPlane([0, 0, z]);
-        return this.ggb.intersect3Planes(planeNameX, planeNameY, planeNameZ);
+        var intersectionPointName: string = this.toStr.planeIntersectionPoint([x, y, z]);
+        if (!ggbApplet.exists(intersectionPointName)) {
+            var planeNameX: string = this.toStr.tPlane([x, 0, 0]);
+            var planeNameY: string = this.toStr.tPlane([0, y, 0]);
+            var planeNameZ: string = this.toStr.tPlane([0, 0, z]);
+            return this.ggb.intersect3Planes(planeNameX, planeNameY, planeNameZ, intersectionPointName);
+        }
     }
 
     public createTPlaneIntersectionPoints() {
