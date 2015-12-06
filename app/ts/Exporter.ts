@@ -47,8 +47,9 @@ class Exporter {
         }
         return outputStr;
     }
+    
     private extractSphereDataFromGGBApplet(): string {
-        var sphereExporter: SphereExporter = new SphereExporter();
+        var sphereExporter: SphereExporter = new SphereExporter(new TypeString());
         var outputStr: string = sphereExporter.extractAllSpheres();
         if (Settings.debug > 0) {
             console.log(outputStr);

@@ -1,13 +1,13 @@
 class SphereExporter {
 
-    constructor(private toStr: TypeString = new TypeString()) {
+    constructor(private toStr: TypeString) {
     }
     
-    /** Extracts coords of Sphere midpoint and radius in the form "x y z r" */
-    private toLineXYZRadius(sphereIndex: number[]): string {
+    /** Extracts coords of Sphere midpoint and radius in the form "x y z \n r" */
+    private toLinesXYZRadius(sphereIndex: number[]): string {
         var midpoint: string = this.toStr.midpoint(sphereIndex);
         var radiusName: string = this.toStr.radius(sphereIndex);
-        return this.toLineOfCoords(midpoint) + ' ' + ggbApplet.getValue(radiusName) + '\n';
+        return this.toLineOfCoords(midpoint) + '\n' + ggbApplet.getValue(radiusName) + '\n';
     }
     
     /** Extracts coordinates of given point to a string of the form "x y z". */
@@ -28,7 +28,7 @@ class SphereExporter {
             for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
                 for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
                     if (ggbApplet.exists(this.toStr.sphere([x, y, z]))) {
-                        outputStr += this.toLineXYZRadius([x, y, z]);
+                        outputStr += this.toLinesXYZRadius([x, y, z]);
                     }
                 }
             }
