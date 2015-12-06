@@ -40,7 +40,7 @@ class Exporter {
     }
 
     private extractOBJDataFromGGBApplet(): string {
-        var objExporter = new OBJExporter();
+        var objExporter = new OBJExporter(new TypeString());
         var outputStr: string = objExporter.extractData();
         if (Settings.debug > 0) {
             console.log(outputStr);

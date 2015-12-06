@@ -1,6 +1,6 @@
 class OBJExporter {
 
-    constructor(private toStr: TypeString = new TypeString()) { }
+    constructor(private toStr: TypeString) { }
 
     public extractData(): string {
         var vertexList = this.createVertexList();
@@ -18,7 +18,7 @@ class OBJExporter {
                     var index: number[] = [x, y, z];
                     var pointName: string = this.toStr.planeIntersectionPoint(index);
                     if (ggbApplet.isDefined(pointName)) {
-                        // length +1 since OBJ definition is 1-based not 0-based
+                        // vertexList.length +1 since OBJ definition is 1-based not 0-based
                         vertexList.push(new Vertex(vertexList.length + 1, index, this.toStr)); 
                     }
                 }

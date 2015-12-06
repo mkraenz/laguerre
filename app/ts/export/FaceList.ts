@@ -1,6 +1,6 @@
 class FaceList extends Array<Face> {
 
-    constructor(private toStr: TypeString = new TypeString(), private vertexList: VertexList) {
+    constructor(private toStr: TypeString, private vertexList: VertexList) {
         super();
     }
 
@@ -25,9 +25,6 @@ class FaceList extends Array<Face> {
     
     /** adds face [x,y,z], [x+1,y,z], [x+1,y+1,z]. [x,y+1,z] to the list if the face exists, i.e. all
     *   corresponding vertices exist. */
-    /**
-     * TODO Standardmaessig muss man um 1 erhoehen, ausser einer von x,y,z ist nahe 0 (d.h.-1??), dann muss man um +2 springen
-     */
     private addFaceInXYPlane(x: number, y: number, z: number): void {
         var v1: Vertex = this.vertexList.getByIndex(x, y, z);
         var v2: Vertex = this.vertexList.getByIndex(x + this.oneOrTwo(x), y, z);

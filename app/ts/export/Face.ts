@@ -1,7 +1,7 @@
 class Face {
     private vertexList: VertexList = new VertexList();
 
-    toFaceLineInOBJ(): string {
+    public toFaceLineInOBJ(): string {
         return 'f ' + this.getVerticesIndexString() + '\n';
     }
 
