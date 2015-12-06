@@ -42,7 +42,7 @@ class Exporter {
     private extractOBJDataFromGGBApplet(): string {
         var objExporter = new OBJExporter(new TypeString());
         var outputStr: string = objExporter.extractData();
-        if (Settings.debug > 0) {
+        if (Settings.debug > 1) {
             console.log(outputStr);
         }
         return outputStr;
@@ -51,7 +51,7 @@ class Exporter {
     private extractSphereDataFromGGBApplet(): string {
         var sphereExporter: SphereExporter = new SphereExporter(new TypeString());
         var outputStr: string = sphereExporter.extractAllSpheres();
-        if (Settings.debug > 0) {
+        if (Settings.debug > 1) {
             console.log(outputStr);
         }
         return outputStr;
