@@ -3,8 +3,11 @@ class OBJExporter {
     constructor(private toStr: TypeString = new TypeString()) { }
 
     public extractData(): string {
-        // TODO: implement 
-        return 'TODO implement me';
+        var vertexList = this.createVertexList();
+        var faceList = this.createFaceList(vertexList);
+        var outputStr: string = vertexList.toOBJString();
+        outputStr += faceList.toOBJString();
+        return outputStr;
     }
 
     private createVertexList(): VertexList {
