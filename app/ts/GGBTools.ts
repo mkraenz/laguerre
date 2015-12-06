@@ -23,7 +23,7 @@ class GGBTools {
     
     /** for custom tool 'Intersect3Planes' */
     public intersect3Planes(planeName1: string, planeName2: string, planeName3: string, name?: string): string {
-        var cmd: string = 'Intersect3Planes[' + planeName1 + ', ' + planeName2 + ', ' + planeName3 + ']';
+        var cmd: string = 'IntersectThreePlanes[' + planeName1 + ', ' + planeName2 + ', ' + planeName3 + ']';
         this.throwErrorIfNotExistentInGGBApplet(planeName1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(planeName2, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(planeName3, cmd, name);
