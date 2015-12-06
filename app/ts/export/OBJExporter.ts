@@ -17,7 +17,7 @@ class OBJExporter {
                 for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
                     var index: number[] = [x, y, z];
                     var pointName: string = this.toStr.planeIntersectionPoint(index);
-                    if (ggbApplet.exists(pointName) && ggbApplet.isDefined(pointName)) {
+                    if (ggbApplet.isDefined(pointName)) {
                         vertexList.push(new Vertex(vertexList.length, index, this.toStr));
                     }
                 }

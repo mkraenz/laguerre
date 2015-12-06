@@ -11,7 +11,7 @@ declare module ggbApplet {
     function setLabelVisible(objName: string, visible: boolean): void;
 
     function exists(objName: string): boolean;
-    function isDefined(objName: string): boolean;
+    function isDefined(objName: string): boolean; // returns false if object does not exist
 
     function getXcoord(objName: string): number;
     function getYcoord(objName: string): number;
