@@ -18,5 +18,6 @@ class Settings {
     public static PROJECTION_POINT_Y_VALUE: number = 100;
     public static PROJECTION_POINT_Z_VALUE: number = 100;
     
+    /** debug level: 0 nothing will be printed, 1 or 2 most things // TODO: think of meaningful levels */
     public static debug = 2;
 }

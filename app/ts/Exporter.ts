@@ -6,7 +6,7 @@ var objFile: any = null;
 /** mode = true then write to OBJ file, else to textFileSpheres */
 function writeTextFile(text: any, mode: boolean) {
     var file = mode ? textFileSpheres : objFile;
-    
+
     var data = new Blob([text], {
         type: 'text/plain'
     });
@@ -29,7 +29,7 @@ class Exporter {
         link.href = writeTextFile(extractedDataStr, true);
         link.style.display = 'block';
     }
-    
+
     public runExportOfSpheres(): void {
         var extractedDataStr: string = this.extractSphereDataFromGGBApplet();
         var link: any = document.getElementById('downloadlink');
@@ -40,13 +40,17 @@ class Exporter {
     private extractOBJDataFromGGBApplet(): string {
         var objExporter = new OBJExporter();
         var outputStr: string = objExporter.extractData();
-        console.log(outputStr);
+        if (Settings.debug > 0) {
+            console.log(outputStr);
+        }
         return outputStr;
     }
     private extractSphereDataFromGGBApplet(): string {
         var sphereExporter: SphereExporter = new SphereExporter();
         var outputStr: string = sphereExporter.extractAllSpheres();
-        console.log(outputStr);
+        if (Settings.debug > 0) {
+            console.log(outputStr);
+        }
         return outputStr;
     }
 }
