@@ -37,6 +37,6 @@ class OBJExporter {
         if (Settings.debug > 0) {
             console.log('createFaceList() finished. ' + faceList.length + ' many faces where added');
         }
-        return null;
+        return faceList;
     }
 }
