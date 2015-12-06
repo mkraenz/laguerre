@@ -7,7 +7,7 @@ class OBJExporter {
         var faceList = this.createFaceList(vertexList);
         var outputStr: string = vertexList.toOBJString();
         outputStr += faceList.toOBJString();
-        return outputStr;
+        return outputStr.trim();
     }
 
     private createVertexList(): VertexList {
@@ -25,7 +25,7 @@ class OBJExporter {
             }
         }
         if (Settings.debug > 0) {
-            console.log('createVertexList() finished. ' + vertexList.length + ' many vertices where added');
+            console.log('createVertexList() finished. ' + vertexList.length + ' vertices where added');
         }
         return vertexList;
     }
@@ -40,7 +40,7 @@ class OBJExporter {
             }
         }
         if (Settings.debug > 0) {
-            console.log('createFaceList() finished. ' + faceList.length + ' many faces where added');
+            console.log('createFaceList() finished. ' + faceList.length + ' faces where added');
         }
         return faceList;
     }
