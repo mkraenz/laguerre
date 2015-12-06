@@ -18,7 +18,8 @@ class OBJExporter {
                     var index: number[] = [x, y, z];
                     var pointName: string = this.toStr.planeIntersectionPoint(index);
                     if (ggbApplet.isDefined(pointName)) {
-                        vertexList.push(new Vertex(vertexList.length, index, this.toStr));
+                        // length +1 since OBJ definition is 1-based not 0-based
+                        vertexList.push(new Vertex(vertexList.length + 1, index, this.toStr)); 
                     }
                 }
             }
