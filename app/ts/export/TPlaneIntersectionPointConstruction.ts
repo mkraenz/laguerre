@@ -21,7 +21,9 @@ class TPlaneIntersectionPointConstruction {
         for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR; x <= Settings.MAX_REGION_IN_POS_X_DIR; x++) {
             for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
                 for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
-                    this.intersect3Planes(x, y, z);
+                    if (x != 0 && y != 0 && z != 0) {
+                        this.intersect3Planes(x, y, z);
+                    }
                 }
             }
         }
