@@ -43,7 +43,7 @@ class View {
         //this.showLineGrid();
     }
 
-    private setLabelsInvisible(): void {
+    public setLabelsInvisible(): void {
         for (var i: number = 0; i < this.listOfInvisibleLabels.length; i++) {
             ggbApplet.setLabelVisible(this.listOfInvisibleLabels[i], false);
         }
