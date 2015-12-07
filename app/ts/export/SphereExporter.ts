@@ -6,14 +6,14 @@ class SphereExporter {
     private toLinesXYZRadius(sphereIndex: number[]): string {
         var midpoint: string = this.toStr.midpoint(sphereIndex);
         var radiusName: string = this.toStr.radius(sphereIndex);
-        return this.toLineOfCoords(midpoint) + '\n' + ggbApplet.getValue(radiusName) + '\n';
+        return this.toLineOfCoords(midpoint) + '\n' + ggbApplet.getValue(radiusName).toFixed(Settings.PRECISION) + '\n';
     }
     
     /** Extracts coordinates of given point to a string of the form "x y z". */
     private toLineOfCoords(pointName: string): string {
-        var xCoord = ggbApplet.getXcoord(pointName);
-        var yCoord = ggbApplet.getYcoord(pointName);
-        var zCoord = ggbApplet.getZcoord(pointName);
+        var xCoord = ggbApplet.getXcoord(pointName).toFixed(Settings.PRECISION);
+        var yCoord = ggbApplet.getYcoord(pointName).toFixed(Settings.PRECISION);
+        var zCoord = ggbApplet.getZcoord(pointName).toFixed(Settings.PRECISION);
         return xCoord + ' ' + yCoord + ' ' + zCoord;
     }
     
