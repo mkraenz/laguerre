@@ -12,14 +12,15 @@ class OBJExporter {
 
     private createVertexList(): VertexList {
         var vertexList = new VertexList();
-        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR; x <= Settings.MAX_REGION_IN_POS_X_DIR; x++) {
-            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
-                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
+        // MAX_REGION +-1 since we need the outer tplanes
+        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR - 1; x <= Settings.MAX_REGION_IN_POS_X_DIR + 1; x++) {
+            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR - 1; y <= Settings.MAX_REGION_IN_POS_Y_DIR + 1; y++) {
+                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR - 1; z <= Settings.MAX_REGION_IN_POS_Z_DIR + 1; z++) {
                     var index: number[] = [x, y, z];
                     var pointName: string = this.toStr.planeIntersectionPoint(index);
                     if (ggbApplet.isDefined(pointName)) {
                         // vertexList.length +1 since OBJ definition is 1-based not 0-based
-                        vertexList.push(new Vertex(vertexList.length + 1, index, this.toStr)); 
+                        vertexList.push(new Vertex(vertexList.length + 1, index, this.toStr));
                     }
                 }
             }
@@ -32,9 +33,9 @@ class OBJExporter {
 
     private createFaceList(vertexList: VertexList): FaceList {
         var faceList: FaceList = new FaceList(this.toStr, vertexList);
-        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR; x <= Settings.MAX_REGION_IN_POS_X_DIR; x++) {
-            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
-                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
+        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR-1; x <= Settings.MAX_REGION_IN_POS_X_DIR+1; x++) {
+            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR-1; y <= Settings.MAX_REGION_IN_POS_Y_DIR+1; y++) {
+                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR-1; z <= Settings.MAX_REGION_IN_POS_Z_DIR+1; z++) {
                     faceList.addUpTo3Faces(x, y, z);
                 }
             }
