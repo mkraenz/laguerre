@@ -1,11 +1,11 @@
 class Settings {
-    public static MAX_REGION_IN_POS_X_DIR: number = 5;
-    public static MAX_REGION_IN_POS_Y_DIR: number = 5;
-    public static MAX_REGION_IN_POS_Z_DIR: number = 5;
+    public static MAX_REGION_IN_POS_X_DIR: number = 2;
+    public static MAX_REGION_IN_POS_Y_DIR: number = 2;
+    public static MAX_REGION_IN_POS_Z_DIR: number = 2;
 
-    public static MAX_REGION_IN_NEG_X_DIR: number = 5;
-    public static MAX_REGION_IN_NEG_Y_DIR: number = 5;
-    public static MAX_REGION_IN_NEG_Z_DIR: number = 5;
+    public static MAX_REGION_IN_NEG_X_DIR: number = 2;
+    public static MAX_REGION_IN_NEG_Y_DIR: number = 2;
+    public static MAX_REGION_IN_NEG_Z_DIR: number = 2;
 
     // for the parametrizable spheres' slider
     public static PARAMETER_SPHERE_MIDPOINT_MIN = 0.01;
@@ -17,4 +17,10 @@ class Settings {
     public static PROJECTION_POINT_X_VALUE: number = 100;
     public static PROJECTION_POINT_Y_VALUE: number = 100;
     public static PROJECTION_POINT_Z_VALUE: number = 100;
+    
+    /** debug level: 0 nothing will be printed, 1 or 2 most things // TODO: think of meaningful levels, not static */
+    public static debug = 2;
+    
+    /** decimal precision for export functions */
+    public static PRECISION: number = 4;
 }

@@ -20,6 +20,16 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
+    
+    /** for custom tool 'Intersect3Planes' */
+    public intersect3Planes(planeName1: string, planeName2: string, planeName3: string, name?: string): string {
+        var cmd: string = 'IntersectThreePlanes[' + planeName1 + ', ' + planeName2 + ', ' + planeName3 + ']';
+        this.throwErrorIfNotExistentInGGBApplet(planeName1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(planeName2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(planeName3, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
 
     public plane(pointName1: string, pointName2: string, pointName3: string, name?: string): string {
         var cmd: string = 'Plane[' + pointName1 + ', ' + pointName2 + ', ' + pointName3 + ']';
