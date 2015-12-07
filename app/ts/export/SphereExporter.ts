@@ -20,13 +20,16 @@ class SphereExporter {
     /**
     * extracts all spheres in form "x y z r" (one line per sphere),
     * where all means all existing spheres specified via Settings MAX_REGION_etc
+    * example: settings.MAX_REG = 2 for all will export the spheres of 3x3x3 cube
+    * // TODO: issue #72
     */
     public extractAllSpheres(): string {
         var outputStr: string = '';
-        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR; x <= Settings.MAX_REGION_IN_POS_X_DIR; x++) {
-            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR; y <= Settings.MAX_REGION_IN_POS_Y_DIR; y++) {
-                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR; z <= Settings.MAX_REGION_IN_POS_Z_DIR; z++) {
-                    if (ggbApplet.isDefined(this.toStr.sphere([x, y, z]))) {
+        for (var x = -Settings.MAX_REGION_IN_NEG_X_DIR + 1; x <= Settings.MAX_REGION_IN_POS_X_DIR - 1; x++) {
+            for (var y = -Settings.MAX_REGION_IN_NEG_Y_DIR + 1; y <= Settings.MAX_REGION_IN_POS_Y_DIR - 1; y++) {
+                for (var z = -Settings.MAX_REGION_IN_NEG_Z_DIR + 1; z <= Settings.MAX_REGION_IN_POS_Z_DIR - 1; z++) {
+                    var sphereName = this.toStr.sphere([x, y, z]);
+                    if (ggbApplet.isDefined(sphereName) && ggbApplet.getVisible(sphereName)) {
                         outputStr += this.toLinesXYZRadius([x, y, z]);
                     }
                 }
