@@ -21,7 +21,7 @@ class SphereExporter {
     * extracts all spheres in form "x y z r" (one line per sphere),
     * where all means all existing spheres specified via Settings MAX_REGION_etc
     * example: settings.MAX_REG = 2 for all will export the spheres of 3x3x3 cube
-    * // TODO: issue #72
+    * // TODO: issue #72 so I do not need the +-1 and can export for any number in Settings
     */
     public extractAllSpheres(): string {
         var outputStr: string = '';
