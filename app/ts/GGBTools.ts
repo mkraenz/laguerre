@@ -123,7 +123,7 @@ class GGBTools {
     public sphere(midpoint: string, radius: string, name?: string): string {
         var cmd: string = 'Sphere[' + midpoint + ', ' + radius + ']';
         this.throwErrorIfNotExistentInGGBApplet(midpoint, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(radius, cmd, name); 
+        this.throwErrorIfNotExistentInGGBApplet(radius, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -153,12 +153,12 @@ class GGBTools {
      */
     public rayOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
         var cmd: string = 'RayOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
-        
+
         this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(plane1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(plane2, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(plane3, cmd, name);
-        
+
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -169,15 +169,28 @@ class GGBTools {
     public tangentPlaneToThreeSpheresAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
         var cmd: string = 'TangentialPlaneToThreeSpheresAwayFromOrigin[' + origin +
             ',' + sphere1 + ',' + sphere2 + ',' + sphere3 + ']';
-        
+
         this.throwErrorIfNotExistentInGGBApplet(origin, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
-        
+
         this.fullCommandAndExec(cmd, name);
         return name;
     }
+    
+    /** Polygon[] tool with just 4 points. */
+    public quad(point1: string, point2: string, point3: string, point4: string, name?: string) {
+        var cmd: string = 'Polygon[' + point1 + ',' + point2 + ',' + point3 + ',' + point4 + ']';
+        this.throwErrorIfNotExistentInGGBApplet(point1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(point2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(point3, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(point4, cmd, name);
+
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
+
     private throwErrorIfNotExistentInGGBApplet(objName: string, cmd: string, definiendum: string) {
         /**
          * Checks if the given object objName exists in the GGBApplet. If not it throws an Error naming the full command

@@ -192,4 +192,9 @@ class Tools {
         }
         return direction;
     }
+
+    quad(point1: number[], point2: number[], point3: number[], point4: number[]): string {
+        return this.ggb.quad(this.toStr.planeIntersectionPoint(point1), this.toStr.planeIntersectionPoint(point2),
+            this.toStr.planeIntersectionPoint(point3), this.toStr.planeIntersectionPoint(point4));
+    }
 }
