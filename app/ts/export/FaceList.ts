@@ -34,11 +34,19 @@ class FaceList extends Array<Face> {
 
     private getIndexMatrix(x: number, y: number, z: number, normalDir: number): number[][] {
         var indexMatrix: number[][] = [[x, y, z], [x, y, z], [x, y, z], [x, y, z]];
+        var shiftMatrix: number[][] = this.getShiftMatrix(x, y, z, normalDir);
+        var matrix = math.add(indexMatrix, shiftMatrix) as number[][];
+        return matrix;
+    }
+
+    private getShiftMatrix(x: number, y: number, z: number, normalDir: number): number[][] {
         var shiftMatrix: number[][] = Utils.getShiftMatrix();
         var mathjsExt: MathjsExtensions = new MathjsExtensions();
         mathjsExt.switchMatrixColumns(shiftMatrix, 0, normalDir);
-        var matrix = math.add(indexMatrix, shiftMatrix) as number[][];
-        return matrix;
+        mathjsExt.multiplyColumnByScalar(shiftMatrix, this.oneOrTwo(x), 0)
+        mathjsExt.multiplyColumnByScalar(shiftMatrix, this.oneOrTwo(y), 1)
+        mathjsExt.multiplyColumnByScalar(shiftMatrix, this.oneOrTwo(z), 2)
+        return shiftMatrix;
     }
     
     /** adds face [x,y,z], [x+1,y,z], [x+1,y+1,z]. [x,y+1,z] to the list if the face exists, i.e. all
