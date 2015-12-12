@@ -17,27 +17,28 @@ class FaceList extends Array<Face> {
     public addUpTo3Faces(x: number, y: number, z: number): void {
         // NOTE: here and in called methods can be optimized a lot. We run through the whole vertexList way to often.
         if (this.vertexList.isVertexExistent(x, y, z)) {
-            this.addFaceInXYPlane(x, y, z);
-            this.addFaceInXZPlane(x, y, z);
-            this.addFaceInYZPlane(x, y, z);
+            this.addFaceInPlane(x, y, z, 0); // yz plane
+            this.addFaceInPlane(x, y, z, 1); // xz
+            this.addFaceInPlane(x, y, z, 2); // xy
         }
     }
 
     private addFaceInPlane(x: number, y: number, z: number, normalDir: number): void {
-        var indexMatrix = this.getIndexMatrix(x, y, z, normalDir) as number[][];
+        var indexMatrix = this.getIndexMatrix(x, y, z, normalDir);
         var v1: Vertex = this.vertexList.getVertexByIndex(indexMatrix[0]);
         var v2: Vertex = this.vertexList.getVertexByIndex(indexMatrix[1]);
         var v3: Vertex = this.vertexList.getVertexByIndex(indexMatrix[2]);
-        var v4: Vertex = this.vertexList.getVertexByIndex(indexMatrix[2]);
+        var v4: Vertex = this.vertexList.getVertexByIndex(indexMatrix[3]);
         this.addFace(v1, v2, v3, v4);
     }
 
-    private getIndexMatrix(x: number, y: number, z: number, normalDir: number): mathjs.MathType {
+    private getIndexMatrix(x: number, y: number, z: number, normalDir: number): number[][] {
         var indexMatrix: number[][] = [[x, y, z], [x, y, z], [x, y, z], [x, y, z]];
-        var mathjsExt: MathjsExtensions = new MathjsExtensions();
         var shiftMatrix: number[][] = Utils.getShiftMatrix();
+        var mathjsExt: MathjsExtensions = new MathjsExtensions();
         mathjsExt.switchMatrixColumns(shiftMatrix, 0, normalDir);
-        return math.add(indexMatrix, shiftMatrix);
+        var matrix = math.add(indexMatrix, shiftMatrix) as number[][];
+        return matrix;
     }
     
     /** adds face [x,y,z], [x+1,y,z], [x+1,y+1,z]. [x,y+1,z] to the list if the face exists, i.e. all
