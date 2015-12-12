@@ -11,4 +11,5 @@ function runSphereExporter() {
 function runExporterToOBJ() {
     var exporter = new Exporter();
     exporter.runExportToOBJ();
+    
 }
