@@ -1,6 +1,6 @@
 class Tools {
 
-    constructor(private toStr: TypeString, private ggb: GGBTools, private ORIGIN: string, private view?: View) {
+    constructor(private toStr: TypeString, private ggb: GGBTools, private ORIGIN?: string, private view?: View) {
     }
 
     pointFree(x: number, y: number, z: number, name?: string): string {
@@ -176,5 +176,10 @@ class Tools {
             }
         }
         return direction;
+    }
+
+    quad(point1: number[], point2: number[], point3: number[], point4: number[], name?: string): string {
+        return this.ggb.quad(this.toStr.planeIntersectionPoint(point1), this.toStr.planeIntersectionPoint(point2),
+            this.toStr.planeIntersectionPoint(point3), this.toStr.planeIntersectionPoint(point4), name);
     }
 }

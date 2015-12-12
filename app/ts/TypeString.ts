@@ -66,4 +66,8 @@ class TypeString {
         }
         return this.midpointRay(indices);
     }
+
+    public face(index1: number[], index2: number[], index3: number[], index4: number[]) {
+        return 'face_{' + index1.toString() + ',' + index2.toString() + ',' + index3.toString() + ',' + index4.toString() + '}';
+    }
 }

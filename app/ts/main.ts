@@ -12,3 +12,13 @@ function runExporterToOBJ() {
     var exporter = new Exporter();
     exporter.runExportToOBJ();
 }
+
+function runCreateFaces() {
+    var listCreator = new ListCreator(new TypeString(), new View(new GGBTools(), new TypeString()));
+    listCreator.getFaceList().createFacesInGGB();
+}
+
+function hideAllLabels() {
+    var view: View = new View(new GGBTools(), new TypeString());
+    view.setLabelsInvisible();
+}

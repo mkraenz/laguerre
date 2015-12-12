@@ -26,26 +26,16 @@ class View {
         }
     }
 
-    private showLineGrid(): void {
-        for (var i: number = 0; i < this.listOfInvisiblePlanes.length; i++) {
-            for (var j: number = 0; j < this.listOfInvisiblePlanes.length; j++) {
-                if (i != j) {
-                    this.ggb.intersect(this.listOfInvisiblePlanes[i], this.listOfInvisiblePlanes[j]);
-                }
-            }
-        }
-    }
-
     public constumizeViewProperties(): void {
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();
         this.setColorOfSphere([0, 0, 0], this.ORIGIN_SPHERE_COLOR);
-        //this.showLineGrid();
     }
 
     public setLabelsInvisible(): void {
-        for (var i: number = 0; i < this.listOfInvisibleLabels.length; i++) {
-            ggbApplet.setLabelVisible(this.listOfInvisibleLabels[i], false);
+        var allGGBObjectNames: string[] = ggbApplet.getAllObjectNames();
+        for(var i = 0; i < allGGBObjectNames.length; i++){
+           ggbApplet.setLabelVisible(allGGBObjectNames[i], false); 
         }
     }
 
