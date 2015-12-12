@@ -39,4 +39,8 @@ class Vertex {
             return false;
         }
     }
+    
+    public getIndex(): number[] {
+       return this.index; 
+    }
 }
