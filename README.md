@@ -7,9 +7,12 @@ First, I assume you have git installed (note that github-for-windows does not su
 2. Navigate into the projects root and run the following commands in a shell.
   1. `$ npm install` (if this gives you errors as in the first comments attached screenshot then see the section Setup problems)
   2. `$ bower install`
-  3. `$ grunt serve` (to see if everything worked fine. It should open a tab in your browser displaying some stuff.)
+  3. `$ npm install -g tsd` *(typescript definition manager)
+  4. `$ tsd reinstall`
+  5. `$ grunt serve` (to see if everything worked fine. It should open a tab in your browser displaying some stuff.)
   
-For tests also cd into /test and run `$ bower install`.
+  
+For tests also cd into /test and run `$ bower install`. (maybe outdated)
 
 
 ## Naming convention
