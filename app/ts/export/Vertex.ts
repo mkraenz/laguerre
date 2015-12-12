@@ -27,6 +27,10 @@ class Vertex {
         return this.id;
     }
 
+    public getName(): string {
+        return this.name;
+    }
+
     /** compares the index of this vertex with the given one and returns true if they are equal */
     public isIndexEqual(compareIndex: number[]): boolean {
         if (compareIndex.length != 3) {
@@ -39,8 +43,8 @@ class Vertex {
             return false;
         }
     }
-    
+
     public getIndex(): number[] {
-       return this.index; 
+        return this.index;
     }
 }
