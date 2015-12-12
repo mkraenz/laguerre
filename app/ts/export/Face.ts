@@ -1,5 +1,12 @@
 class Face {
     private vertexList: VertexList = new VertexList();
+    private name: string;
+
+    constructor(private toStr: TypeString) { }
+
+    public getName() {
+        return this.name;
+    }
 
     public toFaceLineInOBJ(): string {
         return 'f ' + this.getVerticesIndexString() + '\n';
@@ -31,11 +38,12 @@ class Face {
         this.addVertex(v2);
         this.addVertex(v3);
         this.addVertex(v4);
+        this.name = this.toStr.face(v1.getIndex(), v2.getIndex(), v3.getIndex(), v4.getIndex());
     }
 
     public createFaceInGGB(): void {
         var tools = new Tools(new TypeString(), new GGBTools());
         tools.quad(this.vertexList[0].getIndex(), this.vertexList[1].getIndex(),
-            this.vertexList[2].getIndex(), this.vertexList[3].getIndex());
+            this.vertexList[2].getIndex(), this.vertexList[3].getIndex(), this.name);
     }
 }
