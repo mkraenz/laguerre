@@ -19,5 +19,7 @@ declare module ggbApplet {
     function getZcoord(objName: string): number;
     function getValue(objName: string): number;
     
-    function getXML(objName?: String): String;
+    function getXML(objName?: String): string;
+    
+    function getAllObjectNames(): string[]
 }
