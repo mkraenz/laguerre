@@ -52,7 +52,7 @@ class FaceList extends Array<Face> {
         mathjsExt.multiplyColumnByScalar(shiftMatrix, this.oneOrTwo(z), 2)
         return shiftMatrix;
     }
-    
+
     private oneOrTwo(n: number): number {
         if (n == -1) {
             return 2;
@@ -68,6 +68,12 @@ class FaceList extends Array<Face> {
             var face = new Face();
             face.add4Vertices(v1, v2, v3, v4);
             this.push(face);
+        }
+    }
+
+    public createFacesInGGB(): void {
+        for (var i = 0; i < this.length; i++) {
+            this[i].createFaceInGGB();
         }
     }
 }

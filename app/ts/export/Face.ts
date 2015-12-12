@@ -32,4 +32,10 @@ class Face {
         this.addVertex(v3);
         this.addVertex(v4);
     }
+
+    public createFaceInGGB(): void {
+        var tools = new Tools(new TypeString(), new GGBTools());
+        tools.quad(this.vertexList[0].getIndex(), this.vertexList[1].getIndex(),
+            this.vertexList[2].getIndex(), this.vertexList[3].getIndex());
+    }
 }
