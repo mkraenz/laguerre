@@ -7,4 +7,11 @@ class MathjsExtensions {
             matrix[i][columnIndex2] = tmp;
         }
     }
+
+    public multiplyColumnByScalar(matrix: number[][], scalar: number , columnIndex: number){
+       for(var i = 0; i< matrix.length; i++){
+          matrix[i][columnIndex] *= scalar; 
+       } 
+    }
+    
 }
