@@ -22,6 +22,23 @@ class FaceList extends Array<Face> {
             this.addFaceInYZPlane(x, y, z);
         }
     }
+
+    private addFaceInPlane(x: number, y: number, z: number, normalDir: number): void {
+        var indexMatrix = this.getIndexMatrix(x, y, z, normalDir) as number[][];
+        var v1: Vertex = this.vertexList.getVertexByIndex(indexMatrix[0]);
+        var v2: Vertex = this.vertexList.getVertexByIndex(indexMatrix[1]);
+        var v3: Vertex = this.vertexList.getVertexByIndex(indexMatrix[2]);
+        var v4: Vertex = this.vertexList.getVertexByIndex(indexMatrix[2]);
+        this.addFace(v1, v2, v3, v4);
+    }
+
+    private getIndexMatrix(x: number, y: number, z: number, normalDir: number): mathjs.MathType {
+        var indexMatrix: number[][] = [[x, y, z], [x, y, z], [x, y, z], [x, y, z]];
+        var mathjsExt: MathjsExtensions = new MathjsExtensions();
+        var shiftMatrix: number[][] = Utils.getShiftMatrix();
+        mathjsExt.switchMatrixColumns(shiftMatrix, 0, normalDir);
+        return math.add(indexMatrix, shiftMatrix);
+    }
     
     /** adds face [x,y,z], [x+1,y,z], [x+1,y+1,z]. [x,y+1,z] to the list if the face exists, i.e. all
     *   corresponding vertices exist. */
