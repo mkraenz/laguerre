@@ -127,24 +127,9 @@ class Tools {
     private getNextTangentPlaneIndex(sphere1: number[], sphere2: number[], sphere3: number[]) {
         var section: number[] = this.getSectionIndexArray(sphere1, sphere2, sphere3);
         for (var i = 0; i < section.length; i++) {
-            section[i] = section[i] + this.sign(section[i]); // +-1 if section[i] != 0
+            section[i] = section[i] + math.sign(section[i]); // +-1 if section[i] != 0
         }
         return section;
-    }
-
-    /**
-     * Mathematical sign function with 0 returned for input "0".
-     */
-    private sign(a: number) {
-        if (a > 0) {
-            return 1;
-        }
-        else {
-            if (a < 0) {
-                return -1;
-            }
-            return 0;
-        }
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
@@ -170,7 +155,7 @@ class Tools {
                 targetRegion[i] = tpIndices[i];
             }
             else {
-                targetRegion[i] = startRegion[i] - this.sign(startRegion[i]);
+                targetRegion[i] = startRegion[i] - math.sign(startRegion[i]);
             }
         }
         return targetRegion;
