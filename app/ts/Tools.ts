@@ -127,7 +127,7 @@ class Tools {
     private getNextTangentPlaneIndex(sphere1: number[], sphere2: number[], sphere3: number[]) {
         var section: number[] = this.getSectionIndexArray(sphere1, sphere2, sphere3);
         for (var i = 0; i < section.length; i++) {
-            section[i] = section[i] + math.sign(section[i]); // +-1 if section[i] != 0
+            section[i] = section[i] + this.sign(section[i]); // +-1 if section[i] != 0
         }
         return section;
     }
@@ -155,7 +155,7 @@ class Tools {
                 targetRegion[i] = tpIndices[i];
             }
             else {
-                targetRegion[i] = startRegion[i] - math.sign(startRegion[i]);
+                targetRegion[i] = startRegion[i] - this.sign(startRegion[i]);
             }
         }
         return targetRegion;
@@ -181,5 +181,17 @@ class Tools {
     quad(point1: number[], point2: number[], point3: number[], point4: number[], name?: string): string {
         return this.ggb.quad(this.toStr.planeIntersectionPoint(point1), this.toStr.planeIntersectionPoint(point2),
             this.toStr.planeIntersectionPoint(point3), this.toStr.planeIntersectionPoint(point4), name);
+    }
+    
+    private sign(number1: number): number {
+        if(number1 > 0){    
+            return 1;
+        }
+        else if(number1 < 0){
+            return -1;
+        }
+        else{
+            return 0;
+        }
     }
 }
