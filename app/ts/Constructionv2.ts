@@ -222,7 +222,7 @@ class Construction2 {
 
     private constructInZDirection(): void {
         this.constructInSomeZDirection(Settings.MAX_REGION_IN_POS_Z_DIR, true)
-//        this.constructInSomeZDirection(Settings.MAX_REGION_IN_NEG_Z_DIR, false)
+        this.constructInSomeZDirection(Settings.MAX_REGION_IN_NEG_Z_DIR, false)
         //        this.constructInNegativeZDirection();
         //        this.constructFourthSpheresInBothZDirections();
     }
@@ -234,18 +234,19 @@ class Construction2 {
         var sign: number = direction ? +1 : -1
         var x: number = 0;
         var y: number = 0;
-        for (var z = 1; z < max_z; z++) {
+        for (var counterZ = 1; counterZ < max_z; counterZ++) {
             var targetRegions1: Array<number[]>;
             var targetRegions2: Array<number[]>;
             var startRegion1: number[];
             var startRegion2: number[];
             var startRegions1: Array<number[]>;
             var startRegions2: Array<number[]>;
-
+            var z: number = counterZ * sign;
+            
             if (Math.abs(z) % 2 == 1) {
                 // startRegions1 = spheres in combinatorics_in_tp_100_from_3_spheres.ggb
                 // targetRegions1 = spheres in example_combinatorics_in_tp_200_from_4_spheres.ggb
-                targetRegions1 = [[x, y, z + 1*sign], [x + 2, y, z + 1*sign], [x, y + 2, z + 1*sign]];
+                targetRegions1 = [[x, y, z + sign], [x + 2, y, z + sign], [x, y + 2, z + sign]];
                 startRegion1 = [x + 1, y + 1, z];
                 startRegions1 = [[x + 1, y - 1, z], [x + 1, y - 1, z], [x - 1, y + 1, z]];
 
@@ -254,13 +255,13 @@ class Construction2 {
                  * which are not in combinatorics_in_tp_100_from_3_spheres.ggb
                  * targetRegions = remaining 2s spheres in example_combinatorics_in_tp_100_from_4_spheres.ggb 
                  */
-                targetRegions2 = [[x - 2, y, z + 1*sign], [x, y - 2, z + 1*sign]];
+                targetRegions2 = [[x - 2, y, z + sign], [x, y - 2, z + sign]];
                 startRegion2 = [x - 1, y - 1, z];
                 startRegions2 = [[x - 1, y + 1, z], [x + 1, y - 1, z]]
             }
             else {
-                targetRegions1 = [[x + 1, y + 1, z + 1*sign], [x + 1, y - 1, z + 1*sign],
-                     [x - 1, y + 1, z + 1*sign], [x - 1, y - 1, z + 1*sign]];
+                targetRegions1 = [[x + 1, y + 1, z + sign], [x + 1, y - 1, z + sign],
+                    [x - 1, y + 1, z + sign], [x - 1, y - 1, z + sign]];
                 startRegion1 = [x, y, z];
                 startRegions1 = [[x + 2, y, z], [x + 2, y, z], [x - 2, y, z], [x - 2, y, z]];
             }
