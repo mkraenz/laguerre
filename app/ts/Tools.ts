@@ -78,7 +78,6 @@ class Tools {
         var plane1: string = this.toStr.tPlane([planeIndices[0], 0, 0]);
         var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
         var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
-        // TODO use lineOfSphereMidpoints
         this.ggb.lineOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
             plane2, plane3, midpointLineName);
         return midpointLineName; 
@@ -162,6 +161,16 @@ class Tools {
             section[i] = section[i] + this.sign(section[i]); // +-1 if section[i] != 0
         }
         return section;
+    }
+
+    reflectTangentPlane(sphere1: number[], sphere2: number[], sphere3: number[]): string {
+        var givenTangentPlaneIndex: number[] = this.getSectionIndexArray(sphere1, sphere2, sphere3);
+        var nextPlaneIndex: number[] = this.getNextTangentPlaneIndex(sphere1, sphere2, sphere3);
+        var name: string = this.toStr.tPlane(nextPlaneIndex);
+        this.ggb.reflectObjInPlaneSpannedBy3Points(this.toStr.tPlane(givenTangentPlaneIndex),
+            this.toStr.midpoint(sphere1), this.toStr.midpoint(sphere2), this.toStr.midpoint(sphere3),
+            name);
+        return name;
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {

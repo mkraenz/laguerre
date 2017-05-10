@@ -415,8 +415,8 @@ class Construction {
         var sphereRegion3: number[] = [1, 1, -1];
         var sphereRegion4: number[] = [-1, -1, 1];
 
-        var planeInNegZDirection: string = this.t.tangentPlaneToThreeSpheres(sphereRegion1, sphereRegion2, sphereRegion3);
-        var planeInNegYDirection: string = this.t.tangentPlaneToThreeSpheres(sphereRegion1, sphereRegion2, sphereRegion4);
+        var planeInNegZDirection: string = this.t.reflectTangentPlane(sphereRegion1, sphereRegion2, sphereRegion3);
+        var planeInNegYDirection: string = this.t.reflectTangentPlane(sphereRegion1, sphereRegion2, sphereRegion4);
         this.view.listOfInvisiblePlanes.push(planeInNegZDirection, planeInNegYDirection);
     }
 

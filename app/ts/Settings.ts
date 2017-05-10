@@ -1,5 +1,5 @@
 class Settings {
-    public static MAX_REGION_IN_POS_X_DIR: number = 10;
+    public static MAX_REGION_IN_POS_X_DIR: number = 5;
     public static MAX_REGION_IN_POS_Y_DIR: number = 3;
     public static MAX_REGION_IN_POS_Z_DIR: number = 3;
 

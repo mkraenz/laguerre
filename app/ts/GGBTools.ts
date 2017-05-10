@@ -81,7 +81,7 @@ class GGBTools {
     
     public reflectObjInPlaneSpannedBy3Points(obj1: string, point1: string, point2: string, point3: string, 
                                            name?: string): string {
-        var cmd: string = 'Mirror[' + obj1 + ', Plane['+ point1 + ',' + point2 + ',' + point3 +   + ']]';
+        var cmd: string = 'Mirror[' + obj1 + ', Plane['+ point1 + ',' + point2 + ',' + point3 + ']]';
         this.throwErrorIfNotExistentInGGBApplet(obj1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(point1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(point2, cmd, name);
