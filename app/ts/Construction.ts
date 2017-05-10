@@ -315,7 +315,7 @@ class Construction {
         for (var x: number = -1; x < 2; x = x + 2) {
             for (var y: number = -1; y < 2; y = y + 2) {
                 for (var z: number = -1; z < 2; z = z + 2) {
-                    var ray: string = this.t.rayOfSphereMidpointsFromRegion([0, 0, 0], [x, y, z]);
+                    var ray: string = this.t.rayOfSphereMidpointsFromRegion2([0, 0, 0], [x, y, z]);
                     this.view.listOfInvisibleObjects.push(ray);
                 }
             }

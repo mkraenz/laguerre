@@ -79,12 +79,29 @@ class Tools {
         var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
         var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
         // TODO use lineOfSphereMidpoints
-        this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
+        this.ggb.lineOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
             plane2, plane3, midpointLineName);
         return midpointLineName; 
+    }   
+    
+    rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
+        var planeIndices: number[] = [];
+        for (var i: number = 0; i < targetRegion.length; i++) {
+            if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
+                throw new Error('Your midpointRay goes to a face instead of a corner. This is not possible by construction. See Tools.ts/rayOfSphereMidpointsFromRegion().'
+                    + ' Parameters:\nstartRegion = ' + startRegion.toString() + '\ntargetRegion = ' + targetRegion.toString());
+            }
+            if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
+                planeIndices[i] = targetRegion[i];
+            }
+            else {
+                planeIndices[i] = startRegion[i];
+            }
+        }
+        return this.lineOfSphereMidpoints(startRegion, planeIndices);
     }
 
-    rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
+    rayOfSphereMidpointsFromRegion2(startRegion: number[], targetRegion: number[]): string {
         var planeIndices: number[] = [];
         for (var i: number = 0; i < targetRegion.length; i++) {
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
