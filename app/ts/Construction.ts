@@ -128,9 +128,9 @@ class Construction {
             this.t.radius(spheres[i]);
             this.t.sphere(spheres[i]);
         }
-        var plane1Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[2]);
-        var plane2Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[1], spheres[3]);
-        var plane3Name: string = this.t.tangentPlaneToThreeSpheres(spheres[0], spheres[2], spheres[3]);
+        var plane1Name: string = this.t.reflectTangentPlane(spheres[0], spheres[1], spheres[2]);
+        var plane2Name: string = this.t.reflectTangentPlane(spheres[0], spheres[1], spheres[3]);
+        var plane3Name: string = this.t.reflectTangentPlane(spheres[0], spheres[2], spheres[3]);
         this.view.listOfInvisiblePlanes.push(plane1Name, plane2Name, plane3Name);
     }
 
@@ -415,8 +415,10 @@ class Construction {
         var sphereRegion3: number[] = [1, 1, -1];
         var sphereRegion4: number[] = [-1, -1, 1];
 
-        var planeInNegZDirection: string = this.t.reflectTangentPlane(sphereRegion1, sphereRegion2, sphereRegion3);
-        var planeInNegYDirection: string = this.t.reflectTangentPlane(sphereRegion1, sphereRegion2, sphereRegion4);
+        var planeInNegZDirection: string = this.t.reflectTangentPlane(sphereRegion1, sphereRegion2,
+                    sphereRegion3);
+        var planeInNegYDirection: string = this.t.reflectTangentPlane(sphereRegion1, sphereRegion2, 
+                    sphereRegion4);
         this.view.listOfInvisiblePlanes.push(planeInNegZDirection, planeInNegYDirection);
     }
 
