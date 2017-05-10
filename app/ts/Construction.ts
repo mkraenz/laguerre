@@ -232,6 +232,7 @@ class Construction {
             }
         }
     }
+    
     private constructInNegativeYDirection(z: number): void {
         var x: number = 0;
         var targetRegions: Array<number[]>;
