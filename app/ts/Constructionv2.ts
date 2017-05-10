@@ -249,15 +249,15 @@ class Construction2 {
                  * which are not in combinatorics_in_tp_100_from_3_spheres.ggb
                  * targetRegions = remaining 2s spheres in example_combinatorics_in_tp_100_from_4_spheres.ggb 
                  */
-                targetRegions2 = [[x-2, y, z+1], [x, y-2, z+1]];
+                targetRegions2 = [[x - 2, y, z + 1], [x, y - 2, z + 1]];
                 startRegion2 = [x - 1, y - 1, z];
                 startRegions2 = [[x - 1, y + 1, z], [x + 1, y - 1, z]]
             }
             else {
                 targetRegions1 = [[x + 1, y + 1, z + 1], [x + 1, y - 1, z + 1], [x - 1, y + 1, z + 1],
-                             [x-1, y-1, z+1]];
+                    [x - 1, y - 1, z + 1]];
                 startRegion1 = [x, y, z];
-                startRegions1 = [[x + 2, y, z], [x + 2, y, z], [x, y + 2, z], [x-2,y,z]];
+                startRegions1 = [[x + 2, y, z], [x + 2, y, z], [x - 2, y, z], [x - 2, y, z]];
             }
 
             this.createSpheresInTargetRegions(targetRegions1, startRegion1, startRegions1);
