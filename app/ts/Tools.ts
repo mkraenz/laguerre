@@ -68,6 +68,21 @@ class Tools {
             plane2, plane3, midpointRayName);
         return midpointRayName;
     }
+    
+    lineOfSphereMidpoints(startRegion: number[], planeIndices: number[]): string {
+        var tpIndices: number[] = [planeIndices[0], planeIndices[1], planeIndices[2]];
+        var targetRegion: number[] = this.regionIndex(startRegion, tpIndices);
+        var direction: number[] = this.midpointRayEmitterDirection(targetRegion, startRegion);
+        var midpointLineIndex: number[] = targetRegion.concat(direction);
+        var midpointLineName: string = this.toStr.midpointRay(midpointLineIndex);
+        var plane1: string = this.toStr.tPlane([planeIndices[0], 0, 0]);
+        var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
+        var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
+        // TODO use lineOfSphereMidpoints
+        this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
+            plane2, plane3, midpointLineName);
+        return midpointLineName; 
+    }
 
     rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
         var planeIndices: number[] = [];

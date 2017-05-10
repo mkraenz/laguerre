@@ -161,6 +161,22 @@ class GGBTools {
 
         this.fullCommandAndExec(cmd, name);
         return name;
+    }    
+    
+    /**
+     * Custom Tool, where the ray emits from from the midpoint of given sphere and goes through the 
+     * intersection point of the three planes.
+     */
+    public lineOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
+        var cmd: string = 'LineOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
+
+        this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane3, cmd, name);
+
+        this.fullCommandAndExec(cmd, name);
+        return name;
     }
     
     /**
