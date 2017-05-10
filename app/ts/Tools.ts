@@ -83,7 +83,7 @@ class Tools {
         return midpointLineName; 
     }   
     
-    rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
+    lineOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
         var planeIndices: number[] = [];
         for (var i: number = 0; i < targetRegion.length; i++) {
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {

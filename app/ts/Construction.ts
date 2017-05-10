@@ -136,8 +136,8 @@ class Construction {
 
     private sphereMidpointFromTwoRays(targetRegion: number[], startRegion1: number[],
         startRegion2: number[]): string {
-        var ray1: string = this.t.rayOfSphereMidpointsFromRegion(startRegion1, targetRegion);
-        var ray2: string = this.t.rayOfSphereMidpointsFromRegion(startRegion2, targetRegion);
+        var ray1: string = this.t.lineOfSphereMidpointsFromRegion(startRegion1, targetRegion);
+        var ray2: string = this.t.lineOfSphereMidpointsFromRegion(startRegion2, targetRegion);
         var midpoint: string = this.ggb.intersect(ray1, ray2, this.toStr.midpoint(targetRegion));
         this.view.listOfInvisibleObjects.push(ray1, ray2);
         return midpoint;
@@ -359,7 +359,7 @@ class Construction {
         this.t.radius(helpRegion);
         this.t.sphere(helpRegion);
 
-        var rayName: string = this.t.rayOfSphereMidpointsFromRegion(helpRegion, targetRegion);
+        var rayName: string = this.t.lineOfSphereMidpointsFromRegion(helpRegion, targetRegion);
         var rayFromOrigin: string = this.toStr.midpointRayFromOrigin(targetRegion);
         var midpointStr: string = this.toStr.midpoint(targetRegion);
         var midpoint: string = this.ggb.intersect(rayName, rayFromOrigin, midpointStr);
@@ -437,8 +437,8 @@ class Construction {
 
     private constructAFourthSphereInZDirection(z: number): void {
         var targetRegion: number[] = [-1, -1, z];
-        var ray1: string = this.t.rayOfSphereMidpointsFromRegion([0, 0, z - 1], targetRegion);
-        var ray2: string = this.t.rayOfSphereMidpointsFromRegion([0, 0, z + 1], targetRegion);
+        var ray1: string = this.t.lineOfSphereMidpointsFromRegion([0, 0, z - 1], targetRegion);
+        var ray2: string = this.t.lineOfSphereMidpointsFromRegion([0, 0, z + 1], targetRegion);
         var midpointStr: string = this.toStr.midpoint(targetRegion);
         var midpoint: string = this.ggb.intersect(ray1, ray2, midpointStr);
         var sphere: string = this.t.sphere(targetRegion);
