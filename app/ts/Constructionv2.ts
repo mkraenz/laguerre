@@ -223,8 +223,6 @@ class Construction2 {
     private constructInZDirection(): void {
         this.constructInSomeZDirection(Settings.MAX_REGION_IN_POS_Z_DIR, true)
         this.constructInSomeZDirection(Settings.MAX_REGION_IN_NEG_Z_DIR, false)
-        //        this.constructInNegativeZDirection();
-        //        this.constructFourthSpheresInBothZDirections();
     }
 
     private constructInSomeZDirection(max_z: number, direction: boolean): void {
