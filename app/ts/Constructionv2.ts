@@ -219,20 +219,18 @@ class Construction2 {
         this.constructInYDirection();
         //        this.constructInXDirection();
     }
-    
+
     private constructInYDirection(): void {
-        this.constructInSomeYDirection(Settings.MAX_REGION_IN_POS_Y_DIR, true, 0);
-        this.constructInSomeYDirection(Settings.MAX_REGION_IN_NEG_Y_DIR, false, 0);
-        for (var z: number = 0; z < Settings.MAX_REGION_IN_POS_Z_DIR - 1; z += 2) {
-//            this.constructInNegativeYDirection(z);
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_POS_Z_DIR; z += 2) {
+            this.constructInSomeYDirection(Settings.MAX_REGION_IN_POS_Y_DIR, true, z);
+            this.constructInSomeYDirection(Settings.MAX_REGION_IN_NEG_Y_DIR, false, z);
         }
-//
-//        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z += 2) {
-//            this.constructInPositiveYDirection(-z);
-//            this.constructInNegativeYDirection(-z);
-//        }
+        for (var z: number = 0; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z += 2) {
+            this.constructInSomeYDirection(Settings.MAX_REGION_IN_POS_Y_DIR, true, -z);
+            this.constructInSomeYDirection(Settings.MAX_REGION_IN_NEG_Y_DIR, false, -z);
+        }
     }
-    
+
     private constructInSomeYDirection(max_y: number, direction: boolean, z: number) {
         /**
          * if direction == true then construction in positive y direction, else negative
@@ -247,13 +245,13 @@ class Construction2 {
             var startRegions1: Array<number[]>;
             var startRegions2: Array<number[]>;
             var y: number = counterY * sign;
-            
+
             if (Math.abs(y) % 2 == 1) {
                 // startRegions1 = spheres in combinatorics_in_tp_100_from_3_spheres.ggb
                 // targetRegions1 = spheres in example_combinatorics_in_tp_200_from_4_spheres.ggb
-                targetRegions1 = [[x, y + sign, z], [x + 2, y + sign, z], [x, y + sign, z+2]];
-                startRegion1 = [x + 1, y, z+ 1];
-                startRegions1 = [[x + 1, y, z  - 1], [x + 1, y, z-1], [x - 1, y, z+1]];
+                targetRegions1 = [[x, y + sign, z], [x + 2, y + sign, z], [x, y + sign, z + 2]];
+                startRegion1 = [x + 1, y, z + 1];
+                startRegions1 = [[x + 1, y, z - 1], [x + 1, y, z - 1], [x - 1, y, z + 1]];
 
                 /**
                  * startRegions2 = remaining 2 spheres in example_combinatorics_in_tp_100_from_4_spheres.ggb
@@ -261,11 +259,11 @@ class Construction2 {
                  * targetRegions = remaining 2s spheres in example_combinatorics_in_tp_100_from_4_spheres.ggb 
                  */
                 targetRegions2 = [[x - 2, y + sign, z], [x, y + sign, z - 2]];
-                startRegion2 = [x - 1,  y, z - 1];
-                startRegions2 = [[x - 1,  y ,z + 1,], [x + 1, y, z - 1]]
+                startRegion2 = [x - 1, y, z - 1];
+                startRegions2 = [[x - 1, y, z + 1, ], [x + 1, y, z - 1]]
             }
             else {
-                targetRegions1 = [[x + 1, y + sign, z+1], [x + 1, y + sign,  z - 1],
+                targetRegions1 = [[x + 1, y + sign, z + 1], [x + 1, y + sign, z - 1],
                     [x - 1, y + sign, z + 1], [x - 1, y + sign, z - 1]];
                 startRegion1 = [x, y, z];
                 startRegions1 = [[x + 2, y, z], [x + 2, y, z], [x - 2, y, z], [x - 2, y, z]];
@@ -273,7 +271,9 @@ class Construction2 {
 
             this.createSpheresInTargetRegions(targetRegions1, startRegion1, startRegions1);
             this.createSpheresInTargetRegions(targetRegions2, startRegion2, startRegions2);
-            this.createTangentplaneAndHide(targetRegions1);
+            if (z == 0) {
+                this.createTangentplaneAndHide(targetRegions1);
+            }
         }
     }
 
@@ -297,7 +297,7 @@ class Construction2 {
             var startRegions1: Array<number[]>;
             var startRegions2: Array<number[]>;
             var z: number = counterZ * sign;
-            
+
             if (Math.abs(z) % 2 == 1) {
                 // startRegions1 = spheres in combinatorics_in_tp_100_from_3_spheres.ggb
                 // targetRegions1 = spheres in example_combinatorics_in_tp_200_from_4_spheres.ggb
