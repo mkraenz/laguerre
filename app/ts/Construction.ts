@@ -1,4 +1,4 @@
-class Construction2 {
+class Construction {
 
 
     private PROJECTION_POINT_X: string = 'ProjX';
