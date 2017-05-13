@@ -78,6 +78,17 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
+    
+    public reflectObjInPlaneSpannedBy3Points(obj1: string, point1: string, point2: string, point3: string, 
+                                           name?: string): string {
+        var cmd: string = 'Mirror[' + obj1 + ', Plane['+ point1 + ',' + point2 + ',' + point3 + ']]';
+        this.throwErrorIfNotExistentInGGBApplet(obj1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(point1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(point2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(point3, cmd, name);
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }
 
     public reflectIn3Spheres(sphere1: string, sphere2: string, sphere3: string,
         planeToBeMirrored: string, name?: string): string {
@@ -153,6 +164,22 @@ class GGBTools {
      */
     public rayOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
         var cmd: string = 'RayOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
+
+        this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane1, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane2, cmd, name);
+        this.throwErrorIfNotExistentInGGBApplet(plane3, cmd, name);
+
+        this.fullCommandAndExec(cmd, name);
+        return name;
+    }    
+    
+    /**
+     * Custom Tool, where the ray emits from from the midpoint of given sphere and goes through the 
+     * intersection point of the three planes.
+     */
+    public lineOfSphereMidpoints(sphere: string, plane1: string, plane2: string, plane3: string, name?: string) {
+        var cmd: string = 'LineOfSphereMidpoints[' + sphere + ',' + plane1 + ',' + plane2 + ',' + plane3 + ']';
 
         this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(plane1, cmd, name);

@@ -68,8 +68,39 @@ class Tools {
             plane2, plane3, midpointRayName);
         return midpointRayName;
     }
+    
+    lineOfSphereMidpoints(startRegion: number[], planeIndices: number[]): string {
+        var tpIndices: number[] = [planeIndices[0], planeIndices[1], planeIndices[2]];
+        var targetRegion: number[] = this.regionIndex(startRegion, tpIndices);
+        var direction: number[] = this.midpointRayEmitterDirection(targetRegion, startRegion);
+        var midpointLineIndex: number[] = targetRegion.concat(direction);
+        var midpointLineName: string = this.toStr.midpointRay(midpointLineIndex);
+        var plane1: string = this.toStr.tPlane([planeIndices[0], 0, 0]);
+        var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
+        var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
+        this.ggb.lineOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
+            plane2, plane3, midpointLineName);
+        return midpointLineName; 
+    }   
+    
+    lineOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
+        var planeIndices: number[] = [];
+        for (var i: number = 0; i < targetRegion.length; i++) {
+            if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
+                throw new Error('Your midpointRay goes to a face instead of a corner. This is not possible by construction. See Tools.ts/rayOfSphereMidpointsFromRegion().'
+                    + ' Parameters:\nstartRegion = ' + startRegion.toString() + '\ntargetRegion = ' + targetRegion.toString());
+            }
+            if (Math.abs(targetRegion[i]) > Math.abs(startRegion[i])) {
+                planeIndices[i] = targetRegion[i];
+            }
+            else {
+                planeIndices[i] = startRegion[i];
+            }
+        }
+        return this.lineOfSphereMidpoints(startRegion, planeIndices);
+    }
 
-    rayOfSphereMidpointsFromRegion(startRegion: number[], targetRegion: number[]): string {
+    rayOfSphereMidpointsFromRegion2(startRegion: number[], targetRegion: number[]): string {
         var planeIndices: number[] = [];
         for (var i: number = 0; i < targetRegion.length; i++) {
             if (Math.abs(targetRegion[i]) == Math.abs(startRegion[i])) {
@@ -130,6 +161,16 @@ class Tools {
             section[i] = section[i] + this.sign(section[i]); // +-1 if section[i] != 0
         }
         return section;
+    }
+
+    reflectTangentPlane(sphere1: number[], sphere2: number[], sphere3: number[]): string {
+        var givenTangentPlaneIndex: number[] = this.getSectionIndexArray(sphere1, sphere2, sphere3);
+        var nextPlaneIndex: number[] = this.getNextTangentPlaneIndex(sphere1, sphere2, sphere3);
+        var name: string = this.toStr.tPlane(nextPlaneIndex);
+        this.ggb.reflectObjInPlaneSpannedBy3Points(this.toStr.tPlane(givenTangentPlaneIndex),
+            this.toStr.midpoint(sphere1), this.toStr.midpoint(sphere2), this.toStr.midpoint(sphere3),
+            name);
+        return name;
     }
 
     tangentPlaneToThreeSpheres(sphere1: number[], sphere2: number[], sphere3: number[]): string {
