@@ -235,25 +235,26 @@ class Construction2 {
         for (var y: number = 0; y < Settings.MAX_REGION_IN_POS_Y_DIR; y += 2) {
             for (var z: number = 0; z < Settings.MAX_REGION_IN_POS_Z_DIR; z += 2) {
                 this.constructInSomeXDirection(Settings.MAX_REGION_IN_POS_X_DIR, true, y, z);
-                //                this.constructInSomeXDirection(Settings.MAX_REGION_IN_NEG_X_DIR, false, y, z);
+                this.constructInSomeXDirection(Settings.MAX_REGION_IN_NEG_X_DIR, false, y, z);
             }
 
-            //            for (var z: number = 0; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z += 2) {
-            //                this.constructInSomeXDirection(Settings.MAX_REGION_IN_POS_X_DIR, true, y, z);
-            //                this.constructInSomeXDirection(Settings.MAX_REGION_IN_NEG_X_DIR, false, y, -z);
-            //            }
+            for (var z: number = 0; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z += 2) {
+                this.constructInSomeXDirection(Settings.MAX_REGION_IN_POS_X_DIR, true, y, -z);
+                this.constructInSomeXDirection(Settings.MAX_REGION_IN_NEG_X_DIR, false, y, -z);
+            }
         }
-        //
-        //        for (var y: number = 0; y < Settings.MAX_REGION_IN_NEG_Y_DIR; y += 2) {
-        //            for (var z: number = 0; z < Settings.MAX_REGION_IN_POS_Z_DIR; z += 2) {
-        //                this.constructInSomeXDirection(Settings.MAX_REGION_IN_POS_X_DIR, true, -y, z);
-        //                this.constructInSomeXDirection(Settings.MAX_REGION_IN_NEG_X_DIR, false, y, z);
-        //            }
-        //
-        //            for (var z: number = 0; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z += 2) {
-        //                this.constructInSomeXDirection(Settings.MAX_REGION_IN_POS_X_DIR, true, -y, z);
-        //                this.constructInSomeXDirection(Settings.MAX_REGION_IN_NEG_X_DIR, false, y, -z);
-        //            }
+
+        for (var y: number = 0; y < Settings.MAX_REGION_IN_NEG_Y_DIR; y += 2) {
+            for (var z: number = 0; z < Settings.MAX_REGION_IN_POS_Z_DIR; z += 2) {
+                this.constructInSomeXDirection(Settings.MAX_REGION_IN_POS_X_DIR, true, -y, z);
+                this.constructInSomeXDirection(Settings.MAX_REGION_IN_NEG_X_DIR, false, -y, z);
+            }
+
+            for (var z: number = 0; z < Settings.MAX_REGION_IN_NEG_Z_DIR; z += 2) {
+                this.constructInSomeXDirection(Settings.MAX_REGION_IN_POS_X_DIR, true, -y, -z);
+                this.constructInSomeXDirection(Settings.MAX_REGION_IN_NEG_X_DIR, false, -y, -z);
+            }
+        }
     }
 
     private constructInSomeXDirection(max_x: number, direction: boolean, y: number, z: number) {
@@ -270,18 +271,18 @@ class Construction2 {
 
             if (Math.abs(x) % 2 == 1) {
                 targetRegions1 = [[x + sign, y, z], [x + sign, y + 2, z], [x + sign, y, z + 2]];
-                startRegion1 = [x , y+ 1, z + 1];
+                startRegion1 = [x, y + 1, z + 1];
                 startRegions1 = [[x, y + 1, z - 1], [x, y + 1, z - 1], [x, y - 1, z + 1]];
 
-                targetRegions2 = [[x + sign, y - 2, z], [x+sign, y , z - 2]];
-                startRegion2 = [x , y-1, z - 1];
-                startRegions2 = [[x , y-1, z + 1, ], [x , y+1, z - 1]]
+                targetRegions2 = [[x + sign, y - 2, z], [x + sign, y, z - 2]];
+                startRegion2 = [x, y - 1, z - 1];
+                startRegions2 = [[x, y - 1, z + 1, ], [x, y + 1, z - 1]]
             }
             else {
                 targetRegions1 = [[x + sign, y + 1, z + 1], [x + sign, y + 1, z - 1],
-                    [x +sign, y -1, z + 1], [x +sign, y -1, z - 1]];
+                    [x + sign, y - 1, z + 1], [x + sign, y - 1, z - 1]];
                 startRegion1 = [x, y, z];
-                startRegions1 = [[x , y+ 2, z], [x , y+ 2, z], [x , y- 2, z], [x , y- 2, z]];
+                startRegions1 = [[x, y + 2, z], [x, y + 2, z], [x, y - 2, z], [x, y - 2, z]];
             }
 
             this.createSpheresInTargetRegions(targetRegions1, startRegion1, startRegions1);
