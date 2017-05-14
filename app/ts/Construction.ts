@@ -1,10 +1,8 @@
 class Construction {
 
-
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
-    private ORIGIN_REGION: number[] = [0, 0, 0];
     private ORIGIN: string;
     private ORIGIN_SPHERE: string;
 
@@ -16,8 +14,8 @@ class Construction {
 
     constructor() {
         this.toStr = new TypeString();
-        this.ORIGIN = this.toStr.midpoint(this.ORIGIN_REGION);
-        this.ORIGIN_SPHERE = this.toStr.sphere(this.ORIGIN_REGION);
+        this.ORIGIN = this.toStr.midpoint([0, 0, 0]);
+        this.ORIGIN_SPHERE = this.toStr.sphere([0, 0, 0]);
         this.ggb = new GGBTools();
         this.view = new View(this.ggb, this.toStr);
         this.t = new Tools(this.toStr, this.ggb, this.ORIGIN, this.view);
@@ -141,7 +139,7 @@ class Construction {
         for (var x: number = -1; x < 2; x = x + 2) {
             for (var y: number = -1; y < 2; y = y + 2) {
                 for (var z: number = -1; z < 2; z = z + 2) {
-                    var ray: string = this.t.rayOfSphereMidpointsFromRegion2([0, 0, 0], [x, y, z]);
+                    var ray: string = this.t.rayOfSphereMidpointsFromRegion([0, 0, 0], [x, y, z]);
                     this.view.listOfInvisibleObjects.push(ray);
                 }
             }
