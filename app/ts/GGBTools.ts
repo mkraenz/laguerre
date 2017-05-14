@@ -31,15 +31,6 @@ class GGBTools {
         return name;
     }
 
-    public plane(pointName1: string, pointName2: string, pointName3: string, name?: string): string {
-        var cmd: string = 'Plane[' + pointName1 + ', ' + pointName2 + ', ' + pointName3 + ']';
-        this.throwErrorIfNotExistentInGGBApplet(pointName1, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(pointName2, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(pointName3, cmd, name);
-        this.fullCommandAndExec(cmd, name);
-        return name;
-    }
-
     public pointFree(x: string, y: string, z?: string, name?: string): string {
         var cmd: string = '(' + x + ',' + y;
         if (z) {
@@ -67,36 +58,14 @@ class GGBTools {
         this.fullCommandAndExec(cmd, name);
         return name;
     }
-    
-    /**
-     *  Reflect[], also known as Mirror[]
-     */
-    public reflect(targetName: string, mirrorName: string, name?: string): string {
-        var cmd: string = 'Mirror[' + targetName + ',' + mirrorName + ']';
-        this.throwErrorIfNotExistentInGGBApplet(targetName, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(mirrorName, cmd, name);
-        this.fullCommandAndExec(cmd, name);
-        return name;
-    }
-    
-    public reflectObjInPlaneSpannedBy3Points(obj1: string, point1: string, point2: string, point3: string, 
-                                           name?: string): string {
-        var cmd: string = 'Mirror[' + obj1 + ', Plane['+ point1 + ',' + point2 + ',' + point3 + ']]';
+
+    public reflectObjInPlaneSpannedBy3Points(obj1: string, point1: string, point2: string, point3: string,
+        name?: string): string {
+        var cmd: string = 'Mirror[' + obj1 + ', Plane[' + point1 + ',' + point2 + ',' + point3 + ']]';
         this.throwErrorIfNotExistentInGGBApplet(obj1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(point1, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(point2, cmd, name);
         this.throwErrorIfNotExistentInGGBApplet(point3, cmd, name);
-        this.fullCommandAndExec(cmd, name);
-        return name;
-    }
-
-    public reflectIn3Spheres(sphere1: string, sphere2: string, sphere3: string,
-        planeToBeMirrored: string, name?: string): string {
-        var cmd: string = 'ReflectIn3Spheres[' + sphere1 + ' , ' + sphere2 + ' , ' + sphere3 +
-            ' , ' + planeToBeMirrored + ']';
-        this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
         this.fullCommandAndExec(cmd, name);
         return name;
     }
@@ -146,10 +115,7 @@ class GGBTools {
         }
         return fullCommand;
     }
-    
-    /**
-     * Custom Tool
-     */
+
     public tangentPlaneToSphere(sphere: string, point: string, name?: string): string {
         var cmd: string = 'TangentPlaneToSphere[' + sphere + ', ' + point + ']';
         this.throwErrorIfNotExistentInGGBApplet(sphere, cmd, name);
@@ -190,21 +156,6 @@ class GGBTools {
         return name;
     }
     
-    /**
-     * Custom Tool
-     */
-    public tangentPlaneToThreeSpheresAwayFromOrigin(origin: string, sphere1: string, sphere2: string, sphere3: string, name?: string) {
-        var cmd: string = 'TangentialPlaneToThreeSpheresAwayFromOrigin[' + origin +
-            ',' + sphere1 + ',' + sphere2 + ',' + sphere3 + ']';
-
-        this.throwErrorIfNotExistentInGGBApplet(origin, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(sphere1, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(sphere2, cmd, name);
-        this.throwErrorIfNotExistentInGGBApplet(sphere3, cmd, name);
-
-        this.fullCommandAndExec(cmd, name);
-        return name;
-    }
     
     /** Polygon[] tool with just 4 points. */
     public quad(point1: string, point2: string, point3: string, point4: string, name?: string) {
@@ -218,11 +169,11 @@ class GGBTools {
         return name;
     }
 
+    /**
+     * Checks if the given object objName exists in the GGBApplet. If not it throws an Error naming the full command
+     * including definiendum.
+     */
     private throwErrorIfNotExistentInGGBApplet(objName: string, cmd: string, definiendum: string) {
-        /**
-         * Checks if the given object objName exists in the GGBApplet. If not it throws an Error naming the full command
-         * including definiendum.
-         */
         if (!ggbApplet.exists(objName)) {
             throw new Error(objName + ' not existing for command:\n' + this.fullCommand(cmd, definiendum));
         }
