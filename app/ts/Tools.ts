@@ -18,7 +18,7 @@ class Tools {
         }
         var midpoint: string = this.toStr.midpoint(region);
         var radiusName: string = this.toStr.radius(region);
-        return this.ggb.distance(midpoint, this.toStr.tPlane(tpIndex),
+        return this.ggb.distance(midpoint, this.toStr.tangentPlane(tpIndex),
             radiusName);
     }
 
@@ -57,9 +57,9 @@ class Tools {
     rayOfSphereMidpoints(startRegion: number[], planeIndices: number[]): string {
         var midpointRayIndex: number[] = this.getMidpointLineIndex(startRegion, planeIndices);
         var midpointRayName: string = this.toStr.midpointRay(midpointRayIndex);
-        var plane1: string = this.toStr.tPlane([planeIndices[0], 0, 0]);
-        var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
-        var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
+        var plane1: string = this.toStr.tangentPlane([planeIndices[0], 0, 0]);
+        var plane2: string = this.toStr.tangentPlane([0, planeIndices[1], 0]);
+        var plane3: string = this.toStr.tangentPlane([0, 0, planeIndices[2]]);
 
         this.ggb.rayOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
             plane2, plane3, midpointRayName);
@@ -69,9 +69,9 @@ class Tools {
     lineOfSphereMidpoints(startRegion: number[], planeIndices: number[]): string {
         var midpointLineIndex: number[] = this.getMidpointLineIndex(startRegion, planeIndices);
         var midpointLineName: string = this.toStr.midpointRay(midpointLineIndex);
-        var plane1: string = this.toStr.tPlane([planeIndices[0], 0, 0]);
-        var plane2: string = this.toStr.tPlane([0, planeIndices[1], 0]);
-        var plane3: string = this.toStr.tPlane([0, 0, planeIndices[2]]);
+        var plane1: string = this.toStr.tangentPlane([planeIndices[0], 0, 0]);
+        var plane2: string = this.toStr.tangentPlane([0, planeIndices[1], 0]);
+        var plane3: string = this.toStr.tangentPlane([0, 0, planeIndices[2]]);
 
         this.ggb.lineOfSphereMidpoints(this.toStr.sphere(startRegion), plane1,
             plane2, plane3, midpointLineName);
@@ -161,8 +161,8 @@ class Tools {
     reflectTangentPlane(sphere1: number[], sphere2: number[], sphere3: number[]): string {
         var givenTangentPlaneIndex: number[] = this.getSectionIndexArray(sphere1, sphere2, sphere3);
         var nextPlaneIndex: number[] = this.getNextTangentPlaneIndex(sphere1, sphere2, sphere3);
-        var name: string = this.toStr.tPlane(nextPlaneIndex);
-        this.ggb.reflectObjInPlaneSpannedBy3Points(this.toStr.tPlane(givenTangentPlaneIndex),
+        var name: string = this.toStr.tangentPlane(nextPlaneIndex);
+        this.ggb.reflectObjInPlaneSpannedBy3Points(this.toStr.tangentPlane(givenTangentPlaneIndex),
             this.toStr.midpoint(sphere1), this.toStr.midpoint(sphere2), this.toStr.midpoint(sphere3),
             name);
         return name;
