@@ -7,10 +7,7 @@ class TypeString {
         return this.typeString('s', index);
     }
 
-    /**
-     * tplane = tangent plane
-     */
-    public tPlane(index: number[]): string {
+    public tangentPlane(index: number[]): string {
         return this.typeString('tp', index);
     }
 
@@ -26,8 +23,7 @@ class TypeString {
         return this.typeString('parameter', index);
     }
     
-    /** tangent point */
-    public tPoint(index: number[]): string {
+    public tangentPoint(index: number[]): string {
         return this.typeString('TPoint', index);
     }
 
@@ -65,9 +61,5 @@ class TypeString {
             indices[i + targetRegion.length] = -targetRegion[i];
         }
         return this.midpointRay(indices);
-    }
-
-    public face(index1: number[], index2: number[], index3: number[], index4: number[]) {
-        return 'face_{' + index1.toString() + ',' + index2.toString() + ',' + index3.toString() + ',' + index4.toString() + '}';
     }
 }

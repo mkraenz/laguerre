@@ -1,10 +1,8 @@
 class Construction {
 
-
     private PROJECTION_POINT_X: string = 'ProjX';
     private PROJECTION_POINT_Y: string = 'ProjY';
     private PROJECTION_POINT_Z: string = 'ProjZ';
-    private ORIGIN_REGION: number[] = [0, 0, 0];
     private ORIGIN: string;
     private ORIGIN_SPHERE: string;
 
@@ -16,14 +14,14 @@ class Construction {
 
     constructor() {
         this.toStr = new TypeString();
-        this.ORIGIN = this.toStr.midpoint(this.ORIGIN_REGION);
-        this.ORIGIN_SPHERE = this.toStr.sphere(this.ORIGIN_REGION);
+        this.ORIGIN = this.toStr.midpoint([0, 0, 0]);
+        this.ORIGIN_SPHERE = this.toStr.sphere([0, 0, 0]);
         this.ggb = new GGBTools();
         this.view = new View(this.ggb, this.toStr);
         this.t = new Tools(this.toStr, this.ggb, this.ORIGIN, this.view);
     }
 
-
+    
     private createInitialSphere(): void {
         var region: number[] = [0, 0, 0];
         this.t.sphereMidpointFree(region, 0, 0, 0);
@@ -69,30 +67,30 @@ class Construction {
         var coneProjZ: string = this.t.renameObject(coneZ, 'coneProjZ');
 
         this.ggb.intersect(coneProjY, coneProjZ, 'TPointX');
-        var tPointPosX: string = this.t.renameObject('TPointX_1', this.toStr.tPoint([1, 0, 0]));
-        var tPointNegX: string = this.t.renameObject('TPointX_2', this.toStr.tPoint([-1, 0, 0]));
+        var tPointPosX: string = this.t.renameObject('TPointX_1', this.toStr.tangentPoint([1, 0, 0]));
+        var tPointNegX: string = this.t.renameObject('TPointX_2', this.toStr.tangentPoint([-1, 0, 0]));
         this.ggb.intersect(coneProjX, coneProjZ, 'TPointY');
-        var tPointNegY: string = this.t.renameObject('TPointY_1', this.toStr.tPoint([0, -1, 0]));
-        var tPointPosY: string = this.t.renameObject('TPointY_2', this.toStr.tPoint([0, 1, 0]));
+        var tPointNegY: string = this.t.renameObject('TPointY_1', this.toStr.tangentPoint([0, -1, 0]));
+        var tPointPosY: string = this.t.renameObject('TPointY_2', this.toStr.tangentPoint([0, 1, 0]));
         this.ggb.intersect(coneProjX, coneProjY, 'TPointZ');
-        var tPointPosZ: string = this.t.renameObject('TPointZ_1', this.toStr.tPoint([0, 0, 1]));
-        var tPointNegZ: string = this.t.renameObject('TPointZ_2', this.toStr.tPoint([0, 0, -1]));
+        var tPointPosZ: string = this.t.renameObject('TPointZ_1', this.toStr.tangentPoint([0, 0, 1]));
+        var tPointNegZ: string = this.t.renameObject('TPointZ_2', this.toStr.tangentPoint([0, 0, -1]));
 
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, this.toStr.tPlane([1, 0, 0]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, this.toStr.tPlane([-1, 0, 0]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, this.toStr.tPlane([0, 1, 0]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, this.toStr.tPlane([0, -1, 0]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, this.toStr.tPlane([0, 0, 1]));
-        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, this.toStr.tPlane([0, 0, -1]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosX, this.toStr.tangentPlane([1, 0, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegX, this.toStr.tangentPlane([-1, 0, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosY, this.toStr.tangentPlane([0, 1, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegY, this.toStr.tangentPlane([0, -1, 0]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointPosZ, this.toStr.tangentPlane([0, 0, 1]));
+        this.ggb.tangentPlaneToSphere(this.ORIGIN_SPHERE, tPointNegZ, this.toStr.tangentPlane([0, 0, -1]));
 
         this.view.listOfInvisibleObjects.push(midpointProjX, midpointProjY, midpointProjZ);
         this.view.listOfInvisibleObjects.push(projectionSphereX, projectionSphereY, projectionSphereZ);
         this.view.listOfInvisibleObjects.push(coneProjX, coneProjY, coneProjZ);
         this.view.listOfInvisibleObjects.push(tPointPosX, tPointNegX, tPointNegY, tPointPosY, tPointPosZ, tPointNegZ);
 
-        this.view.listOfInvisiblePlanes.push(this.toStr.tPlane([1, 0, 0]), this.toStr.tPlane([-1, 0, 0]),
-            this.toStr.tPlane([0, 1, 0]), this.toStr.tPlane([0, -1, 0]), this.toStr.tPlane([0, 0, 1]),
-            this.toStr.tPlane([0, 0, -1]));
+        this.view.listOfInvisiblePlanes.push(this.toStr.tangentPlane([1, 0, 0]), this.toStr.tangentPlane([-1, 0, 0]),
+            this.toStr.tangentPlane([0, 1, 0]), this.toStr.tangentPlane([0, -1, 0]), this.toStr.tangentPlane([0, 0, 1]),
+            this.toStr.tangentPlane([0, 0, -1]));
     }
 
     /**
@@ -141,7 +139,7 @@ class Construction {
         for (var x: number = -1; x < 2; x = x + 2) {
             for (var y: number = -1; y < 2; y = y + 2) {
                 for (var z: number = -1; z < 2; z = z + 2) {
-                    var ray: string = this.t.rayOfSphereMidpointsFromRegion2([0, 0, 0], [x, y, z]);
+                    var ray: string = this.t.rayOfSphereMidpointsFromRegion([0, 0, 0], [x, y, z]);
                     this.view.listOfInvisibleObjects.push(ray);
                 }
             }

@@ -34,14 +34,16 @@ class View {
 
     public setLabelsInvisible(): void {
         var allGGBObjectNames: string[] = ggbApplet.getAllObjectNames();
-        for(var i = 0; i < allGGBObjectNames.length; i++){
-           ggbApplet.setLabelVisible(allGGBObjectNames[i], false); 
+        for (var i = 0; i < allGGBObjectNames.length; i++) {
+            ggbApplet.setLabelVisible(allGGBObjectNames[i], false);
         }
     }
 
     private setColorOfnthOrderSphere(order: number, color: string): void {
+        // Starting at 0. 0 colors the origin sphere, then proceed outwards by steps of 1
         if (order < 0) {
-            throw new Error('Illegal Argument: Order must be greater or equal to zero. Given parameter: order = ' + order);
+            throw new Error('Illegal Argument: Order must be greater or equal to zero. Given parameter: order = '
+                + order);
         }
         var toStr: TypeString = new TypeString();
         for (var i: number = -order; i <= order; i++) {
@@ -49,9 +51,7 @@ class View {
                 var targetRegions: Array<number[]> = [[-order, i, j], [order, i, j], [i, -order, j], [i, order, j],
                     [i, j, -order], [i, j, order]];
                 for (var k: number = 0; k < targetRegions.length; k++) {
-                    var sphereName: string = toStr.sphere(targetRegions[k]);
-                    var isSphereExistent: boolean = ggbApplet.exists(sphereName);
-                    if (isSphereExistent) {
+                    if (ggbApplet.exists(toStr.sphere(targetRegions[k]))) {
                         this.setColorOfSphere(targetRegions[k], color);
                     }
                 }

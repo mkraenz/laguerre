@@ -14,9 +14,9 @@ class TPlaneIntersectionPointConstruction {
     private intersect3Planes(x: number, y: number, z: number): string {
         var intersectionPointName: string = this.toStr.planeIntersectionPoint([x, y, z]);
         if (!ggbApplet.exists(intersectionPointName)) {
-            var planeNameX: string = this.toStr.tPlane([x, 0, 0]);
-            var planeNameY: string = this.toStr.tPlane([0, y, 0]);
-            var planeNameZ: string = this.toStr.tPlane([0, 0, z]);
+            var planeNameX: string = this.toStr.tangentPlane([x, 0, 0]);
+            var planeNameY: string = this.toStr.tangentPlane([0, y, 0]);
+            var planeNameZ: string = this.toStr.tangentPlane([0, 0, z]);
             return this.ggb.intersect3Planes(planeNameX, planeNameY, planeNameZ, intersectionPointName);
         }
     }
