@@ -31,6 +31,7 @@
 	
 	<a download="info.txt" id="downloadlink" style="display: none">Download Sphere Export</a>
 	<a download="info.txt" id="downloadOBJlink" style="display: none">Download .OBJ Export</a>
+	<input type="button" name="button" value="Do next step" id="nextStep" onclick="nextStep();"/>
 
 	<div id="applet_container1"></div>
 
@@ -61,5 +62,46 @@
 	</script>
 	<script type="text/javascript" src="scripts/gen/laguerre.js"></script>
 	<!-- endbuild -->
+	
+    <script type="text/javascript">
+	    function nextStep() {
+			switch (stepCounter) {
+			    case 0:
+			        construction.createInitialSphere();
+			        break;
+			    case 1:
+			    	construction.createInfinityPoints();
+			        break;
+			    case 2:
+			    	construction.createInitialTangentplanes();
+			        break;
+			    case 3:
+			    	construction.createInitialMidpointRays();
+			        break;
+			    case 4:
+			    	construction.createParameterMidpoints();
+			        break;
+			    case 5:
+			    	construction.createParameterSpheresAndTangentplanes();
+			        break;
+			    case 6:
+			    	construction.createMissingInitialSpheres();
+			    	break;
+			    case 7:
+			    	construction.constructSecondOrderTangentPlanesInNegDirections()
+			    	break;
+			    case 8:
+			    	construction.createEighthSphere();
+			    	break;
+			    case 9:
+			    	construction.constructIteratively();
+			    	break;
+			}
+			construction.view.customizeViewProperties00();
+			stepCounter++;
+    	}
+	    var construction = new Construction();
+	    var stepCounter = 0;
+	</script>
 </body>
 </html>
