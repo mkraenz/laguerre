@@ -1,4 +1,4 @@
-function runLaguerreConstruction() {
+function runFullLaguerreConstruction() {
     var construction = new Construction();
     construction.run();
 }
