@@ -26,7 +26,7 @@ class View {
         }
     }
 
-    public constumizeViewProperties(): void {
+    public customizeViewProperties(): void {
         this.setHelperObjectsInvisible();
         this.setLabelsInvisible();
         this.setColorOfSphere([0, 0, 0], this.ORIGIN_SPHERE_COLOR);

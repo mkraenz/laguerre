@@ -407,6 +407,6 @@ class Construction {
         this.constructSecondOrderTangentPlanesInNegDirections()
         this.createEighthSphere();
         this.constructIteratively();
-        this.view.constumizeViewProperties();
+        this.view.customizeViewProperties();
     }
 }
