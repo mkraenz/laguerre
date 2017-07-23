@@ -4,8 +4,6 @@ class ListCreator {
     private faceList: FaceList;
 
     constructor(private toStr: TypeString, private view: View) {
-        var intersector = new TPlaneIntersectionPointConstruction(toStr, new GGBTools());
-        intersector.createTPlaneIntersectionPoints();
         this.vertexList = this.createVertexList();
         this.faceList = this.createFaceList(this.vertexList);
     }
