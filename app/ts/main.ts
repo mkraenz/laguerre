@@ -13,6 +13,11 @@ function runExporterToOBJ() {
     exporter.runExportToOBJ();
 }
 
+function runAllIntersectionPointsOfTplanes() {
+    var intersector = new TPlaneIntersectionPointConstruction(new TypeString(), new GGBTools());
+    intersector.createTPlaneIntersectionPoints();
+}
+
 function runCreateFaces() {
     var listCreator = new ListCreator(new TypeString(), new View(new GGBTools(), new TypeString()));
     listCreator.getFaceList().createFacesInGGB();
