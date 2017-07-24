@@ -25,33 +25,48 @@ function writeTextFile(text: any, mode: boolean) {
 class Exporter {
     public runExportToOBJ(): void {
         var extractedDataStr: string = this.extractOBJDataFromGGBApplet();
-        var link: any = document.getElementById('downloadOBJlink');
-        link.href = writeTextFile(extractedDataStr, true);
-        link.style.display = 'block';
+        this.showDownloadLink(extractedDataStr, 'downloadlinkVerticesFaces');
     }
 
     public runExportOfSpheres(): void {
         var extractedDataStr: string = this.extractSphereDataFromGGBApplet();
-        var link: any = document.getElementById('downloadlink');
-        link.href = writeTextFile(extractedDataStr, false);
-        link.style.display = 'block';
+        this.showDownloadLink(extractedDataStr, 'downloadlinkSpheres');
+    }
+
+    public runExportOfInputParameters(): void {
+        var extractedDataStr: string = this.extractInputParametersFromGGBApplet();
+        this.showDownloadLink(extractedDataStr, 'downloadlinkInputParameters');
     }
 
     private extractOBJDataFromGGBApplet(): string {
         var objExporter = new OBJExporter(new TypeString());
         var outputStr: string = objExporter.extractData();
-        if (Settings.debug > 1) {
-            console.log(outputStr);
-        }
+        this.toConsoleIfHighDebugLevel(outputStr);
         return outputStr;
     }
-    
+
     private extractSphereDataFromGGBApplet(): string {
         var sphereExporter: SphereExporter = new SphereExporter(new TypeString());
         var outputStr: string = sphereExporter.extractAllSpheres();
+        this.toConsoleIfHighDebugLevel(outputStr);
+        return outputStr;
+    }
+
+    private extractInputParametersFromGGBApplet(): string {
+        var inputParameterExporter = new InputParameterExporter(new TypeString());
+        var outputStr: string = inputParameterExporter.export();
+        this.toConsoleIfHighDebugLevel(outputStr);
+        return outputStr;
+    }
+    private toConsoleIfHighDebugLevel(outputStr: string) {
         if (Settings.debug > 1) {
             console.log(outputStr);
         }
-        return outputStr;
+    }
+
+    private showDownloadLink(extractedDataStr: string, htmlLinkName: string) {
+        var link: any = document.getElementById(htmlLinkName);
+        link.href = writeTextFile(extractedDataStr, false);
+        link.style.display = 'block';
     }
 }

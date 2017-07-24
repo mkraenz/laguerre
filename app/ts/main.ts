@@ -12,7 +12,10 @@ function runExporterToOBJ() {
     var exporter = new Exporter();
     exporter.runExportToOBJ();
 }
-
+function runInputParameterExporter() {
+    var exporter = new Exporter();
+    exporter.runExportOfInputParameters();
+}
 function runAllIntersectionPointsOfTplanes() {
     var intersector = new TPlaneIntersectionPointConstruction(new TypeString(), new GGBTools());
     intersector.createTPlaneIntersectionPoints();
