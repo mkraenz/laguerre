@@ -25,17 +25,17 @@ function writeTextFile(text: any, mode: boolean) {
 class Exporter {
     public runExportToOBJ(): void {
         var extractedDataStr: string = this.extractOBJDataFromGGBApplet();
-        this.showDownloadLink(extractedDataStr);
+        this.showDownloadLink(extractedDataStr, 'downloadlinkVerticesFaces');
     }
 
     public runExportOfSpheres(): void {
         var extractedDataStr: string = this.extractSphereDataFromGGBApplet();
-        this.showDownloadLink(extractedDataStr);
+        this.showDownloadLink(extractedDataStr, 'downloadlinkSpheres');
     }
 
     public runExportOfInputParameters(): void {
         var extractedDataStr: string = this.extractInputParametersFromGGBApplet();
-        this.showDownloadLink(extractedDataStr);
+        this.showDownloadLink(extractedDataStr, 'downloadlinkInputParameters');
     }
 
     private extractOBJDataFromGGBApplet(): string {
@@ -64,8 +64,8 @@ class Exporter {
         }
     }
 
-    private showDownloadLink(extractedDataStr: string) {
-        var link: any = document.getElementById('downloadlink');
+    private showDownloadLink(extractedDataStr: string, htmlLinkName: string) {
+        var link: any = document.getElementById(htmlLinkName);
         link.href = writeTextFile(extractedDataStr, false);
         link.style.display = 'block';
     }

@@ -22,7 +22,8 @@
 	<!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
+    
+	<input type="button" name="button" value="Next construction step" id="nextStep" onclick="nextStep();"/>
 	<input type="button" value="run full Laguerre Construction" onclick="runFullLaguerreConstruction()">
 	<input type="button" value="create net vertices" onclick="runAllIntersectionPointsOfTplanes()">
 	<input type="button" value="create Faces" onclick="runCreateFaces()">
@@ -31,10 +32,10 @@
 	<input type="button" value="export cubes to .OBJ file" onclick="runExporterToOBJ()">
 	<input type="button" value="export input parameters" onclick="runInputParameterExporter()">
 	
-	
-	<a download="info.txt" id="downloadlink" style="display: none">Download Sphere Export</a>
-	<a download="info.txt" id="downloadOBJlink" style="display: none">Download .OBJ Export</a>
-	<input type="button" name="button" value="Next construction step" id="nextStep" onclick="nextStep();"/>
+	<a download="ISNetSpheres.txt" id="downloadlinkSpheres" style="display: none">Download Sphere Export</a>
+	<a download="ISNetVerticesAndFaces.obj" id="downloadlinkVerticesFaces" style="display: none">Download .OBJ Export</a>
+	<a download="ISNetInputParameters.txt" id="downloadlinkInputParameters" style="display: none">Download Input Parameter Export</a>
+
 
 	<div id="applet_container1"></div>
 
