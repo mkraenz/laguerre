@@ -30,3 +30,8 @@ function hideAllLabels() {
     var view: View = new View(new GGBTools(), new TypeString());
     view.setLabelsInvisible();
 }
+
+function hideAllNonInspheres() {
+    var view: View = new View(new GGBTools(), new TypeString());
+    view.hideallNonInspheres();
+}
